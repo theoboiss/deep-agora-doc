@@ -8,7 +8,7 @@
 - **1 mail / sem ou 15j max**
 - **2j min avant prise de contact**
 - réu présent. ds 15j -> présentation slides bilan existant et sujet
-- contact/prise décision avec équipe retro ? oui, justine maugeais
+- contact/prise décision avec équipe retro ? oui, justine pinsard
 - contact CESR? oui Helena Pierratzo, équipe BVH (biblio virt humaniste)
 - recrutement prévu janvier (pro dev di5 sortant)
 

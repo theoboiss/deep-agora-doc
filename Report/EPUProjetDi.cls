@@ -42,7 +42,7 @@
 
 %----- Package Loading -----
 \LoadClass[12pt,oneside]{book}
-\RequirePackage[UKenglish]{babel}
+\RequirePackage[french]{babel}
 
 
 %----- Main Code -----
