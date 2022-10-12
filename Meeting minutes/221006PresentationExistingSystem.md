@@ -6,7 +6,7 @@ Many scenario rules require a lot of parameters and without being an expert user
 
 Deep learning could be a solution to this complexity by avoiding all this configuration.
 
-DL modules could then be used iteratively with simpler scenarios to extract specifically defined EOCs.
+DL modules could then be used iteratively with simpler scenarios to extract specifically defined elements of content (EOCs).
 
 
 # Output specifications
@@ -23,7 +23,7 @@ However, characters can be labeled in different ways that segment them into as m
 
 ## Visual
 
-In ancient document, *dropped capital letters*, *banners*, *photographs*, tables are all types of EOC that are extremely valuable for their amount of historical information.
+In ancient document, *dropped capital letters*, *banners*, *photographs*, *tables* are all types of EOC that are extremely valuable for their amount of historical information.
 
 They are therefore also of great importance to extract in this project.
 
@@ -50,9 +50,9 @@ Most of them will most likely be trained on different data sets.
 
 Before or after the iteration above can be produced an iteration that will aim to design an appropriate output for RETRO, in relation to the ALTO XML standard.
 
-A third iteration should consist of training a model on handwritten documents and test its limits.
+A forth iteration should consist of training a model on handwritten documents and test its limits.
 
-Accordingly to the future specifications, the forth iteration should be about turning the notebook into a usable python module or group modules.
+Accordingly to the future specifications, the fifth iteration should be about turning the notebook into a usable python module or group modules.
 The number of modules will be defined in relation to the number of EOC types they return.
 A generic module would return the whole layout as EOCs which can later be processed by scenarios.
 Otherwise, several specialised extractor modules should be reusable as part of scenarios.
