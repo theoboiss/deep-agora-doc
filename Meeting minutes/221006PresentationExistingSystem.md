@@ -10,7 +10,9 @@
 
 **Creation date:** 06.10.2022
 
-**Version:** 1.0
+**Time spent:** 8h
+
+**Version:** 1.1
 
 ## SUMMARY
 
@@ -40,12 +42,27 @@ They are looking for elements that are valuable in term of information or rarity
 
 Characters are among the most important EOCs to extract. Indeed, they can later be processed by RETRO for clustering and then transcription.
 
-However, characters can be labeled in different ways that segment them into as many EOCs of the same value: *title*, *note*, *text*, ... **to pursue**
+However, text can be viewed in different ways that segment them into as many EOCs:
+- *character*,
+- *word*,
+- *line*,
+- *dropped capital letter*,
+- *annotation*;
+
+And which can be considered as previously:
+- *title*;
+- *footnote*;
+- *legend*;
+- *related components (CC)*;
+- *noise*.
 
 
 ## VISUAL
 
-In ancient document, *dropped capital letters*, *banners*, *photographs*, *tables* are all types of EOC that are extremely valuable for their amount of historical information.
+In ancient document, are all types of EOC that are extremely valuable for their amount of historical information:
+- *dropped capital letters*
+- *banners*
+- *illustrations (drawings/engravings)*
 
 They are therefore also of great importance to extract in this project.
 
