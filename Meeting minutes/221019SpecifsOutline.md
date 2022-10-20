@@ -12,13 +12,13 @@
 
 **Time spent:** 4h
 
-**Version:** 1.0
+**Version:** 1.1
 
 ## SUMMARY
 
 1. [METHODOLOGICAL BASES](#I.)
-1. [CONSTRAINTS IN ANALYSIS AND DESIGN](#I.)
-1. [SYNTHESIS OF ANALYSIS](#I.)
+2. [CONSTRAINTS IN ANALYSIS AND DESIGN](#II.)
+3. [SYNTHESIS OF ANALYSIS](#III.)
 
 
 # I. METHODOLOGICAL BASES <a id="I."></a>
@@ -54,7 +54,7 @@ Making a model for each of them would allow much more modulability and less comp
 Therefore, this seems to be the most appropriate choice.
 
 
-## FRAMEWORKS
+## FRAMEWORKS <a id="II.FRAMEWORKS"></a>
 
 Frameworks designed for Ancient Document Layout Analysis usually use additional features than others, in order to take into account broken characters, stains, poor paper quality, and so on.
 
@@ -71,7 +71,7 @@ The most important non-functionnal specifications about the learning will be the
 With regard to datasets, the ways in which their completeness is promoted and how they should be labelled are essential.
 
 
-# III. SYNTHESIS OF ANALYSIS <a id="II."></a>
+# III. SYNTHESIS OF ANALYSIS <a id="III."></a>
 
 I should present explicit **UML diagrams** in order to define and validate:
 - Use cases

@@ -12,7 +12,7 @@
 
 **Time spent:** 8h
 
-**Version:** 1.1
+**Version:** 1.2
 
 ## SUMMARY
 
@@ -38,7 +38,7 @@ DL modules could then be used iteratively with simpler scenarios to extract spec
 Related components only are not interesting enough to extract for the end user.
 They are looking for elements that are valuable in term of information or rarity.
 
-## TEXTUAL
+## TEXTUAL <a id="II.TEXTUAL"></a>
 
 Characters are among the most important EOCs to extract. Indeed, they can later be processed by RETRO for clustering and then transcription.
 
@@ -57,7 +57,7 @@ And which can be considered as previously:
 - *noise*.
 
 
-## VISUAL
+## VISUAL <a id="II.VISUAL"></a>
 
 In ancient document, are all types of EOC that are extremely valuable for their amount of historical information:
 - *dropped capital letters*
