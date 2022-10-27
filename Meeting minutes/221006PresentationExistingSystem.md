@@ -12,7 +12,7 @@
 
 **Time spent:** 8h
 
-**Version:** 1.2
+**Version:** 1.3
 
 ## SUMMARY
 
@@ -35,7 +35,7 @@ DL modules could then be used iteratively with simpler scenarios to extract spec
 
 # II. OUTPUT SPECIFICATIONS <a id="II."></a>
 
-Related components only are not interesting enough to extract for the end user.
+Connected components only are not interesting enough to extract for the end user.
 They are looking for elements that are valuable in term of information or rarity.
 
 ## TEXTUAL <a id="II.TEXTUAL"></a>
@@ -46,21 +46,21 @@ However, text can be viewed in different ways that segment them into as many EOC
 - *character*,
 - *word*,
 - *line*,
-- *dropped capital letter*,
+- *initial capital*,
 - *annotation*;
 
 And which can be considered as previously:
 - *title*;
 - *footnote*;
 - *legend*;
-- *related components (CC)*;
+- *connected components (CC)*;
 - *noise*.
 
 
 ## VISUAL <a id="II.VISUAL"></a>
 
 In ancient document, are all types of EOC that are extremely valuable for their amount of historical information:
-- *dropped capital letters*
+- *initial capitals*
 - *banners*
 - *illustrations (drawings/engravings)*
 
@@ -69,14 +69,15 @@ They are therefore also of great importance to extract in this project.
 
 # III. UPCOMING RESEARCH <a id="III."></a>
 
-- Keep a bibliography
+- Keep a **bibliography**
 - **Specify the outputs** of the desired algorithm, like te EOCs to be extracted
 - Make an overview of the librairies that could be interesting for the project and **analyse the competing libraries by a table**.
 - **Analyse the ALTO standard** and why it is relevant for the storage of Deep-AGORA outputs.
 - Schedule a meeting with Justine Pinsard (RETRO team) in order to **specify with her the outputs of Deep-Agora** in relation to the inputs of RETRO, according to the ALTO format.
-- **Specify all dataset requirements** to **analyse those available by a table to build the most appropriate one**.
+- **Specify dataset requirements**.
 - Produce a simple **Jupyter notebook that implements the dhSegment library** on a few ancient document images containing textual or visual EOCs, in order to extract the list of their position and label.
-- Produce a schedule (Gantt) for the implementation phase
+- Produce a **schedule (Gantt)** for the implementation phase
+- Produce **component diagrams**
 
 
 # IV. IMPLEMENTATION PROCESS <a id="IV."></a>

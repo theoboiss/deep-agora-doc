@@ -12,7 +12,7 @@
 
 **Time spent:** 4h
 
-**Version:** 1.1
+**Version:** 1.2
 
 ## SUMMARY
 
@@ -43,12 +43,12 @@ First of all, the user needs a modular solution that allows them to build the ri
 
 Secondly, the more things the model can extract, the more difficult it is to generalise.
 Indeed, since the user needs as many potential characters as possible, even if it is not certain that these are the actual characters, they will play a much more important role in the objective function.
-In this case, it might be harder to predict dropped capital letters or any other decoration.
+In this case, it might be harder to predict initial capitals or any other decoration.
 
 As they are 3 main types of EOCs:
-- decoration
+- ornaments
 - text
-- additional text (annotations)
+- additional text (handwritten annotations and initial capitals)
 
 Making a model for each of them would allow much more modulability and less complexity.
 Therefore, this seems to be the most appropriate choice.
@@ -56,19 +56,20 @@ Therefore, this seems to be the most appropriate choice.
 
 ## FRAMEWORKS <a id="II.FRAMEWORKS"></a>
 
-Frameworks designed for Ancient Document Layout Analysis usually use additional features than others, in order to take into account broken characters, stains, poor paper quality, and so on.
+Frameworks designed for Ancient Document Layout Analysis usually use additional features than others, in order to take into account broken characters, stains, poor paper quality and so on.
 
 The study of the different Frameworks should take into account the previous section, so that some may be better than others for certain tasks.
 
 
-## LEARNING
+## LEARNING <a id="II.LEARNING"></a>
 
 It will be interesting to define hypothesis and risks in regard to the user needs.
 Such as the future of their research or their potential other needs.
 It will influence the product and the data sets.
 
 The most important non-functionnal specifications about the learning will be the performance metrics, the performance expectations and the learning time.
-With regard to datasets, the ways in which their completeness is promoted and how they should be labelled are essential.
+
+With regard to datasets, the ways in which their completeness is ensured and how they should be labelled are essential.
 
 
 # III. SYNTHESIS OF ANALYSIS <a id="III."></a>
