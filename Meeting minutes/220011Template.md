@@ -10,6 +10,8 @@
 
 **Creation date:** ..2022
 
+**Time spent:** 0h
+
 **Version:** 1.0
 
 ## SUMMARY
