@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><project name="Untitled Gantt Project" company="" webLink="http://" view-date="2023-01-23" view-index="0" gantt-divider-location="300" resource-divider-location="300" version="2.8.11" locale="en_GB">
+<?xml version="1.0" encoding="UTF-8"?><project name="Untitled Gantt Project" company="" webLink="http://" view-date="2022-12-05" view-index="0" gantt-divider-location="300" resource-divider-location="300" version="2.8.11" locale="en_GB">
     <description/>
     <view zooming-state="default:6" id="gantt-chart">
         <field id="tpd3" name="Name" width="158" order="0"/>
@@ -52,20 +52,19 @@
             <task id="61" name="Frameworks specs" color="#ffcc33" meeting="false" start="2022-10-13" duration="11" complete="0" thirdDate="2022-09-19" thirdDate-constraint="0" expand="true"/>
             <task id="59" name="Meeting (Specifications)" color="#00ff00" meeting="true" start="2022-10-19" duration="0" complete="0" thirdDate="2022-09-12" thirdDate-constraint="0" expand="true"/>
             <task id="64" name="Data set specs" color="#ffcc33" meeting="false" start="2022-11-10" duration="5" complete="0" thirdDate="2022-09-12" thirdDate-constraint="0" expand="true"/>
-            <task id="49" name="Planning" color="#9966ff" meeting="false" start="2022-11-15" duration="3" complete="0" thirdDate="2022-09-12" thirdDate-constraint="0" expand="true"/>
+            <task id="49" name="Planning" color="#9966ff" meeting="false" start="2022-11-15" duration="2" complete="0" thirdDate="2022-09-12" thirdDate-constraint="0" expand="true"/>
             <task id="78" name="Functional Specification Document" color="#9966ff" meeting="false" start="2022-11-17" duration="11" complete="0" thirdDate="2022-09-26" thirdDate-constraint="0" expand="true">
                 <depend id="100" type="2" difference="0" hardness="Strong"/>
             </task>
             <task id="79" name="Model specs" color="#ffcc33" meeting="false" start="2022-11-23" duration="1" complete="0" thirdDate="2022-11-17" thirdDate-constraint="0" expand="true"/>
-            <task id="84" name="Diagrams" color="#ffcc33" meeting="false" start="2022-11-24" duration="5" complete="0" thirdDate="2022-11-24" thirdDate-constraint="0" expand="true"/>
+            <task id="84" name="Diagrams" color="#ffcc33" meeting="false" start="2022-11-16" duration="2" complete="0" thirdDate="2022-11-24" thirdDate-constraint="0" expand="true"/>
             <task id="100" name="Validation" color="#ff0033" meeting="false" start="2022-12-02" duration="8" complete="0" thirdDate="2022-12-08" thirdDate-constraint="0" expand="true"/>
             <task id="93" name="Presentation (Specifications &amp; Analysis)" color="#ff0033" meeting="true" start="2022-12-14" duration="0" complete="0" thirdDate="2022-11-14" thirdDate-constraint="0" expand="true"/>
         </task>
-        <task id="107" name="Sprint 1" color="#000000" meeting="false" start="2023-01-04" duration="12" complete="0" thirdDate="2022-11-21" thirdDate-constraint="0" expand="true">
-            <task id="117" name="Data preparation" color="#ffcc33" meeting="false" start="2023-01-04" duration="1" complete="0" thirdDate="2023-01-19" thirdDate-constraint="0" expand="true">
-                <depend id="116" type="2" difference="0" hardness="Strong"/>
-            </task>
-            <task id="116" name="Pre-trained model inference" color="#ffcc33" meeting="false" start="2023-01-05" duration="11" complete="0" thirdDate="2023-01-05" thirdDate-constraint="0" expand="true"/>
+        <task id="107" name="Sprint 1" color="#000000" meeting="false" start="2023-01-04" duration="13" complete="0" thirdDate="2022-11-21" thirdDate-constraint="0" expand="true">
+            <task id="117" name="Data preparation" color="#ffcc33" meeting="false" start="2023-01-05" duration="6" complete="0" thirdDate="2023-01-19" thirdDate-constraint="0" expand="true"/>
+            <task id="254" name="Environnement" color="#ffcc33" meeting="false" start="2023-01-04" duration="2" complete="0" thirdDate="2023-01-02" thirdDate-constraint="0" expand="true"/>
+            <task id="116" name="Pre-trained model inference" color="#ffcc33" meeting="false" start="2023-01-12" duration="7" complete="0" thirdDate="2023-01-05" thirdDate-constraint="0" expand="true"/>
             <task id="118" name="Feedback" color="#ff0033" meeting="false" start="2023-01-19" duration="1" complete="0" thirdDate="2023-01-19" thirdDate-constraint="0" expand="true"/>
         </task>
         <task id="243" name="Project report" color="#9966ff" meeting="false" start="2023-01-19" duration="46" complete="0" thirdDate="2022-12-05" thirdDate-constraint="0" expand="true"/>
@@ -98,7 +97,7 @@
             <task id="204" name="Corrections" color="#ffcc33" meeting="false" start="2023-03-09" duration="5" complete="0" thirdDate="2023-01-26" thirdDate-constraint="0" expand="true">
                 <depend id="206" type="2" difference="0" hardness="Strong"/>
             </task>
-            <task id="206" name="New model training" color="#ffcc33" meeting="false" start="2023-03-16" duration="5" complete="0" thirdDate="2023-01-26" thirdDate-constraint="0" expand="true"/>
+            <task id="206" name="Scenario management" color="#ffcc33" meeting="false" start="2023-03-16" duration="5" complete="0" thirdDate="2023-01-26" thirdDate-constraint="0" expand="true"/>
             <task id="208" name="Feedback" color="#ff0033" meeting="false" start="2023-03-22" duration="1" complete="0" thirdDate="2023-02-09" thirdDate-constraint="0" expand="true"/>
         </task>
         <task id="246" name="Project report validation" color="#ff0033" meeting="false" start="2023-03-23" duration="7" complete="0" thirdDate="2023-02-06" thirdDate-constraint="0" expand="true"/>
