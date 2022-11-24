@@ -1,0 +1,23 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{polytech/index}[\polytechfiledate\space\polytechfileversion\space Polytech document class sub package]
+
+% enable index
+\makeindex
+
+\newbool{polytech@hasindex}
+
+\preto{\index}{%
+	\booltrue{polytech@hasindex}%
+}
+
+% override the index to add a \chapter* if there is an index
+\renewcommand{\theindex}{\let \item \@idxitem}
+
+\preto{\printindex}{%
+	\bookmarksetupnext{level=part}%
+	\booltrue{polytech@allownewpagesection}%
+	\ifbool{polytech@hasindex}{%
+		\chapter*{\indexname}%
+	}{}%
+}
+\appto{\printindex}{\boolfalse{polytech@allownewpagesection}}

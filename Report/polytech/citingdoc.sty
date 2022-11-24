@@ -1,0 +1,38 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{polytech/citingdoc}[\polytechfiledate\space\polytechfileversion\space Polytech document class sub package]
+
+%###
+
+\csdef{polytech@output@citingthedocument}{
+  \chapter*{\csuse{polytech@citingthedocument@name@\csuse{polytech@lang}}}
+  \thispagestyle{empty}%
+
+  \vfill
+  
+  \begin{framed}
+  \csuse{polytech@output@students@simple}, \textit{\csuse{polytech@output@titlewithsubtitle}}, \polytech@output@typereport, \csuse{polytech@school}, Tours, France, \polytech@output@reportyear.
+  \end{framed}
+
+  \vfill
+  
+  \begin{framed}
+  @mastersthesis\{
+  \begin{description}\setlength\itemsep{0pt}
+  \item \hspace{1em}author=\{\csuse{polytech@output@students@bibtex}\},
+  \item \hspace{1em}title=\{\csuse{polytech@output@titlewithsubtitle}\},
+  \ifstrequal{\csuse{polytech@output@typereport}}{}{}{
+    \item \hspace{1em}type=\{\csuse{polytech@output@typereport@bibtex}\},
+  }
+  \item \hspace{1em}school=\{\csuse{polytech@school}\},
+  \item \hspace{1em}address=\{Tours, France\},
+  \item \hspace{1em}year=\{\polytech@output@reportyear\}
+  \end{description}
+  \}
+  \end{framed}
+
+  \vfill
+  \begin{center}
+    \small
+    \csuse{polytech@versioninfo@\csuse{polytech@lang}}
+  \end{center}
+}

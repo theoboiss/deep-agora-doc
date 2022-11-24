@@ -1,0 +1,481 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{polytech/constants}[\polytechfiledate\space\polytechfileversion\space Polytech document class sub package]
+
+%###
+% define a database of constants
+
+\csdef{polytech@school}{Ecole Polytechnique de l'Université de Tours}
+\csdef{polytech@school@fr}{Ecole Polytechnique de l'Université de Tours}
+\csdef{polytech@school@en}{Polytechnic School of the University of Tours}
+
+
+%%% DEPARTMENT %%%
+\csdef{polytech@schooldepartment@name@dae}{Département Aménagement et Environnement}
+\csdef{polytech@schooldepartment@address@dae}{35 Allée Ferdinand Lesseps}
+\csdef{polytech@schooldepartment@phone@dae}{+33 (0)2 47 36 14 55}
+\csdef{polytech@schooldepartment@poster@dae@fr}{Génie de l'Aménagement et de l'Environnement}
+\csdef{polytech@schooldepartment@poster@dae@en}{Urban and Environmental Engineering}
+\csdef{polytech@schooldepartment@postershift@dae@fr}{0.7cm}
+\csdef{polytech@schooldepartment@postershift@dae@en}{0.7cm}
+\csdef{polytech@shortcut@affiliation@dae}{Département Aménagement et Environnement}
+
+\csdef{polytech@schooldepartment@name@dee}{Département Électronique et Énergie}
+\csdef{polytech@schooldepartment@address@dee}{7 avenue Marcel Dassault}
+\csdef{polytech@schooldepartment@phone@dee}{+33 (0)2 47 36 13 00}
+\csdef{polytech@schooldepartment@poster@dee@fr}{Électronique et Systèmes de l'Énergie Électrique}
+\csdef{polytech@schooldepartment@poster@dee@en}{Electronics and Electrical Energy Systems}
+\csdef{polytech@schooldepartment@postershift@dee@fr}{1cm}
+\csdef{polytech@schooldepartment@postershift@dee@en}{1cm}
+\csdef{polytech@shortcut@affiliation@dee}{Département Électronique et Énergie}
+
+\csdef{polytech@schooldepartment@name@di}{Département Informatique}
+\csdef{polytech@schooldepartment@address@di}{64 avenue Jean Portalis}
+\csdef{polytech@schooldepartment@phone@di}{+33 (0)2 47 36 14 14}
+\csdef{polytech@schooldepartment@poster@di@fr}{Informatique}
+\csdef{polytech@schooldepartment@poster@di@en}{Computer Science}
+\csdef{polytech@schooldepartment@postershift@di@fr}{0.3cm}
+\csdef{polytech@schooldepartment@postershift@di@en}{0.3cm}
+\csdef{polytech@shortcut@affiliation@di}{Département Informatique}
+
+\csdef{polytech@schooldepartment@name@dii}{Département Formations par Alternance / Informatique industrielle par apprentissage}
+\csdef{polytech@schooldepartment@address@dii}{64 avenue Jean Portalis}
+\csdef{polytech@schooldepartment@phone@dii}{+33 (0)2 47 36 11 26}
+\csdef{polytech@schooldepartment@poster@dii@fr}{Informatique industrielle}
+\csdef{polytech@schooldepartment@poster@dii@en}{Industrial Computing}
+\csdef{polytech@schooldepartment@postercollapseaddress@dii}{}
+\csdef{polytech@schooldepartment@postershift@dii@fr}{0.4cm}
+\csdef{polytech@schooldepartment@postershift@dii@en}{0.4cm}
+\csdef{polytech@shortcut@affiliation@dii}{Département Formations par Alternance}
+
+
+\csdef{polytech@schooldepartment@name@dms}{Département Mécanique et Systèmes}
+\csdef{polytech@schooldepartment@address@dms}{7 avenue Marcel Dassault}
+\csdef{polytech@schooldepartment@phone@dms}{+33 (0)2 47 36 13 00}
+\csdef{polytech@schooldepartment@poster@dms@fr}{Mécanique et Conception des Systèmes}
+\csdef{polytech@schooldepartment@poster@dms@en}{Mechanical Engineering and Systems Design}
+\csdef{polytech@schooldepartment@postershift@dms@fr}{0.8cm}
+\csdef{polytech@schooldepartment@postershift@dms@en}{0.8cm}
+\csdef{polytech@shortcut@affiliation@dms}{Département Mécanique et Systèmes}
+
+\csdef{polytech@schooldepartment@name@peip}{Département premier cycle / Parcours des écoles d'ingénieurs Polytech}
+\csdef{polytech@schooldepartment@address@peip}{64 avenue Jean Portalis}
+\csdef{polytech@schooldepartment@phone@peip}{+33 (0)2 47 36 14 14}
+\csdef{polytech@schooldepartment@poster@peip@fr}{Parcours des écoles d'ingénieurs Polytech}
+\csdef{polytech@schooldepartment@poster@peip@en}{Parcours des écoles d'ingénieurs Polytech}
+\csdef{polytech@schooldepartment@postershift@peip@fr}{0.8cm}
+\csdef{polytech@schooldepartment@postershift@peip@en}{0.8cm}
+
+%%% TYPE OF REPORT %%%
+\csdef{polytech@typereport@name@none}{}
+\csdef{polytech@typereport@name@none@fr}{}
+\csdef{polytech@typereport@name@none@en}{}
+
+% PeiP
+\csdef{polytech@typereport@name@peip1@fr}{Projet Parcours des écoles d'ingénieurs Polytech 1}
+\csdef{polytech@typereport@name@peip1@en}{Parcours des écoles d'ingénieurs Polytech 1 Project}
+\csdef{polytech@typereport@hook@peip1}{%
+  \schooldepartment{peip}
+  \csgdef{polytech@students@defaultgrade}{peip1}
+  \booltrue{polytech@default@poster}%
+}
+
+\csdef{polytech@typereport@name@peip2@fr}{Projet Parcours des écoles d'ingénieurs Polytech 2}
+\csdef{polytech@typereport@name@peip2@en}{Parcours des écoles d'ingénieurs Polytech 2 Project}
+\csdef{polytech@typereport@hook@peip2}{%
+  \schooldepartment{peip}
+  \csgdef{polytech@students@defaultgrade}{peip2}
+  \booltrue{polytech@default@poster}%
+}
+
+\csdef{polytech@typereport@name@stagepeip@fr}{Rapport de stage}
+\csdef{polytech@typereport@name@stagepeip@en}{Internship Report}
+\csdef{polytech@typereport@hook@stagepeip}{%
+  \schooldepartment{peip}
+  \csgdef{polytech@students@defaultgrade}{peip1}
+}
+
+%DI
+\csdef{polytech@typereport@name@prddi5@fr}{Projet Recherche \& Développement}
+\csdef{polytech@typereport@name@prddi5@en}{Research & Development Project}
+\csdef{polytech@typereport@hook@prddi5}{%
+  \schooldepartment{di}%
+  \csgdef{polytech@students@defaultgrade}{di5}%
+  \csgdef{polytech@academicsupervisors@defaultaffiliation}{di}%
+  \booltrue{polytech@default@poster}%
+}
+\csdef{polytech@typereport@name@bibtex@prddi5@fr}{Projet Recherche \textbackslash\& Développement}
+\csdef{polytech@typereport@name@bibtex@prddi5@en}{Research & Development Project}
+
+\csdef{polytech@typereport@name@ppgldi4@fr}{Projet de programmation et génie logiciel}
+\csdef{polytech@typereport@name@ppgldi4@en}{Software Engineering Project}
+\csdef{polytech@typereport@hook@ppgldi4}{%
+  \schooldepartment{di}%
+  \csgdef{polytech@students@defaultgrade}{di4}%
+  \csgdef{polytech@academicsupervisors@defaultaffiliation}{di}%
+}
+
+\csdef{polytech@typereport@name@pcdi4@fr}{Projet collectif}
+\csdef{polytech@typereport@name@pcdi4@en}{Group Project}
+\csdef{polytech@typereport@hook@pcdi4}{%
+  \schooldepartment{di}%
+  \csgdef{polytech@students@defaultgrade}{di4}%
+  \csgdef{polytech@academicsupervisors@defaultaffiliation}{di}%
+  \booltrue{polytech@default@poster}%
+}
+
+\csdef{polytech@typereport@name@psidi5@fr}{Projet Systèmes d'Information}
+\csdef{polytech@typereport@name@psidi5@en}{Information Systems Project}
+\csdef{polytech@typereport@hook@psidi5}{%
+  \schooldepartment{di}%
+  \csgdef{polytech@students@defaultgrade}{di5}%
+  \csgdef{polytech@academicsupervisors@defaultaffiliation}{di}%
+}
+
+\csdef{polytech@typereport@name@pasrdi5@fr}{Projet Architecture, Système et Réseaux}
+\csdef{polytech@typereport@name@pasrdi5@en}{Architecture, Systems and Networks Project}
+\csdef{polytech@typereport@hook@pasrdi5}{%
+  \schooldepartment{di}%
+  \csgdef{polytech@students@defaultgrade}{di5}%
+  \csgdef{polytech@academicsupervisors@defaultaffiliation}{di}%
+}
+
+\csdef{polytech@typereport@name@pldi5@fr}{Projet libre}
+\csdef{polytech@typereport@name@pldi5@en}{Free Project}
+\csdef{polytech@typereport@hook@pldi5}{%
+  \schooldepartment{di}
+  \csgdef{polytech@students@defaultgrade}{di5}%
+  \csgdef{polytech@academicsupervisors@defaultaffiliation}{di}%
+  \booltrue{polytech@default@poster}%
+}
+
+
+\csdef{polytech@typereport@name@stagedi3@fr}{Rapport de stage}
+\csdef{polytech@typereport@name@stagedi3@en}{Internship Report}
+\csdef{polytech@typereport@hook@stagedi3}{%
+  \schooldepartment{di}
+  \csgdef{polytech@students@defaultgrade}{di3}
+  \csgdef{polytech@academicsupervisors@defaultaffiliation}{di}%
+}
+
+\csdef{polytech@typereport@name@stagedi4@fr}{Rapport de stage}
+\csdef{polytech@typereport@name@stagedi4@en}{Internship Report}
+\csdef{polytech@typereport@hook@stagedi4}{%
+  \schooldepartment{di}
+  \csgdef{polytech@students@defaultgrade}{di4}
+  \csgdef{polytech@academicsupervisors@defaultaffiliation}{di}%
+}
+
+\csdef{polytech@typereport@name@stagedi5@fr}{Rapport de stage}
+\csdef{polytech@typereport@name@stagedi5@en}{Internship Report}
+\csdef{polytech@typereport@hook@stagedi5}{%
+  \schooldepartment{di}
+  \csgdef{polytech@students@defaultgrade}{di5}
+  \csgdef{polytech@academicsupervisors@defaultaffiliation}{di}%
+}
+
+%DEE
+\csdef{polytech@typereport@name@pfedee5@fr}{Projet de Fin d'\'Etudes}
+\csdef{polytech@typereport@name@pfedee5@en}{Final Year Project}
+\csdef{polytech@typereport@hook@pfedee5}{%
+  \schooldepartment{di}%
+  \csgdef{polytech@students@defaultgrade}{dee5}%
+  \csgdef{polytech@academicsupervisors@defaultaffiliation}{dee}%
+}
+\csdef{polytech@typereport@name@bibtex@pfedee5@fr}{Projet de Fin d'\'Etudes}
+\csdef{polytech@typereport@name@bibtex@pfedee5@en}{Final Year Project}
+
+\csdef{polytech@typereport@name@pldee5@fr}{Projet libre}
+\csdef{polytech@typereport@name@pldee5@en}{Free Project}
+\csdef{polytech@typereport@hook@pldee5}{%
+  \schooldepartment{dee}
+  \csgdef{polytech@students@defaultgrade}{dee5}%
+  \csgdef{polytech@academicsupervisors@defaultaffiliation}{dee}%
+}
+
+\csdef{polytech@typereport@name@pcidee4@fr}{Projet collectif intensif}
+\csdef{polytech@typereport@name@pcidee4@en}{Intensive Grop Project}
+\csdef{polytech@typereport@hook@pcidee4}{%
+  \schooldepartment{di}%
+  \csgdef{polytech@students@defaultgrade}{dee4}%
+  \csgdef{polytech@academicsupervisors@defaultaffiliation}{dee}%
+}
+
+\csdef{polytech@typereport@name@pldee4@fr}{Projet libre}
+\csdef{polytech@typereport@name@pldee4@en}{Free Project}
+\csdef{polytech@typereport@hook@pldee4}{%
+  \schooldepartment{dee}
+  \csgdef{polytech@students@defaultgrade}{dee4}%
+  \csgdef{polytech@academicsupervisors@defaultaffiliation}{dee}%
+}
+
+\csdef{polytech@typereport@name@pldee3@fr}{Projet libre}
+\csdef{polytech@typereport@name@pldee3@en}{Free Project}
+\csdef{polytech@typereport@hook@pldee3}{%
+  \schooldepartment{dee}
+  \csgdef{polytech@students@defaultgrade}{dee3}%
+  \csgdef{polytech@academicsupervisors@defaultaffiliation}{dee}%
+}
+
+\csdef{polytech@typereport@name@pcrdee3@fr}{Projet de conception et de réalisation}
+\csdef{polytech@typereport@name@pcrdee3@en}{Design and Production Project}
+\csdef{polytech@typereport@hook@pcrdee3}{%
+  \schooldepartment{dee}
+  \csgdef{polytech@students@defaultgrade}{dee3}%
+  \csgdef{polytech@academicsupervisors@defaultaffiliation}{dee}%
+}
+
+\csdef{polytech@typereport@name@stagedee3@fr}{Rapport de stage}
+\csdef{polytech@typereport@name@stagedee3@en}{Internship Report}
+\csdef{polytech@typereport@hook@stagedee3}{%
+  \schooldepartment{dee}
+  \csgdef{polytech@students@defaultgrade}{dee3}
+  \csgdef{polytech@academicsupervisors@defaultaffiliation}{dee}%
+}
+
+\csdef{polytech@typereport@name@stagedee4@fr}{Rapport de stage}
+\csdef{polytech@typereport@name@stagedee4@en}{Internship Report}
+\csdef{polytech@typereport@hook@stagedee4}{%
+  \schooldepartment{dee}
+  \csgdef{polytech@students@defaultgrade}{dee4}
+  \csgdef{polytech@academicsupervisors@defaultaffiliation}{dee}%
+}
+
+\csdef{polytech@typereport@name@stagedee5@fr}{Rapport de stage de fin d'études}
+\csdef{polytech@typereport@name@stagedee5@en}{Graduation Internship Report}
+\csdef{polytech@typereport@hook@stagedee5}{%
+  \schooldepartment{dee}
+  \csgdef{polytech@students@defaultgrade}{dee5}
+  \csgdef{polytech@academicsupervisors@defaultaffiliation}{dee}%
+}
+
+
+
+%%% CONFIDENTIAL %%%
+\csdef{polytech@output@confidential@fr}{Confidentiel}
+\csdef{polytech@output@confidential@en}{Confidential}
+
+%%% STUDENT %%%
+% string replacement (lost in translation :))
+\csdef{polytech@students@title@singular@en}{Student}
+\csdef{polytech@students@title@singular@fr}{\'Etudiant}
+\csdef{polytech@students@title@plural@en}{Students}
+\csdef{polytech@students@title@plural@fr}{\'Etudiants}
+\csdef{polytech@authors@title@singular@en}{Author}
+\csdef{polytech@authors@title@singular@fr}{Auteur}
+\csdef{polytech@authors@title@plural@en}{Authors}
+\csdef{polytech@authors@title@plural@fr}{Auteurs}
+
+\csdef{polytech@students@grade@dae3}{DAE3}
+\csdef{polytech@students@grade@dae4}{DAE4}
+\csdef{polytech@students@grade@dae5}{DAE5}
+
+\csdef{polytech@students@grade@dee3}{DEE3}
+\csdef{polytech@students@grade@dee4}{DEE4}
+\csdef{polytech@students@grade@dee5}{DEE5}
+
+\csdef{polytech@students@grade@di3}{DI3}
+\csdef{polytech@students@grade@di4}{DI4}
+\csdef{polytech@students@grade@di5}{DI5}
+
+\csdef{polytech@students@grade@dii3}{DII3}
+\csdef{polytech@students@grade@dii4}{DII4}
+\csdef{polytech@students@grade@dii5}{DII5}
+
+\csdef{polytech@students@grade@dms3}{DMS3}
+\csdef{polytech@students@grade@dms4}{DMS4}
+\csdef{polytech@students@grade@dms5}{DMS5}
+
+\csdef{polytech@students@grade@peip1}{PeiP1}
+\csdef{polytech@students@grade@peip2}{PeiP2}
+
+%%% ACADEMIC SUPERVISORS %%%
+% strign replacement (lost in translation :))
+\csdef{polytech@academicsupervisors@title@singular@en}{Academic supervisor}
+\csdef{polytech@academicsupervisors@title@singular@fr}{Tuteur académique}
+\csdef{polytech@academicsupervisors@title@plural@en}{Academic supervisors}
+\csdef{polytech@academicsupervisors@title@plural@fr}{Tuteurs académiques}
+
+\csdef{polytech@academicsupervisors@affiliation@dae@fr}{Département Aménagement et Environnement}
+\csdef{polytech@academicsupervisors@affiliation@dae@en}{Urban and Environmental Department}
+\csdef{polytech@academicsupervisors@affiliation@dee@fr}{Département Électronique et Énergie}
+\csdef{polytech@academicsupervisors@affiliation@dee@en}{Electronics and Energy Department}
+\csdef{polytech@academicsupervisors@affiliation@di@fr}{Département Informatique}
+\csdef{polytech@academicsupervisors@affiliation@di@en}{Computer Science Department}
+\csdef{polytech@academicsupervisors@affiliation@dii@fr}{Informatique industrielle par apprentissage}
+\csdef{polytech@academicsupervisors@affiliation@dii@en}{Industrial Computing Department}
+\csdef{polytech@academicsupervisors@affiliation@dms@fr}{Département Mécanique et Systèmes}
+\csdef{polytech@academicsupervisors@affiliation@dms@en}{Mechanics and Systems Department}
+
+%%% INDUSTRIAL SUPERVISOR %%
+\csdef{polytech@industrialsupervisors@title@singular@en}{Industrial supervisor}
+\csdef{polytech@industrialsupervisors@title@singular@fr}{Tuteur entreprise}
+\csdef{polytech@industrialsupervisors@title@plural@en}{Industrial supervisors}
+\csdef{polytech@industrialsupervisors@title@plural@fr}{Tuteurs entreprise}
+
+%%% COMPANY %%%
+\csdef{polytech@company@title@en}{Company}
+\csdef{polytech@company@title@fr}{Entreprise}
+
+%%% LIST OF CONTRIBUTORS %%%
+\csdef{polytech@contributors@name@en}{List of contributors}
+\csdef{polytech@contributors@name@fr}{Liste des intervenants}
+
+\csdef{polytech@contributorspage@name@fr}{Nom}
+\csdef{polytech@contributorspage@name@en}{Name}
+\csdef{polytech@contributorspage@mail@fr}{Email}
+\csdef{polytech@contributorspage@mail@en}{Email}
+\csdef{polytech@contributorspage@quality@fr}{Qualité}
+\csdef{polytech@contributorspage@quality@en}{Quality}
+
+%%% TITLE PAGE %%%
+\csdef{polytech@titlepage@bookmark@en}{Title page}
+\csdef{polytech@titlepage@bookmark@fr}{Page de titre}
+
+%%% CITING THE DOCUMENT %%%
+\csdef{polytech@citingthedocument@name@en}{To cite this document}
+\csdef{polytech@citingthedocument@name@fr}{Pour citer ce document}
+
+%%% WARNINGS %%%
+\csdef{polytech@warning@name@fr}{Avertissement}
+\csdef{polytech@warning@name@en}{Warning}
+
+% disable warning for specific type of report
+\csdef{polytech@warning@disabled@stage}{}
+\csdef{polytech@warning@disabled@custom}{}
+\csdef{polytech@warning@disabled@none}{}
+
+%%% WEEKLY REPORTS %%%
+\csdef{polytech@weeklyreports@title@en}{Weekly reports}
+\csdef{polytech@weeklyreports@title@fr}{Comptes rendus\polytechlinebreak{} hebdomadaires}
+\newcommand{\polytech@weeklyreports@reporttitle@en}[2]{Report #1 (#2)}
+\newcommand{\polytech@weeklyreports@reporttitle@fr}[2]{Compte rendu n°#1 du #2}
+
+%%% WEBOGRAPHY %%%
+\csdef{polytech@output@webography@en}{Webography}
+\csdef{polytech@output@webography@fr}{Webographie}
+
+%%% LAST PAGE %%%
+\csdef{polytech@lastpage@en}{Last page}
+\csdef{polytech@lastpage@fr}{Dernière page}
+
+%%% REFERENCES %%%
+
+\newcommand{\polytech@ref@from@chapter@en}[1]{\xspace(Chapter~#1)}
+\newcommand{\polytech@ref@from@chapter@fr}[1]{\xspace(Chapitre~#1)}
+\newcommand{\polytech@ref@from@appendix@en}[1]{\xspace(Appendix~#1)}
+\newcommand{\polytech@ref@from@appendix@fr}[1]{\xspace(Annexe~#1)}
+\newcommand{\polytech@refchapter@name@chapter@en}[1]{Chapter~#1}
+\newcommand{\polytech@refchapter@name@chapter@fr}[1]{Chapitre~#1}
+\newcommand{\polytech@refchapter@name@appendix@en}[1]{Appendix~#1}
+\newcommand{\polytech@refchapter@name@appendix@fr}[1]{Annexe~#1}
+
+\csdef{polytech@ref@name@appendices@en}{Appendices}
+\csdef{polytech@ref@name@appendices@fr}{Annexes}
+
+\csdef{polytech@ref@name@table@en}{Table}
+\csdef{polytech@ref@name@table@fr}{Table}
+
+\csdef{polytech@ref@name@figure@en}{Figure}
+\csdef{polytech@ref@name@figure@fr}{Figure}
+\csdef{polytech@ref@name@subfigure@en}{Figure}
+\csdef{polytech@ref@name@subfigure@fr}{Figure}
+
+\csdef{polytech@ref@name@algorithm@en}{Algorithm}
+\csdef{polytech@ref@name@algorithm@fr}{Algorithme}
+
+\csdef{polytech@ref@name@part@en}{Part}
+\csdef{polytech@ref@name@part@fr}{Partie}
+
+\csdef{polytech@ref@name@chapter@en}{Chapter}
+\csdef{polytech@ref@name@chapter@fr}{Chapitre}
+
+\csdef{polytech@ref@name@appendix@en}{Appendix}
+\csdef{polytech@ref@name@appendix@fr}{Annexe}
+
+\csdef{polytech@ref@name@section@en}{Section}
+\csdef{polytech@ref@name@section@fr}{Section}
+
+\csdef{polytech@ref@name@subsection@en}{Section}
+\csdef{polytech@ref@name@subsection@fr}{Section}
+
+\csdef{polytech@ref@name@subsubsection@en}{Section}
+\csdef{polytech@ref@name@subsubsection@fr}{Section}
+
+\csdef{polytech@ref@name@paragraph@en}{Section}
+\csdef{polytech@ref@name@paragraph@fr}{Section}
+
+\csdef{polytech@ref@name@subparagraph@en}{Section}
+\csdef{polytech@ref@name@subparagraph@fr}{Section}
+
+\csdef{polytech@versioninfo@fr}{Document mis en forme sous \LaTeX\par
+gr\^ace \`a la classe de document \texttt{polytech.cls} V\polytechfileversion\xspace(\polytechfiledate)}
+\csdef{polytech@versioninfo@en}{This document has been formatted with \LaTeX\par
+thanks to the document class \texttt{polytech.cls} V\polytechfileversion\xspace(\polytechfiledate)}
+
+\csdef{polytech@poster@encadrement@fr}{Encadrement}
+\csdef{polytech@poster@encadrement@en}{Supervisor}
+
+\csdef{polytech@poster@collab@fr}{En collaboration avec}
+\csdef{polytech@poster@collab@en}{In collaboration with}
+
+\csdef{polytech@warning@text@fr}{
+  Ce document a été rédigé par \csuse{polytech@output@students@simple} \notbool{polytech@students@plural}{susnommé l'auteur}{susnommés les auteurs}.
+  
+  	\ifcsdef{polytech@company@db@name}{
+  		L'entreprise \csuse{polytech@output@company@simple} est représentée par \csuse{polytech@output@industrialsupervisors@simple}
+  		\notbool{polytech@industrialsupervisors@plural}{susnommé le tuteur entreprise}{susnommés les tuteurs entreprise}.
+  	}{}
+  
+  	L'\csuse{polytech@school} est représentée par \csuse{polytech@output@academicsupervisors@simple}
+  	\notbool{polytech@academicsupervisors@plural}{susnommé le tuteur académique}{susnommés les tuteurs académiques}.
+  
+  	Par l'utilisation de ce modèle de document, l'ensemble des intervenants du projet acceptent les conditions définies ci-après.
+  
+  	\notbool{polytech@students@plural}{L'auteur reconnait}{Les auteurs reconnaissent} assumer l'entière responsabilité
+  	du contenu du document ainsi que toutes suites judiciaires qui pourraient en découler du fait du non respect des lois ou des droits d'auteur.
+  
+  	\notbool{polytech@students@plural}{L'auteur atteste}{Les auteurs attestent} que les propos du document sont sincères
+  	et \notbool{polytech@students@plural}{assume}{assument} l'entière responsabilité de la véracité des propos.
+  
+  	\notbool{polytech@students@plural}{L'auteur atteste}{Les auteurs attestent} ne pas s'approprier le travail d'autrui et que
+  	le document ne contient aucun plagiat.
+  
+  	\notbool{polytech@students@plural}{L'auteur atteste}{Les auteurs attestent} que le document ne contient aucun propos diffamatoire ou condamnable devant la loi.
+  
+  	\notbool{polytech@students@plural}{L'auteur reconnait qu'il ne peut}{Les auteurs reconnaissent qu'ils ne peuvent} diffuser ce document en partie ou en intégralité sous quelque forme que ce soit sans l'accord préalable
+  	\notbool{polytech@academicsupervisors@plural}{du tuteur académique}{des tuteurs académiques}%
+  	\ifcsdef{polytech@output@company@simple}{ et de l'entreprise}{}.
+  
+    \notbool{polytech@students@plural}{L'auteur autorise}{Les auteurs autorisent} l'école polytechnique de l'université François Rabelais de Tours à diffuser tout ou partie de ce document, sous quelque forme que ce soit, y compris après transformation en citant la source. Cette diffusion devra se faire gracieusement et être accompagnée du présent avertissement.
+}
+\csdef{polytech@warning@text@en}{
+  This document was written by \csuse{polytech@output@students@simple} hereinafter referred to as the \notbool{polytech@students@plural}{author}{authors}.
+  
+  	\ifcsdef{polytech@company@db@name}{
+  		The company \csuse{polytech@output@company@simple} is represented by \csuse{polytech@output@industrialsupervisors@simple}
+  		hereinafter referred to as the \notbool{polytech@industrialsupervisors@plural}{industrial supervisor}{industrial supervisors}.
+  	}{}
+  
+  	The \csuse{polytech@school@en} is represented by \csuse{polytech@output@academicsupervisors@simple}
+  	hereinafter referred to as the \notbool{polytech@academicsupervisors@plural}{academic supervisor}{academic supervisors}.
+  
+  	By the use of this document model, all parties of the project accept the conditions defined hereunder.
+  
+  	\notbool{polytech@students@plural}{The author acknowledges}{The authors acknowledge} taking full responsibility
+  	for the content of the document, as well as any judicial consequences that might ensue as a result of non-compliance with laws or copyright.
+  
+  	\notbool{polytech@students@plural}{The author certifies}{The authors certify} that the statements of the document are truthful
+  	and \notbool{polytech@students@plural}{takes}{take} full responsibility for the veracity of the statements.
+  
+  	\notbool{polytech@students@plural}{The author certifies}{The authors certify} not to appropriate the work of others and that the document contains no plagiarism.
+  
+  	\notbool{polytech@students@plural}{The author certifies}{The authors certify} that the document contains no statements that are defamatory or reprehensible under the law.
+  
+  	\notbool{polytech@students@plural}{The author acknowledges}{The authors acknowledge} that they may not publish this document in part or in whole in any form without prior approval
+  	\notbool{polytech@academicsupervisors@plural}{of the academic supervisor}{of the academic supervisors}%
+  	\ifcsdef{polytech@output@company@simple}{ and the industrial \notbool{polytech@industrialsupervisors@plural}{supervisor}{supervisors}}{}.
+  
+    \notbool{polytech@students@plural}{The author authorizes}{The authors authorize} the \csuse{polytech@school@en} to publish
+    this document in whole or in part in any form, including after modification with due acknowledgement of the source. These publications must be free of charge
+    and come along with this warning.
+}

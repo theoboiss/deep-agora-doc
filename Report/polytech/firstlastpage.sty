@@ -1,0 +1,1017 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{polytech/firstlastpage}[\polytechfiledate\space\polytechfileversion\space Polytech document class sub package]
+
+%###
+
+%%%%%%%%%%% SCHOOL DEPARTMENT %%%%%%%%%%%%%%%%%
+
+% Define the school department
+% Usage in preamble only : \schooldepartment{id}
+% Param id : the id of the department (dae, dee, di, dii, dms, peip)
+\newcommand{\schooldepartment}[1]{%
+  % check if argument is valid
+  \ifcsdef{polytech@schooldepartment@name@#1}{}{%
+    \polytechfatalerror{\string\schooldepartment\space called with an invalid argument.}%
+  }%
+  \csgdef{polytech@schooldepartment}{#1}%
+}
+% can only be used in preamble
+\@onlypreamble\schooldepartment
+
+% ensure it has been called in the preamble
+\ifbool{polytech@bare}{}{
+  \csappto{polytech@check@preamble}{%
+    \ifcsdef{polytech@schooldepartment}{}{%
+      \polytechfatalerror{\string\schooldepartment\space has not been called.}%
+    }%
+  }
+}
+% Output a text containing the expanded department properties
+\csdef{polytech@output@schooldepartment}{\csuse{polytech@schooldepartment@name@\polytech@schooldepartment}}
+\csdef{polytech@output@schooladdress}{\csuse{polytech@schooldepartment@address@\polytech@schooldepartment}}
+\csdef{polytech@output@schoolphone}{\csuse{polytech@schooldepartment@phone@\polytech@schooldepartment}}
+
+% Output the whole address block of the department
+\csdef{polytech@output@school}{%
+	\parskip0pt%
+	\textbf{\textsc{\csuse{polytech@school}}}\par%
+	\csuse{polytech@output@schooldepartment}\par%
+	\csuse{polytech@output@schooladdress}\par%
+	37200 Tours, France\par%
+	Tél. \csuse{polytech@output@schoolphone}\par%
+	\href{http://polytech.univ-tours.fr}{\url{polytech.univ-tours.fr}}%
+}
+
+% Output the whole address block of the department
+\csdef{polytech@output@poster@school}{%
+  \parskip0pt%
+  \textbf{\textsc{\csuse{polytech@school}}}\par%
+  \small%
+  \csuse{polytech@output@schooldepartment}%
+  \ifcsdef{polytech@schooldepartment@postercollapseaddress@\csuse{polytech@schooldepartment}}{, }{\par}%
+  \csuse{polytech@output@schooladdress}, 37200 Tours, France\par%
+  \href{http://polytech.univ-tours.fr}{\url{polytech.univ-tours.fr}}%
+}
+
+%%%%%%%%%%% TYPE OF REPORT %%%%%%%%%%%%%%%%%
+
+% Define the type of report
+% Usage in preamble only : \typereport{id}
+% Param id : the id of the type of report or 'custom' for an unknown type of report
+\newcommand{\typereport}[1]{%
+  % check if argument is valid
+  \ifstrequal{#1}{custom}{%
+    % defer check for custom definition with \typereportname
+  }{%
+    \ifcsdef{polytech@typereport@name@#1@\csuse{polytech@lang}}{}{%
+      \polytechfatalerror{\string\typereport\space called with an invalid argument.}%
+    }%
+  }%
+  \csgdef{polytech@typereport}{#1}%
+  \csuse{polytech@typereport@hook@#1}
+}
+% can only be used in preamble
+\@onlypreamble\typereport
+
+% ensure it has been called in the preamble
+\ifbool{polytech@bare}{}{
+  \appto\polytech@check@preamble{%
+    \ifcsdef{polytech@typereport}{}{%
+      \polytechfatalerror{\string\typereport\space has not been called.}%
+    }%
+  }
+}
+
+% Define the name of a custom report (\typereport{custom})
+% Usage in preamble only : \typereportname{name}
+% Param name : the name of the type of report
+\newcommand{\typereportname}[1]{%
+  \csgdef{polytech@typereport@name@custom}{#1}%
+}
+% can only be used in preamble
+\@onlypreamble\typereportname
+
+% ensure it has been called in the preamble if necessary
+\appto\polytech@check@preamble{%
+  \ifcsstring{polytech@typereport}{custom}{%
+    \ifcsdef{polytech@typereport@name@custom}{%
+    }{%
+      \polytechfatalerror{\string\typereportname\space has not been called but \string\typereport\string{custom\string} has been used.}%
+    }%
+  }{}%
+}
+
+% Output a text containing the expanded type of report
+\csdef{polytech@output@typereport}{\csuse{polytech@typereport@name@\csuse{polytech@typereport}@\csuse{polytech@lang}}}
+
+% Output a text containing the expanded type of report suitable for a bibtex entry
+\csdef{polytech@output@typereport@bibtex}{%
+	\ifcsdef{polytech@typereport@name@bibtex@\csuse{polytech@typereport}@\csuse{polytech@lang}}{%
+		\csuse{polytech@typereport@name@bibtex@\csuse{polytech@typereport}@\csuse{polytech@lang}}%
+	}{%
+		\csuse{polytech@output@typereport}%
+	}%
+}
+
+%%%%%%%%%%% REPORT YEAR %%%%%%%%%%%%%%%%%
+
+% Define the year of the report
+% Usage in preamble only : \reportyear{date}
+% Param date : the date commonly in the form 2015-2016
+\newcommand{\reportyear}[1]{%
+  \csgdef{polytech@reportyear}{#1}%
+}
+
+% can only be used in preamble
+\@onlypreamble\reportyear
+
+% ensure it has been called in the preamble
+\ifbool{polytech@bare}{}{
+  \appto\polytech@check@preamble{%
+    \ifcsdef{polytech@reportyear}{}{%
+      \polytechfatalerror{\string\reportyear\space has not been called.}%
+    }%
+  }
+}
+
+% Output a text containing the expanded date
+\csdef{polytech@output@reportyear}{\csuse{polytech@reportyear}}
+
+%%%%%%%%%%% REPORT TITLE AND SUBTITLE %%%%%%%%%%%%%%%%%
+
+% Define the title of the report
+% Usage in preamble only : \title{text}
+% Param text : the title
+\renewcommand{\title}[1]{%
+  \csgdef{polytech@title}{#1}%
+}
+
+% can only be called in preamble
+\@onlypreamble\title
+
+% ensure it has been called in the preamble
+\ifbool{polytech@bare}{}{
+  \csappto{polytech@check@preamble}{%
+    \ifcsdef{polytech@title}{}{%
+      \polytechfatalerror{\string\title\space has not been called.}%
+    }%
+  }
+}
+
+% Output a text containing the expanded title
+\csdef{polytech@output@title}{\csuse{polytech@title}}
+
+% Define the subtitle of the report
+% Usage in preamble only : \subtitle{text}
+% Param text : the subtitle
+\newcommand{\subtitle}[1]{%
+  \csgdef{polytech@subtitle}{#1}%
+}
+
+% can only be called in preamble
+\@onlypreamble\subtitle
+
+% ensure there is a title if a subtitle is defined
+\csappto{polytech@check@preamble}{%
+  \ifcsdef{polytech@subtitle}{%
+    \ifcsdef{polytech@title}{}{%
+      \polytechfatalerror{\string\title\space has not been called but a subtitle has been defined.}%
+    }%
+  }{}%
+}
+
+% Output a text containing the expanded subtitle
+\csdef{polytech@output@subtitle}{\csuse{polytech@subtitle}}
+
+% used for PDF metadata
+\csdef{polytech@output@titlewithsubtitle}{%
+	\ifcsdef{polytech@subtitle}{%
+		\csuse{polytech@title}: \csuse{polytech@subtitle}%
+	}{%
+		\csuse{polytech@title}%
+	}%
+}
+
+%%%%%%%%%%% REPORT LOGO %%%%%%%%%%%%%%%%%
+
+% Define the report logo of the report
+% Usage in preamble only : \reportlogo{filepath}
+% Param filepath : the file path of the image
+\newcommand{\reportlogo}[1]{%
+  \ifstrequal{#1}{}{%
+    \polytechfatalerror{\string\reportlogo\space has been called with an empty file path.}%
+  }{}%
+  \csgdef{polytech@reportlogo}{#1}%
+}
+
+% can be called only in preamble
+\@onlypreamble\reportlogo
+
+
+
+%%%%%%%%%%% REPORT DATE %%%%%%%%%%%%%%%%%
+
+% Define the report date
+% Usage in preamble only : \date{overrided date}
+% Param overrided date : the overrided date
+% Default : \today (the compilation date)
+\renewcommand{\date}[1]{%
+  \csgdef{polytech@date}{#1}%
+}
+
+% can only be called in preamble
+\@onlypreamble\date
+
+% output the date
+\csdef{polytech@output@date}{%
+	\ifcsdef{polytech@date}{%
+		\polytech@date%
+	}{%
+		\today%
+	}%
+}
+
+%%%%%%%%%%% CONFIDENTIAL MARK %%%%%%%%%%%%%%%
+
+\ifbool{polytech@blackandwhite}{
+	\colorlet{polytech@color@confidential}{black}
+}{
+	\colorlet{polytech@color@confidential}{red}
+}
+
+% Define the report as being confidential
+% Usage in preamble only : \confidential
+\csdef{confidential}{%
+	\csdef{polytech@output@confidential}{%
+    \textcolor{polytech@color@confidential}{%
+      \Huge%
+      \csuse{polytech@output@confidential@\csuse{polytech@lang}}%
+    }%
+  }%
+}
+
+% can only be called in preamble
+\@onlypreamble\confidential
+
+%%%%%%%%%%% STUDENTS %%%%%%%%%%%%%%%%%
+\csdef{polytech@and}{\ifbool{polytech@english}{ and }{ et }}
+
+% ensure there is no conflict on any previously defined command
+\csundef{author}
+
+% command used to differentiate authors and students
+\csdef{polytech@authorstype}{authors}
+
+% are there many students ?
+\newbool{polytech@students@plural}
+
+% handle students genre (singular or plural)
+\csdef{polytech@students@title@genre}{\ifbool{polytech@students@plural}{plural}{singular}}
+% handle localized authors/students title
+\csdef{polytech@output@students@title}{%
+  \csuse{polytech@\csuse{polytech@authorstype}@title@\csuse{polytech@students@title@genre}@\csuse{polytech@lang}}%
+}
+
+
+% sub output functions
+% grade (1), firstname (2), lastname (3), mail (4)
+\newcommand{\polytech@output@student@compact}[4]{%
+  \href{mailto:#4}{#2 \textsc{#3}}%
+  \ifcsdef{polytech@students@grade@#1}{ (\csuse{polytech@students@grade@#1})}{}\\%
+}
+
+% sub output functions
+% grade (1), firstname (2), lastname (3), mail (4)
+\newcommand{\polytech@output@student@split}[4]{%
+	#2 \textsc{#3}&%
+	\href{mailto:#4}{\url{#4}}&%
+	\csuse{polytech@\csuse{polytech@authorstype}@title@singular@\csuse{polytech@lang}}%
+	\ifcsdef{polytech@students@grade@#1}{ \csuse{polytech@students@grade@#1}}{}\\%
+}
+
+% Define a student/author
+% Usage in preamble only : \student{firstname}{lastname}{mail} or \student[grade]{firstname}{lastname}{mail}
+% Param grade : the grade of the student. If it can be deduced from the report type it is deduced otherwhise an error is produced
+% Param firstname : the author firstname
+% Param lastname : the author lastname
+% Param mail : the author mail
+\newcommand{\student}[4][]{%
+  % check parameters
+  \ifstrequal{#2}{}{\polytechfatalerror{\string\student\space has been called with an empty parameter (firstname).}}{}%
+  \ifstrequal{#3}{}{\polytechfatalerror{\string\student\space has been called with an empty parameter (lastname).}}{}%
+  \ifstrequal{#4}{}{\polytechfatalerror{\string\student\space has been called with an empty parameter (mail).}}{}%
+  % if grade is empty : try to autocomplete grade or display an error 
+  \ifstrequal{#1}{}{%
+    \ifcsdef{polytech@students@defaultgrade}{%
+      % autocomplete grade
+      \student[\csuse{polytech@students@defaultgrade}]{#2}{#3}{#4}%
+    }{%
+      \polytechfatalerror{\string\student\space has been called without the optional parameter and it can not be deduced from context.}%
+    }%
+  }{%
+    % check there is a grade or if none was used
+    \ifstrequal{#1}{none}{}{%
+      \ifcsdef{polytech@students@grade@#1}{}{%
+        \polytechfatalerror{\string\student\space has been called with an invalid grade (#1).}%
+      }%
+    }%
+    \csappto{polytech@output@students@compact}{\polytech@output@student@compact{#1}{#2}{#3}{#4}}%
+    \csappto{polytech@output@students@split}{\polytech@output@student@split{#1}{#2}{#3}{#4}}%
+    % if polytech@output@students@simple is defined there is already at least an author
+    \ifcsdef{polytech@output@students@simple}{%
+      % replace last \authorand with a coma
+      \patchcmd{\polytech@output@students@simple}{\csuse{polytech@and}}{, }{}{}%
+      % append the separator
+      \csappto{polytech@output@students@simple}{\csuse{polytech@and}}%
+      % append the separator for bibtex
+      \csappto{polytech@output@students@bibtex}{ and }%
+      % we now have many authors so we need to use plural
+      \booltrue{polytech@students@plural}%
+    }{}%
+    % append author
+    \csappto{polytech@output@students@simple}{#2 #3}%
+    \csappto{polytech@output@students@bibtex}{#3, #2}%
+  }%
+}
+
+% can only be called in preamble
+\@onlypreamble\student
+
+% An alias to \student
+\newcommand{\author}[4][]{\student[#1]{#2}{#3}{#4}}
+
+% can only be called in preamble
+\@onlypreamble\author
+
+% ensure there is at least an author
+\ifbool{polytech@bare}{}{
+  \csappto{polytech@check@preamble}{%
+    \ifcsdef{polytech@output@students@simple}{}{%
+      \polytechfatalerror{There is no author for the document (\string\student or \string\author needed).}%
+    }%
+  }
+}
+
+%%%%%%%%%%% ACADEMIC SUPERVISORS %%%%%%%%%%%%%%%%%
+
+% are there many supervisors ?
+\newbool{polytech@academicsupervisors@plural}
+
+% handle supervisor genre (singular or plural)
+\csdef{polytech@academicsupervisors@title@genre}{\ifbool{polytech@academicsupervisors@plural}{plural}{singular}}
+% handle localized supervisor title
+\csdef{polytech@output@academicsupervisors@title}{%
+  \csuse{polytech@academicsupervisors@title@\csuse{polytech@academicsupervisors@title@genre}@\csuse{polytech@lang}}%
+}
+
+% sub output functions
+% affiliation (1), firstname (2), lastname (3), mail (4)
+\newcommand{\polytech@output@academicsupervisor@compact}[4]{%
+  \href{mailto:#4}{#2 \textsc{#3}}\\%
+}
+% sub output functions
+% affiliation (1), firstname (2), lastname (3), mail (4)
+\newcommand{\polytech@output@academicsupervisor@split}[4]{%
+	#2 \textsc{#3}&%
+	\href{mailto:#4}{\url{#4}}&%
+	\csuse{polytech@academicsupervisors@title@singular@\csuse{polytech@lang}}%
+	\ifstrequal{#1}{}{}{,\linebreak{}\csuse{polytech@academicsupervisors@affiliation@#1@\csuse{polytech@lang}}}\\%
+}%
+
+% Define an academic supervisor
+% Usage in preamble only : \academicsupervisor{firstname}{lastname}{mail} or \academicsupervisor[affiliation]{firstname}{lastname}{mail}
+% Param affiliation : the affiliation of the supervisor. If it can be deduced from the report type it is deduced otherwhise an error is produced
+% Param firstname : the supervisor firstname
+% Param lastname : the supervisor lastname
+% Param mail : the supervisor mail
+\newcommand{\academicsupervisor}[4][]{%
+  % since we have academic supervisors then we have students instead of authors
+  \csdef{polytech@authorstype}{students}%
+  % check parameters
+  \ifstrequal{#2}{}{\polytechfatalerror{\string\academicsupervisor\space has been called with an empty parameter (firstname).}}{}%
+  \ifstrequal{#3}{}{\polytechfatalerror{\string\academicsupervisor\space has been called with an empty parameter (lastname).}}{}%
+  \ifstrequal{#4}{}{\polytechfatalerror{\string\academicsupervisor\space has been called with an empty parameter (mail).}}{}%
+  % if affiliation is empty : try to autocomplete affiliation or display an error 
+  \ifstrequal{#1}{}{%
+    \ifcsdef{polytech@academicsupervisors@defaultaffiliation}{%
+      % autocomplete affiliation
+      \academicsupervisor[\csuse{polytech@academicsupervisors@defaultaffiliation}]{#2}{#3}{#4}%
+    }{%
+      \polytechfatalerror{\string\academicsupervisor\space has been called without the optional parameter and it can not be deduced from context.}%
+    }%
+  }{%
+    % check there is an affiliation
+    \ifcsdef{polytech@academicsupervisors@affiliation@#1@\csuse{polytech@lang}}{}{%
+      \polytechfatalerror{\string\academicsupervisor\space has been called with an invalid affiliation (#1).}%
+    }%
+    \csappto{polytech@output@academicsupervisors@compact}{\polytech@output@academicsupervisor@compact{#1}{#2}{#3}{#4}}%
+    \csappto{polytech@output@academicsupervisors@split}{\polytech@output@academicsupervisor@split{#1}{#2}{#3}{#4}}%
+    \ifcsdef{polytech@output@academicsupervisors@simple}{%
+      \patchcmd{\polytech@output@academicsupervisors@simple}{\csuse{polytech@and}}{, }{}{}%
+      \csappto{polytech@output@academicsupervisors@simple}{\csuse{polytech@and} }%
+      \booltrue{polytech@academicsupervisors@plural}%
+    }{}%
+    \csappto{polytech@output@academicsupervisors@simple}{#2 #3}%
+  }%
+} 
+
+% can be used only in preamble
+\@onlypreamble\academicsupervisor
+
+%%%%%%%%%%% COMPANY SUPERVISORS %%%%%%%%%%%%%%%%%
+
+% are there many supervisors ?
+\newbool{polytech@industrialsupervisors@plural}
+
+% industrialsupervisor genre (singular or plural)
+\csdef{polytech@industrialsupervisors@title@genre}{\ifbool{polytech@industrialsupervisors@plural}{plural}{singular}}
+
+% handle localized supervisor title
+\csdef{polytech@output@industrialsupervisors@title}{%
+  \csuse{polytech@industrialsupervisors@title@\csuse{polytech@industrialsupervisors@title@genre}@\csuse{polytech@lang}}%
+}
+
+% sub output functions
+% % function (1, optional), firstname (2), lastname (3), mail (4)
+\newcommand{\polytech@output@industrialsupervisor@compact}[4]{%
+  \href{mailto:#4}{#2 \textsc{#3}}\ifstrequal{#1}{}{}{ (#1)}\\%
+}
+
+% sub output functions
+% % function (1, optional), firstname (2), lastname (3), mail (4)
+\newcommand{\polytech@output@industrialsupervisor@split}[4]{%
+	#2 \textsc{#3}&%
+	\href{mailto:#4}{\url{#4}}&%
+	\csuse{polytech@industrialsupervisors@title@singular@\csuse{polytech@lang}}%
+	\ifstrequal{#1}{}{}{,\linebreak{}#1}\\%
+}%
+
+% Define a company supervisor
+% Usage in preamble only : \industrialsupervisor{firstname}{lastname}{mail} or \industrialsupervisor[function]{firstname}{lastname}{mail}
+% Param function : the function of the supervisor
+% Param firstname : the supervisor firstname
+% Param lastname : the supervisor lastname
+% Param mail : the supervisor mail
+\newcommand{\industrialsupervisor}[4][]{
+  % since we have industrial supervisors then we have students instead of authors
+  \csdef{polytech@authorstype}{students}%
+  % check parameters
+  \ifstrequal{#2}{}{\polytechfatalerror{\string\industrialsupervisor\space has been called with an empty parameter (firstname).}}{}%
+  \ifstrequal{#3}{}{\polytechfatalerror{\string\industrialsupervisor\space has been called with an empty parameter (lastname).}}{}%
+  \ifstrequal{#4}{}{\polytechfatalerror{\string\industrialsupervisor\space has been called with an empty parameter (mail).}}{}%
+  %
+	\csappto{polytech@output@industrialsupervisors@compact}{\polytech@output@industrialsupervisor@compact{#1}{#2}{#3}{#4}}
+	\csappto{polytech@output@industrialsupervisors@split}{\polytech@output@industrialsupervisor@split{#1}{#2}{#3}{#4}}
+	\ifcsdef{polytech@output@industrialsupervisors@simple}{
+		\patchcmd{\polytech@output@industrialsupervisors@simple}{\csuse{polytech@and}}{, }{}{}
+		\csappto{polytech@output@industrialsupervisors@simple}{\csuse{polytech@and}}
+		\booltrue{polytech@industrialsupervisors@plural}
+	}{}
+	\csappto{polytech@output@industrialsupervisors@simple}{#2 #3}
+}
+
+% can be used only in preamble
+\@onlypreamble\industrialsupervisor
+
+% ensure there is an academic supervisor if an industrial superviros is defined
+\csappto{polytech@check@preamble}{%
+  \ifcsdef{polytech@output@industrialsupervisors@simple}{%
+    \ifcsdef{polytech@output@academicsupervisors@simple}{}{%
+      \polytechfatalerror{An industrial supervisor has been defined but no academic superviror has been defined (\string\academicsupervisor needed).}%
+    }%
+  }{}%
+}
+
+% ensure there is a company if an industrial superviros is defined
+\csappto{polytech@check@preamble}{%
+  \ifcsdef{polytech@output@industrialsupervisors@simple}{%
+    \ifcsdef{polytech@output@company@simple}{}{%
+      \polytechfatalerror{An industrial superviror has been defined but no company has been defined (\string\company needed).}%
+    }%
+  }{}%
+}
+%%%%%%%%%%% COMPANY %%%%%%%%%%%%%%%%%
+
+% handle localized company title
+\csdef{polytech@output@company@title}{\csname polytech@company@title@\csuse{polytech@lang}\endcsname}
+
+% sub output functions
+\csdef{polytech@output@company@compact}{%
+  \href{\csuse{polytech@company@db@website}}{\csuse{polytech@company@db@name}}%
+  \ifcsdef{polytech@company@db@logo}{%
+    \\%
+    \fitimagetobox{0.5\textwidth}{1cm}{\csuse{polytech@company@db@logo}}%
+  }{}\\%
+}
+
+% sub output functions
+\csdef{polytech@output@company@split}{%
+  \begin{tikzpicture}
+      \node[color=black,align=left,anchor=west,inner sep=0cm] at (0,0) {
+        \csuse{polytech@company@db@name}\\%
+        \csuse{polytech@company@db@address}\\%
+        \href{\csuse{polytech@company@db@website}}{\url{\csuse{polytech@company@db@websitewithoutprotocol}}}%
+      };
+      \node[color=black,align=right,anchor=east,inner sep=0.1cm] at (\textwidth - 0.2cm - \fboxrule - \fboxrule,0) {
+        \ifcsdef{polytech@company@db@logo}{
+          \fitimagetobox{0.5\textwidth}{2cm}{\csuse{polytech@company@db@logo}}%
+        }{}%
+      };
+  \end{tikzpicture}%
+}
+
+% sub output functions
+\csdef{polytech@output@company@simple}{\csuse{polytech@company@db@name}}%
+
+% sub output functions
+\csdef{polytech@output@company@poster}{%
+  \ifcsdef{polytech@company@db@logo}{%
+    \includegrahics[height=1cm]{\csuse{polytech@company@db@logo}}%
+  }%
+}
+
+% utility function to remove the 7 following characters
+\newcommand{\polytech@gobbleseven}[7]{}
+% utility function to remove the 8 following characters
+\newcommand{\polytech@gobbleeight}[8]{}
+
+% Define a company
+% Usage in preamble only : \company{Name}{Address}{website} or \company[pathtologo]{Name}{Address}{website}
+% Param pathtologo : the path to an logo image
+% Param name : the name of the company
+% Param address : the address
+% Param website : the url or email of the website of the company
+\newcommand{\company}[4][]{%
+  % since we have a company then we have students instead of authors
+  \csdef{polytech@authorstype}{students}%
+  % already called ?
+  \ifcsdef{polytech@company@db@name}{%
+    \polytechfatalerror{\string\company\space has already been called.}%
+  }{}%
+  % check parameters
+  \ifstrequal{#2}{}{\polytechfatalerror{\string\company\space has been called with an empty parameter (company name).}}{}%
+  \ifstrequal{#3}{}{\polytechfatalerror{\string\company\space has been called with an empty parameter (address).}}{}%
+  \ifstrequal{#4}{}{\polytechfatalerror{\string\company\space has been called with an empty parameter (website).}}{}%
+  \ifstrequal{#1}{}{}{%
+    \csdef{polytech@company@db@logo}{#1}%
+  }%
+  \csdef{polytech@company@db@name}{#2}%
+  \csdef{polytech@company@db@address}{#3}%
+  % normalize website and websitewithoutprotocol
+  \IfBeginWith{#4}{http://}{%
+    \csdef{polytech@company@db@websitewithoutprotocol}{\polytech@gobbleseven#4}%
+    \csdef{polytech@company@db@website}{#4}%
+  }{%
+    \IfBeginWith{#4}{https://}{%
+      \csdef{polytech@company@db@websitewithoutprotocol}{\polytech@gobbleeight#4}%
+      \csdef{polytech@company@db@website}{#4}%
+    }{%
+      \IfBeginWith{#4}{mailto:}{%
+        \csdef{polytech@company@db@websitewithoutprotocol}{\polytech@gobbleseven#4}%
+        \csdef{polytech@company@db@website}{#4}%
+      }{%
+        \csdef{polytech@company@db@websitewithoutprotocol}{#4}%
+        \csdef{polytech@company@db@website}{http://#4}%
+      }%
+    }%
+  }%
+}
+
+% can be used only in preamble
+\@onlypreamble\company
+
+% ensure there is at least an industrial supervisor if there is a company and vice versa
+\csappto{polytech@check@preamble}{%
+	\ifcsdef{polytech@company@db@name}{
+		\ifcsdef{polytech@output@industrialsupervisors@simple}{
+		}{
+			\polytechfatalerror{\string\company used without \string\industrialsupervisor}
+		}
+	}
+	{
+		\ifcsdef{polytech@output@industrialsupervisors@simple}{
+			\polytechfatalerror{\string\industrialsupervisor used without \string\company}
+		}{
+		}
+	}
+}
+
+%%%%%%%%%%% CONTRIBUTORS BLOCK %%%%%%%%%%%%%%%%%
+
+\csdef{polytech@output@contributors}{%
+	\ifcsdef{polytech@company@db@name}{%
+		% company defined
+		\begin{tikzpicture}
+		    \node[color=black,align=left,anchor=north west,inner sep=0cm] at (0,0) {%
+		    	\textbf{\csuse{polytech@output@company@title}}\\%
+		    	\csuse{polytech@output@company@compact}\\%
+		    	\textbf{\csuse{polytech@output@industrialsupervisors@title}}\\%
+		    	\csuse{polytech@output@industrialsupervisors@compact}%
+		    };
+		    \node[color=black,align=right,anchor=north east,inner sep=0cm] at (\textwidth-2pt,0) {%
+		    	\textbf{\csuse{polytech@output@students@title}}\\%
+		    	\csuse{polytech@output@students@compact}\\%
+		    	\textbf{\csuse{polytech@output@academicsupervisors@title}}\\%
+		    	\csuse{polytech@output@academicsupervisors@compact}%
+		    };
+		\end{tikzpicture}%
+	}{% no company defined
+		\begin{tikzpicture}%
+		    \node[color=black,align=left,anchor=north west,inner sep=0cm,outer sep=0cm] at (0,0) {%
+		      \ifcsdef{polytech@output@academicsupervisors@compact}{%
+  		    	\textbf{\csuse{polytech@output@academicsupervisors@title}}\\%
+  		    	\csuse{polytech@output@academicsupervisors@compact}%
+		      }{\space}%
+		    };%
+		    \node[color=black,align=right,anchor=north east,inner sep=0cm,outer sep=0cm] at (\textwidth-2pt,0) {%
+		    	\textbf{\csuse{polytech@output@students@title}}\\%
+		    	\csuse{polytech@output@students@compact}%
+		    };%
+		\end{tikzpicture}%
+	}%
+}
+
+%%%%%%%%%%% LIST OF CONTRIBUTORS %%%%%%%%%%%%%%%%%
+% the contributors page
+\csdef{polytech@output@contributorspage}{%
+	\chapter*{\csuse{polytech@contributors@name@\csuse{polytech@lang}}}%
+	\vfill
+	\thispagestyle{empty}%
+	%
+	\ifcsdef{polytech@company@db@name}{%
+		\begin{center}%
+			\textbf{\csuse{polytech@output@company@title}}\\[0.2cm]%
+			\fbox{\csuse{polytech@output@company@split}}%
+		\end{center}%
+		\vfill%
+	}{}%
+	{%
+  	\small%
+  	\begin{tabularx}{\textwidth}{@{}|*3Y|@{}}%
+  		\hline%
+   		\textbf{\csuse{polytech@contributorspage@name@\csuse{polytech@lang}}}&%
+   		\textbf{\csuse{polytech@contributorspage@mail@\csuse{polytech@lang}}}&%
+   		\textbf{\csuse{polytech@contributorspage@quality@\csuse{polytech@lang}}}\\\hline%
+   		\endhead
+   		\csuse{polytech@output@students@split}\hline%
+  		\ifcsdef{polytech@output@academicsupervisors@split}{%
+  		  \csuse{polytech@output@academicsupervisors@split}\hline%
+  		}{}%
+  		\ifcsdef{polytech@output@industrialsupervisors@split}{%
+  			\csuse{polytech@output@industrialsupervisors@split}\hline%
+  		}{}%
+  	\end{tabularx}%
+  	\vfill%
+	}%
+	%\newpage%
+}
+
+% the title page
+\csdef{polytech@output@titlepage}{%
+  % redefine page layout to maximize space
+  \csuse{polytech@output@setupfirstlastpagegeometry}%
+  \begin{titlepage}%
+    \pdfbookmark{\csuse{polytech@titlepage@bookmark@\csuse{polytech@lang}}}{titlepage}%
+    \begin{tikzpicture}%
+        \node[right,color=black,align=center] at (0,0) {\fitimagetoheight{2cm}{polytech/polytech.png}};%
+        \node[left,color=black,align=center] at (\textwidth,0) {\fitimagetoheight{2cm}{polytech/univ.png}};%
+    \end{tikzpicture}\par%
+    \csuse{polytech@output@school}\par%
+    \vfill%
+    \begin{center}%
+      \csuse{polytech@font@titlepage@typereport}\csuse{polytech@output@typereport}\par\vspace{0.2cm}%
+      \csuse{polytech@font@titlepage@reportyear}\csuse{polytech@output@reportyear}\par\vspace{1cm}%
+      \csuse{polytech@font@titlepage@title}\csuse{polytech@output@title}\par\vspace{0.5cm}%
+      \csuse{polytech@font@titlepage@subtitle}\csuse{polytech@output@subtitle}\par%
+      \ifcsdef{polytech@reportlogo}{%
+        \vfill%
+        \fitimagetobox{\textwidth}{5cm}{\csuse{polytech@reportlogo}}%
+      }{}%
+      \ifcsdef{polytech@output@confidential}{%
+        \vfill%
+        \csuse{polytech@output@confidential}%
+      }{}%
+    \end{center}%
+    \vfill%
+    \polytech@output@contributors%
+    \ifbool{polytech@nodate}{}{\center{\polytech@font@titlepage@date\polytech@output@date}}%
+  \end{titlepage}%
+  \restoregeometry%
+}
+
+%%%%%%%%%%% MAKETITLE %%%%%%%%%%%%%%%%%
+
+\csdef{polytech@font@titlepage@typereport}{\bfseries\LARGE}
+\csdef{polytech@font@titlepage@reportyear}{\bfseries\LARGE}
+\csdef{polytech@font@titlepage@title}{\bfseries\Huge}
+\csdef{polytech@font@titlepage@subtitle}{\bfseries\LARGE}
+\csdef{polytech@font@titlepage@date}{\small}
+
+% do some configuration at the begin of the document
+% automagically call maketitle
+\AtBeginDocument{
+  \pagestyle{empty}%
+  \pagenumbering{Alph}%
+  % PDF metadata setup
+  \hypersetup{%
+    pdfauthor={\csuse{polytech@output@students@simple}},
+    pdftitle={\csuse{polytech@output@titlewithsubtitle}},
+    pdfkeywords={\csuse{polytech@output@keywords}, \csuse{polytech@output@motcles}}
+  }
+  \csuse{polytech@maketitle}
+}
+
+% output the begining of the document
+\csdef{polytech@maketitle}{%
+  \ifbool{polytech@bare}{%
+    \pagestyle{polytech}%
+    \mainmatter%
+  }{%
+  	\ifbool{polytech@onlyposter}{%
+  		\csuse{polytech@output@poster}%
+  		\end{document}%
+  	}{}%
+  	\csuse{polytech@output@titlepage}%
+  	\pagenumbering{alph}%
+  	\csuse{polytech@output@contributorspage}%
+  	\csuse{polytech@output@copyrightnotice}%
+  	\csuse{polytech@output@citingthedocument}%
+    \pagestyle{polytech}%
+  	\ifbool{polytech@firstlastonly}{%
+  		\mainmatter%
+  		\makelastpages%
+  		\end{document}%
+  	}{%
+  		\frontmatter%
+  		%
+  		\tableofcontents%
+  		%
+  		% automagically add lists of figures, tables and listings if needed (i.e not empty)
+  		\iftotalfigures%
+  			\listoffigures%
+  		\fi%
+  		\iftotaltables%
+  			\listoftables%
+  		\fi%
+  		\iftotallstlistings%
+  			\lstlistoflistings%
+  		\fi%
+  		%\iftotalalgocfs%
+  		%  \listofalgorithms%
+  		%\fi%
+  		\mainmatter%
+  	}%
+  	\setcounter{table}{0}%
+	}%
+	\boolfalse{polytech@allownewpagestartenddoc}% disable newpage, clearpage, cleardoublepage
+}
+
+%%%%%%%%%%% KEYWORDS %%%%%%%%%%%%%%%%%
+
+% Define a french keyword 
+% Usage in preamble only : \motcle{motcle}
+% Param motcle : the keyword
+\newcommand{\motcle}[1]{
+	\ifcsdef{polytech@output@motcles}{
+		\appto\polytech@output@motcles{, #1}
+	}{
+		\appto\polytech@output@motcles{#1}
+	}
+}
+
+% can be used only in preamble
+\@onlypreamble\motcle
+
+% ensure there is at least a motcle
+\ifbool{polytech@bare}{}{
+  \csappto{polytech@check@preamble}{%
+    \ifcsdef{polytech@output@motcles}{}{%
+      \polytechfatalerror{No french keyword defined (\string\motcle needed).}%
+    }%
+  }
+}
+
+% Define an english keyword 
+% Usage in preamble only : \motcle{keyword}
+% Param keyword : the keyword
+\newcommand{\keyword}[1]{
+	\ifcsdef{polytech@output@keywords}{
+		\appto\polytech@output@keywords{, #1}
+	}{
+		\appto\polytech@output@keywords{#1}
+	}
+}
+% can be used only in preamble
+\@onlypreamble\keyword
+
+% ensure there is at least a keyword
+\ifbool{polytech@bare}{}{
+  \csappto{polytech@check@preamble}{%
+    \ifcsdef{polytech@output@keywords}{}{%
+      \polytechfatalerror{No english keyword defined (\string\keyword needed).}%
+    }%
+  }
+}
+
+%%%%%%%%%%% ABSTRACT %%%%%%%%%%%%%%%%%
+
+% Define a french abstract
+% Usage in preamble only : \resume{resume}
+% Param resume : the abstract
+\newcommand{\resume}[1]{%
+  \ifcsdef{polytech@output@resume}{%
+    \polytechfatalerror{\string\resume has already been called.}%
+  }{%
+    \csdef{polytech@output@resume}{#1}%
+  }%
+}
+
+% can be used only in preamble
+\@onlypreamble\resume
+
+% ensure there is a resume
+\ifbool{polytech@bare}{}{
+  \csappto{polytech@check@preamble}{%
+    \ifcsdef{polytech@output@resume}{}{%
+      \polytechfatalerror{No resume defined (\string\resume needed).}%
+    }%
+  }
+}
+
+% Define an english abstract 
+% Usage in preamble only : \abstract{abstract}
+% Param abstract : the abstract
+\newcommand{\abstract}[1]{%
+ \ifcsdef{polytech@output@abstract}{%
+    \polytechfatalerror{\string\abstract has already been called.}%
+  }{%
+    \csdef{polytech@output@abstract}{#1}%
+  }%
+}
+
+% can be used only in preamble
+\@onlypreamble\abstract
+
+% ensure there is an abstract
+\ifbool{polytech@bare}{}{
+  \csappto{polytech@check@preamble}{%
+    \ifcsdef{polytech@output@abstract}{}{%
+      \polytechfatalerror{No resume defined (\string\abstract needed).}%
+    }%
+  }
+}
+
+%%%%%%%%%%% LAST PAGES %%%%%%%%%%%%%%%%%
+
+\DeclareFieldFormat{annotation}{%
+    \textsc{Annotation:} #1%
+}
+
+\renewbibmacro*{finentry}{%
+  \finentry%
+  \ifbool{polytech@nobibannotations}{%
+  }{%
+    \iffieldundef{annotation}{}{%
+      \begin{quotation}\noindent%
+        \printfield{annotation}%
+      \end{quotation}%
+    }%
+  }%
+}
+
+% round page count using blank page
+\csdef{polytech@roundpagecount}{
+  \ifbool{polytech@twoside}{%
+    \ifbool{polytech@roundtofour}{%
+      % add up to 3 pages to round total page count to *4
+      \ifnumcomp{ 3 - (\value{CurrentPage} - (\value{CurrentPage} /4 ) * 4)}{>}{0}{\mbox{ }\newpage}{}%
+      \ifnumcomp{ 3 - (\value{CurrentPage} - (\value{CurrentPage} /4 ) * 4)}{>}{1}{\mbox{ }\newpage}{}%
+      \ifnumcomp{ 3 - (\value{CurrentPage} - (\value{CurrentPage} /4 ) * 4)}{>}{2}{\mbox{ }\newpage}{}%
+    }{%
+      % add up to 1 pages to round total page count to *2
+      \ifnumcomp{ 3 - (\value{CurrentPage} - (\value{CurrentPage} /4 ) * 4)}{>}{0}{\mbox{ }\newpage}{}%
+    }%
+  }{}%
+}
+
+% output the last page
+\csdef{polytech@lastpage}{
+  \newpage%
+  \label{polytech@lastpage@start}
+  \csuse{polytech@output@setupfirstlastpagegeometry}%
+  \bookmarksetupnext{level=part}%
+  \phantomsection%
+  \pdfbookmark[0]{\csuse{polytech@lastpage@\csuse{polytech@lang}}}{lastpage}%
+  \begin{center}%
+    {\csuse{polytech@font@titlepage@title}\csuse{polytech@output@title}}\par%
+    \ifcsdef{polytech@output@subtitle}{%
+      \vspace{0.3cm}%
+      {\csuse{polytech@font@titlepage@subtitle}\csuse{polytech@output@subtitle}}\par
+    }{}%
+    \ifcsdef{polytech@output@confidential}{%
+      \vspace{0.3cm}%
+      \csuse{polytech@output@confidential}\par%
+    }{}%
+  \end{center}%
+  \vspace{0.3cm}%
+  \vfill%
+  \begin{otherlanguage}{french}%
+    \textbf{Résumé}\par%
+    \csuse{polytech@output@resume}\par%
+    \textbf{Mots-clés}\par%
+    \csuse{polytech@output@motcles}\par%
+  \end{otherlanguage}%
+  \vspace{0.3cm}
+  \vfill%
+  \begin{otherlanguage}{english}%
+    \textbf{Abstract}\par%
+    \csuse{polytech@output@abstract}\par%
+    \textbf{Keywords}\par%
+    \csuse{polytech@output@keywords}\par%
+  \end{otherlanguage}%
+  \vspace{0.3cm}%
+  \vfill%
+  \csuse{polytech@output@contributors}%
+  \label{polytech@lastpage@end}%
+  % test if overflow the page
+  \ifnumequal{\getpagerefnumber{polytech@lastpage@start}}{\getpagerefnumber{polytech@lastpage@end}}{}{%
+    \polytechwarning{Last page too long (\getpagerefnumber{polytech@lastpage@start} vs \getpagerefnumber{polytech@lastpage@end}). Try reducing \string\resume, \string\abstract, \string\motcle\space or \string\keyword. If you changed things, do not forget to recompile.}%
+  }%
+  % to make unused but defined label happy :)
+  \polytech@label@register{polytech@lastpage@start}%
+  \polytech@label@register{polytech@lastpage@end}%
+  \restoregeometry%
+}
+
+\csdef{blx@warn@bibempty}{}
+
+\ifcsdef{DeclareRefcontext}{%
+	\DeclareRefcontext{online}{labelprefix=WWW}%
+}{}	
+
+% print the bibliography handling biblatex deprecation parameter
+\csdef{polytech@printbibliography}{%
+	\ifcsdef{DeclareRefcontext}{%
+		\bookmarksetupnext{level=part}%
+		\begin{refcontext}[labelprefix=WWW]%
+			\printbibliography[type=online,title={\csuse{polytech@output@webography@\csuse{polytech@lang}}},heading=bibnumbered]%
+		\end{refcontext}%
+		\bookmarksetupnext{level=part}%
+		\begin{refcontext}[labelprefix=]%
+			\printbibliography[nottype=online,heading=bibnumbered]%    		
+		\end{refcontext}%
+	}{%
+		\ifcsdef{blx@type@\the\c@refsection @online}{%
+			\bookmarksetupnext{level=part}%
+			\printbibliography[type=online,prefixnumbers=WWW,title={\csuse{polytech@output@webography@\csuse{polytech@lang}}},heading=bibnumbered]%
+		}{}%
+		\bookmarksetupnext{level=part}%
+		\printbibliography[nottype=online,heading=bibnumbered]%    		
+	}
+}
+
+\csdef{polytech@makelastpages}{%
+  \ifbool{polytech@bare}{}{%
+    % allow unnumbered chapter again
+    \boolfalse{polytech@ref@appendix}%
+    \ifbool{polytech@onlyposter}{%
+    }{%
+      \bookmarksetupnext{level=part}%
+    	\ifbool{polytech@firstlastonly}{%
+    	}{%
+    		\csuse{polytech@output@weeklyreportspart}%    		
+    		\csuse{polytech@printbibliography}%
+    		\printglossaries%
+    		\printindex%
+    		\ifbool{polytech@noposter}{%
+    		  % no poster required
+    		}{%
+    		  \ifbool{polytech@poster}{%
+    		    % poster required
+    		    \csuse{polytech@output@poster}%
+    		  }{%
+    		    % no requirement, we rely on defaults
+    		    \ifbool{polytech@default@poster}{%
+    		      \csuse{polytech@output@poster}%
+    		    }{}%
+    		  }%
+    		}%
+    	}%
+    	\backmatter%
+    	\pagestyle{empty}%
+    	\ifbool{polytech@firstlastonly}{}{%
+    		\csuse{polytech@roundpagecount}%
+    	}%
+    	\csuse{polytech@lastpage}%
+    }%
+  }%
+}
+
+
+
+%###
+
+
+
+
+

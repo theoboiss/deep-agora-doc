@@ -1,0 +1,29 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{polytech/polglossaries}[\polytechfiledate\space\polytechfileversion\space Polytech document class sub package]
+
+% enable glossaries
+\ifbool{polytech@glossaries}{
+	\setabbreviationstyle[acronym]{long-short}
+	\csdef{printglossaries}{%
+		\forallglossaries {\@@glo@type }{%
+			\bookmarksetupnext{level=part}%
+			\booltrue{polytech@allownewpagesection}%
+			\printunsrtglossary[type=\@@glo@type ]%
+			\boolfalse{polytech@allownewpagesection}%
+		}%
+	}
+}{
+	\makeglossaries
+	\csdef{printglossaries}{%
+		\forallglossaries {\@@glo@type }{%
+			\bookmarksetupnext{level=part}%
+			\booltrue{polytech@allownewpagesection}%
+			\printglossary[type=\@@glo@type ]%
+			\boolfalse{polytech@allownewpagesection}%
+		}%
+	}
+}
+%
+
+% disable \glsaddall
+\renewcommand{\glsaddall}{}

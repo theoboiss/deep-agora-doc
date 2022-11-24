@@ -1,0 +1,329 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{polytech/sectionning}[\polytechfiledate\space\polytechfileversion\space Polytech document class sub package]
+
+%###
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PART
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% part page
+\csdef{polytech@part@numberfont}{\bfseries\huge}
+\csdef{polytech@part@titlefont}{\bfseries\Huge}
+
+\ifbool{polytech@blackandwhite}{
+	\colorlet{polytech@sectionning@part@num@fg}{white}
+	\colorlet{polytech@sectionning@part@num@bg}{black!50}
+	\colorlet{polytech@sectionning@part@num@border}{black!50}
+	\colorlet{polytech@sectionning@part@title@fg}{white}
+	\colorlet{polytech@sectionning@part@title@bg}{black!70}
+	\colorlet{polytech@sectionning@part@title@border}{black!50}
+}{
+	\colorlet{polytech@sectionning@part@num@fg}{white}
+	\colorlet{polytech@sectionning@part@num@bg}{polytechlightblue}
+	\colorlet{polytech@sectionning@part@num@border}{polytechlightblue}
+	\colorlet{polytech@sectionning@part@title@fg}{white}
+	\colorlet{polytech@sectionning@part@title@bg}{polytechdarkblue}
+	\colorlet{polytech@sectionning@part@title@border}{polytechdarkblue}
+}
+
+% patch titlesec command to remove superflous blank pages
+\patchcmd{\ttl@page@ii}
+{\if@twocolumn \onecolumn \@tempswatrue \else \@tempswafalse \fi}
+{}
+{}
+{
+  \polytechfatalerror{Can not patch \string\ttl@page@ii (1)}
+}
+
+\patchcmd{\ttl@page@ii}
+{\newpage \if@twoside \if@openright \null \@ifundefined {ttl@ps@#6}{\thispagestyle {empty}}{\thispagestyle {\@nameuse {ttl@ps@#6}}}\newpage \fi \fi \if@tempswa \twocolumn \fi}
+{}
+{}
+{
+  \polytechfatalerror{Can not patch \string\ttl@page@ii (2)}
+}
+
+
+%\titlespacing{\part}{0pt}{3cm}{3cm}
+
+\titleformat{\part}[display]
+{\global\setbool{polytech@titlesec@hasnumber}{false}}%
+{\global\setbool{polytech@titlesec@hasnumber}{true}}%
+{0cm}%
+{%
+	\thispagestyle{empty}%
+    \begin{tikzpicture}
+       \ifbool{polytech@titlesec@hasnumber}{%
+       		\draw[color=polytech@sectionning@part@num@border,fill=polytech@sectionning@part@num@bg] (1cm,3) rectangle (\textwidth-0.4pt-1cm,4.4);
+       		\node[right,text width=\textwidth-1cm,align=center] at (0,3.7) {%
+       		   \color{polytech@sectionning@part@num@fg}%
+              \csuse{polytech@part@numberfont}%
+              \ifbool{polytech@english}{
+                \partname~\thepart%
+              }
+              {
+                \partname%
+              }
+       	  };
+       }{}
+       \draw[color=polytech@sectionning@part@title@border,fill=polytech@sectionning@part@title@bg] (0,0) rectangle (\textwidth-0.4pt,3);
+       \node[right,white,text width=\textwidth-1cm,align=center] at (0,1.5) {%
+          \color{polytech@sectionning@part@title@fg}
+          \csuse{polytech@part@titlefont}%
+          \csdef{polytechlinebreak}{\\}%
+          #1%
+       };
+     \end{tikzpicture}%
+}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% CHAPTER
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+% chapter page
+
+\csdef{polytech@chapter@numberfont}{\bfseries\fontsize{2cm}{1em}\selectfont}
+\csdef{polytech@chapter@titlefont}{\bfseries\Huge}
+
+\newbool{polytech@titlesec@hasnumber}
+\newlength{\polytech@chapter@numwidth}
+
+\ifbool{polytech@blackandwhite}{
+	\colorlet{polytech@sectionning@chapter@num@fg}{white}
+	\colorlet{polytech@sectionning@chapter@num@bg}{black!50}
+	\colorlet{polytech@sectionning@chapter@num@border}{black!50}
+	\colorlet{polytech@sectionning@chapter@title@fg}{white}
+	\colorlet{polytech@sectionning@chapter@title@bg}{black!70}
+	\colorlet{polytech@sectionning@chapter@title@border}{black!50}
+}{
+	\colorlet{polytech@sectionning@chapter@num@fg}{white}
+	\colorlet{polytech@sectionning@chapter@num@bg}{polytechlightblue}
+	\colorlet{polytech@sectionning@chapter@num@border}{polytechlightblue}
+	\colorlet{polytech@sectionning@chapter@title@fg}{white}
+	\colorlet{polytech@sectionning@chapter@title@bg}{polytechdarkblue}
+	\colorlet{polytech@sectionning@chapter@title@border}{polytechdarkblue}
+}
+
+\titlespacing{\chapter}{0pt}{2cm}{6cm}
+
+\titleformat{\chapter}%
+   {\global\setbool{polytech@titlesec@hasnumber}{false}}%
+   {\global\setbool{polytech@titlesec@hasnumber}{true}}%
+   {0pt}%
+   {%
+     \noindent\begin{tikzpicture}%
+       \draw[line width=0pt,color=polytech@sectionning@chapter@title@border,fill=polytech@sectionning@chapter@title@bg] (0,0) rectangle (\textwidth-2pt,2.5);%
+       \draw[color=polytech@sectionning@chapter@num@border,fill=polytech@sectionning@chapter@num@bg] (0.25,0.25) rectangle (3.25,3.25);%
+       \ifbool{polytech@titlesec@hasnumber}{%
+         \node[inner sep=0em,color=polytech@sectionning@chapter@num@fg,align=center] at (1.75,1.75) {%
+            \csuse{polytech@chapter@numberfont}%
+            \thechapter%
+         };%
+       }{}%
+       \node[right,color=polytech@sectionning@chapter@title@fg, align=justify, outer sep=0cm,text width={\textwidth-4.1cm}] at (3.5,1.25) {%
+          \csuse{polytech@chapter@titlefont}%
+          \csdef{polytechlinebreak}{\\}%
+          #1%
+       };%
+     \end{tikzpicture}%
+   }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% SECTION
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\csdef{polytech@section@numberfont}{\bfseries\Large}
+\csdef{polytech@section@titlefont}{\bfseries\Large}
+
+\ifbool{polytech@blackandwhite}{
+	\colorlet{polytech@sectionning@section@num@fg}{white}
+	\colorlet{polytech@sectionning@section@num@bg}{black!50}
+	\colorlet{polytech@sectionning@section@num@border}{black!50}
+	\colorlet{polytech@sectionning@section@title@fg}{white}
+	\colorlet{polytech@sectionning@section@title@bg}{black!70}
+	\colorlet{polytech@sectionning@section@title@border}{black!50}
+}{
+	\colorlet{polytech@sectionning@section@num@fg}{white}
+	\colorlet{polytech@sectionning@section@num@bg}{polytechlightblue}
+	\colorlet{polytech@sectionning@section@num@border}{polytechlightblue}
+	\colorlet{polytech@sectionning@section@title@fg}{white}
+	\colorlet{polytech@sectionning@section@title@bg}{polytechdarkblue}
+	\colorlet{polytech@sectionning@section@title@border}{polytechdarkblue}
+}
+
+\titlespacing{\section}{0pt}{2ex plus 1ex minus 0.5ex}{2ex plus 1ex minus 0.5ex}
+
+\titleformat{\section}[block]{\global\setbool{polytech@titlesec@hasnumber}{false}}{\global\setbool{polytech@titlesec@hasnumber}{true}}{0pt}%
+  {%
+    \begin{tikzpicture}[color=white]
+    %
+      \node[
+        text width=\textwidth-0.4cm-0.4pt,
+        fill=polytech@sectionning@section@title@bg,
+        draw=polytech@sectionning@section@title@border,
+        inner sep=0.2cm,
+        inner ysep=0.2cm] (title)
+        at (0,0) {\color{polytech@sectionning@section@title@fg}\polytech@section@titlefont#1} ;
+      \path (title.south); \pgfgetlastxy{\titlexS}{\titleyS}
+      \path (title.north); \pgfgetlastxy{\titlexN}{\titleyN}
+      \ifbool{polytech@titlesec@hasnumber}{%
+        \node[ align=center,
+               fill=polytech@sectionning@section@num@bg,
+               draw=polytech@sectionning@section@num@border,
+               inner xsep=0.2cm,
+               minimum height=\titleyN-\titleyS-0.4cm,
+               overlay,
+               anchor=east,
+               left=-0.1cm of title.west
+             ] at (title.west) {\color{polytech@sectionning@section@num@fg}\polytech@section@numberfont\arabic{section}};
+      }{}
+     \end{tikzpicture}%
+    }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% SUBSECTION
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\csdef{polytech@subsection@numberfont}{\bfseries\large}
+\csdef{polytech@subsection@titlefont}{\bfseries\large}
+
+\ifbool{polytech@blackandwhite}{
+	\colorlet{polytech@sectionning@subsection@num@fg}{white}
+	\colorlet{polytech@sectionning@subsection@num@bg}{black!50}
+	\colorlet{polytech@sectionning@subsection@num@border}{black!50}
+	\colorlet{polytech@sectionning@subsection@title@fg}{white}
+	\colorlet{polytech@sectionning@subsection@title@bg}{black!70}
+	\colorlet{polytech@sectionning@subsection@title@border}{black!50}
+}{
+	\colorlet{polytech@sectionning@subsection@num@fg}{white}
+	\colorlet{polytech@sectionning@subsection@num@bg}{polytechlightblue}
+	\colorlet{polytech@sectionning@subsection@num@border}{polytechlightblue}
+	\colorlet{polytech@sectionning@subsection@title@fg}{white}
+	\colorlet{polytech@sectionning@subsection@title@bg}{polytechdarkblue}
+	\colorlet{polytech@sectionning@subsection@title@border}{polytechdarkblue}
+}
+
+\titlespacing{\subsection}{0pt}{2ex plus 1ex minus 0.5ex}{2ex plus 1ex minus 0.5ex}
+
+\titleformat{\subsection}[block]{\global\setbool{polytech@titlesec@hasnumber}{false}}{\global\setbool{polytech@titlesec@hasnumber}{true}}{0pt}%
+  {%
+    \begin{tikzpicture}[color=white]
+    %
+      \node[
+        text width=\textwidth-0.4cm-0.4pt,
+        fill=polytech@sectionning@subsection@title@bg,
+        draw=polytech@sectionning@subsection@title@border,
+        inner sep=0.2cm,
+        inner ysep=0.2cm] (title)
+        at (0,0) {\color{polytech@sectionning@subsection@title@fg}\polytech@subsection@titlefont#1} ;
+      \path (title.south); \pgfgetlastxy{\titlexS}{\titleyS}
+      \path (title.north); \pgfgetlastxy{\titlexN}{\titleyN}
+      \ifbool{polytech@titlesec@hasnumber}{%
+        \node[ align=center,
+               fill=polytech@sectionning@subsection@num@bg,
+               draw=polytech@sectionning@subsection@num@border,
+               inner xsep=0.2cm,
+               minimum height=\titleyN-\titleyS-0.4cm,
+               overlay,
+               anchor=east,
+               left=-0.1cm of title.west
+             ] at (title.west) {\color{polytech@sectionning@subsection@num@fg}\polytech@subsection@numberfont\arabic{section}.\arabic{subsection}};
+      }{}
+     \end{tikzpicture}%
+    }
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% SUBSUBSECTION
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\csdef{polytech@subsubsection@numberfont}{\large}
+\csdef{polytech@subsubsection@titlefont}{\large}
+
+\ifbool{polytech@blackandwhite}{
+	\colorlet{polytech@sectionning@subsubsection@num@fg}{white}
+	\colorlet{polytech@sectionning@subsubsection@num@bg}{black!50}
+	\colorlet{polytech@sectionning@subsubsection@num@border}{black!50}
+	\colorlet{polytech@sectionning@subsubsection@title@fg}{white}
+	\colorlet{polytech@sectionning@subsubsection@title@bg}{black!70}
+	\colorlet{polytech@sectionning@subsubsection@title@border}{black!50}
+}{
+	\colorlet{polytech@sectionning@subsubsection@num@fg}{white}
+	\colorlet{polytech@sectionning@subsubsection@num@bg}{polytechlightblue}
+	\colorlet{polytech@sectionning@subsubsection@num@border}{polytechlightblue}
+	\colorlet{polytech@sectionning@subsubsection@title@fg}{white}
+	\colorlet{polytech@sectionning@subsubsection@title@bg}{polytechdarkblue}
+	\colorlet{polytech@sectionning@subsubsection@title@border}{polytechdarkblue}
+}
+
+\titlespacing{\subsubsection}{0pt}{2ex plus 1ex minus 0.5ex}{2ex plus 1ex minus 0.5ex}
+
+\titleformat{\subsubsection}[block]{\global\setbool{polytech@titlesec@hasnumber}{false}}{\global\setbool{polytech@titlesec@hasnumber}{true}}{0pt}%
+  {%
+    \begin{tikzpicture}[color=white]
+    %
+      \node[
+        text width=\textwidth-0.4cm-0.4pt,
+        fill=polytech@sectionning@subsubsection@title@bg,
+        draw=polytech@sectionning@subsubsection@title@border,
+        inner sep=0.2cm,
+        inner ysep=0.2cm] (title)
+        at (0,0) {\color{polytech@sectionning@subsubsection@title@fg}\polytech@subsubsection@titlefont#1} ;
+      \path (title.south); \pgfgetlastxy{\titlexS}{\titleyS}
+      \path (title.north); \pgfgetlastxy{\titlexN}{\titleyN}
+      \ifbool{polytech@titlesec@hasnumber}{%
+        \node[ align=center,
+               fill=polytech@sectionning@subsubsection@num@bg,
+               draw=polytech@sectionning@subsubsection@num@border,
+               inner xsep=0.2cm,
+               minimum height=\titleyN-\titleyS-0.4cm,
+               overlay,
+               anchor=east,
+               left=-0.1cm of title.west
+             ] at (title.west) {\color{polytech@sectionning@subsubsection@num@fg}\polytech@subsubsection@numberfont\arabic{section}.\arabic{subsection}.\arabic{subsubsection}};
+      }{}
+    \end{tikzpicture}%
+  }
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PARAGRAPH
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\csdef{polytech@paragraph@titlefont}{\bfseries\normalsize}
+
+\ifbool{polytech@blackandwhite}{
+	\colorlet{polytech@sectionning@paragraph@fg}{black}
+}{
+	\colorlet{polytech@sectionning@paragraph@fg}{polytechdarkblue}
+}
+
+\titlespacing{\paragraph}{0pt}{1ex plus 1ex minus 0.5ex}{1ex plus 0.1ex minus 0.1ex}
+
+\titleformat{\paragraph}[hang]{\color{polytech@sectionning@paragraph@fg}\csname polytech@paragraph@titlefont\endcsname}{\theparagraph}{0pt}{#1}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% SUBPARAGRAPH
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\csdef{polytech@subparagraph@titlefont}{\bfseries\itshape\normalsize}
+
+\ifbool{polytech@blackandwhite}{
+	\colorlet{polytech@sectionning@subparagraph@fg}{black}
+}{
+	\colorlet{polytech@sectionning@subparagraph@fg}{polytechdarkblue}
+}
+
+\titlespacing{\subparagraph}{0pt}{1ex plus 1ex minus 0.5ex}{1ex plus 0.1ex minus 0.1ex}
+
+\titleformat{\subparagraph}[hang]{\color{polytech@sectionning@subparagraph@fg}\csname polytech@subparagraph@titlefont\endcsname}{\thesubparagraph}{0pt}{#1}
+
+
+
+
+%###

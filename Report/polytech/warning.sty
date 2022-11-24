@@ -1,0 +1,14 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{polytech/warning}[\polytechfiledate\space\polytechfileversion\space Polytech document class sub package]
+
+%###
+
+\csdef{polytech@output@copyrightnotice}{
+  \ifcsdef{polytech@copyrightnotice@disabled@\csuse{polytech@typereport}}{}{
+		\chapter*{\csuse{polytech@warning@name@\csuse{polytech@lang}}}
+    \thispagestyle{empty}%
+
+	\csuse{polytech@warning@text@\csuse{polytech@lang}}
+	}
+}
+%###

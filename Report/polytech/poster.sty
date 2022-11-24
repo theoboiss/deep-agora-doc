@@ -1,0 +1,391 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{polytech/poster}[\polytechfiledate\space\polytechfileversion\space Polytech document class sub package]
+
+%###
+
+% boolean used to specify if a poster is required by default
+\newbool{polytech@default@poster}
+
+% counter to check requirements
+\newcounter{polytech@poster@block}
+
+% ensure there is an abstract
+\csappto{polytech@check@preamble}{%
+  \ifbool{polytech@noposter}{%
+      % no poster required
+    }{%
+      \ifbool{polytech@poster}{%
+        % poster required
+        \ifnumequal{\value{polytech@poster@block}}{3}{%
+        }{%
+          \polytechfatalerror{A poster is required but an invalid number (\arabic{polytech@poster@block}/3) of block is defined (see \string\posterblock).}%
+        }%
+      }{%
+        % no requirement, we rely on defaults
+        \ifbool{polytech@default@poster}{%
+          \ifnumequal{\value{polytech@poster@block}}{3}{%
+          }{%
+            \polytechfatalerror{A poster is required but an invalid number (\arabic{polytech@poster@block}/3) of block is defined (see \string\posterblock).}%
+          }%
+        }{}%
+      }%
+    }%
+}
+
+
+% constant allowing block to overflow a bit
+\newlength{\polytechblockheightallowedoverflow}
+\setlength{\polytechblockheightallowedoverflow}{0.1cm}
+
+% variable used to shift the logo and allow to display the department
+\newlength{\polytechposterschooldepartmentshift}
+% variable used for computing poster layout
+\newlength{\polytechpostervertspace}
+\newlength{\polytechpostervertanchor}
+\newlength{\polytechposterhorizspace}
+\newlength{\polytechposterhorizanchor}
+\newlength{\polytechposterlogoheight}
+% variable used to verify block heights
+\newlength{\polytecheffectiveblockheight}
+\newlength{\polytechmaxblockheight}
+
+
+
+\csdef{polytech@font@poster@typereport}{\bfseries\LARGE}
+\csdef{polytech@font@poster@school}{\bfseries\normalsize}
+\csdef{polytech@font@poster@title}{\bfseries\Huge}
+\csdef{polytech@font@poster@subtitle}{\bfseries\LARGE}
+\csdef{polytech@font@poster@authors}{\bfseries\huge}
+\csdef{polytech@font@poster@supervisors}{\bfseries\LARGE\color{polytechlightblue}}
+\csdef{polytech@font@poster@company}{\bfseries\scriptsize}
+\csdef{polytech@font@poster@department}{\bfseries\large}
+
+\csdef{polytech@font@poster@block@title}{\bfseries\huge\color{polytechdarkblue}}
+\csdef{polytech@font@poster@block@content}{\Large\color{black}}
+\csdef{polytech@font@poster@block@imagetitle}{\itshape\normalsize\color{black}}
+\csdef{polytech@font@poster@block@bf}{\bfseries\color{polytechorange}}
+
+% Check if verticalblock does not overflow. If it overflows, a red rectangle and an error message are added
+\newcommand{\polytech@poster@checkvertblock}[1]{%
+  \path (#1.north west); \pgfgetlastxy{\blockxN}{\blockyN}%
+  \path (#1.south east); \pgfgetlastxy{\blockxS}{\blockyS}%
+  \setlength{\polytecheffectiveblockheight}{\blockyN-\blockyS}%
+  \ifdimgreater{\polytecheffectiveblockheight}{\polytechmaxblockheight}{%
+    \draw [fill=red,opacity=0.5] %
+      (\blockxN,\polytechpostervertanchor-0.3\polytechpostervertspace) % 
+      rectangle %
+      (\blockxS,\polytechpostervertanchor+0.3\polytechpostervertspace); %
+    \polytechwarning{Poster block too big (see \string\posterblock) (\the\polytecheffectiveblockheight > \the\polytechmaxblockheight).}%
+  }{}%
+}
+
+% Check if block does not overflow. If it overflows, a red rectangle and an error message are added
+\newcommand{\polytech@poster@checkhorizblock}[1]{%
+  \path (#1.north west); \pgfgetlastxy{\blockxN}{\blockyN}%
+  \path (#1.south east); \pgfgetlastxy{\blockxS}{\blockyS}%
+  \setlength{\polytecheffectiveblockheight}{\blockyN-\blockyS}%
+  \ifdimgreater{\polytecheffectiveblockheight}{\polytechmaxblockheight}{%
+    \draw [anchor=north west,fill=red,opacity=0.5] %
+      (\blockxN,\polytechpostervertanchor) % 
+      rectangle %
+      (\blockxS,\polytechpostervertanchor+\polytechpostervertspace); %
+    \polytechwarning{Poster block too big (see \string\posterblock) (\the\polytecheffectiveblockheight > \the\polytechmaxblockheight).} %
+  }{}% 
+}
+
+% #1 : title
+% #2 : paragraph
+% #3 : image
+% #4 : image legend
+\newcommand{\posterblock}[4]{%
+  % for vertical poster
+	\csappto{polytech@output@poster@blocksvert}{%
+    %image block
+		\node[anchor=east,
+					color=polytechdarkblue,
+					align=center,
+					inner sep=0cm,
+					outer sep=0cm,
+					text width=9.5cm] (blockimage) at (20cm,\polytechpostervertanchor) {%
+					  \parskip0pt%
+						\ifblank{#4}{%
+						  \fitimagetobox{9.5cm}{-\polytechpostervertspace-0.1cm}{#3}%
+						}{%
+							% fit image and caption
+							\fitimagetobox{9.5cm}{-\polytechpostervertspace-1cm}{#3}%
+							\par%
+							{\csuse{polytech@font@poster@block@imagetitle}#4}%
+						}%
+			};%
+		% check result
+	  \polytech@poster@checkvertblock{blockimage}%
+		\node[anchor=west,
+					color=polytechdarkblue,
+					align=justify,
+					inner sep=0cm,
+					outer sep=0cm,
+					text width=9.5cm] (blocktext) at (0cm,\polytechpostervertanchor) {%
+			\parskip2pt%
+			{\csuse{polytech@font@poster@block@title}#1}\par\vspace{-0.1cm}%
+			{\textcolor{polytechlightblue}{\rule{9.5cm}{0.15cm}}}\par%\vspace{-0.2cm}%
+			{\csuse{polytech@font@poster@block@content}\parskip0pt#2}%
+		};%
+		% check result
+		\polytech@poster@checkvertblock{blocktext}%
+		% advance position by one block height and 1cm skip
+		\addtolength{\polytechpostervertanchor}{\polytechpostervertspace-0.3cm}%
+	}%
+	% for horizontal poster
+	\csappto{polytech@output@poster@blockshoriz}{%
+    %image block
+    \node[anchor=west,
+          color=polytechdarkblue,
+          align=center,
+          inner sep=0cm,
+          outer sep=0cm,
+          text width=\polytechposterhorizspace] (blockimage) at (\polytechposterhorizanchor,\polytechpostervertanchor+\polytechpostervertspace-0.3cm+0.5\polytechpostervertspace) {%
+            \parskip0pt%
+            \ifblank{#4}{%
+              \fitimagetobox{\polytechposterhorizspace}{-\polytechpostervertspace-0.1cm}{#3}%
+            }{%
+              % fit image and caption
+              \fitimagetobox{\polytechposterhorizspace}{-\polytechpostervertspace-1cm}{#3}%
+              \par%
+              {\csuse{polytech@font@poster@block@imagetitle}#4}%
+            }%
+      };%
+    \polytech@poster@checkhorizblock{blockimage}%
+    \node[anchor=north west,
+          color=polytechdarkblue,
+          align=justify,
+          inner sep=0cm,
+          outer sep=0cm,
+          text width=\polytechposterhorizspace] (blocktext) at (\polytechposterhorizanchor,\polytechpostervertanchor) {%
+          \parskip2pt%
+      {\csuse{polytech@font@poster@block@title}#1}\par\vspace{-0.1cm}%
+      {\textcolor{polytechlightblue}{\rule{\polytechposterhorizspace}{0.15cm}}}\par%\vspace{-0.2cm}%
+      {\csuse{polytech@font@poster@block@content}\parskip0pt#2}%
+    };%
+    \polytech@poster@checkhorizblock{blocktext}%
+    % advance position by one block height and 1cm skip
+    \addtolength{\polytechposterhorizanchor}{\polytechposterhorizspace+0.3cm}%
+  }%
+  \stepcounter{polytech@poster@block}
+} 
+
+% can be used only in preamble
+\@onlypreamble\posterblock
+
+% a4 paper vertical
+\csdef{polytech@output@postervert@aiv}{%
+  % largeur : 20cm, hauteur : 28.7cm
+  % top left = (0cm,28.7cm)
+  % bottom right = (20cm,0cm)
+  \begin{tikzpicture}
+  	%\draw[fill=yellow,opacity=0.5cm] (0,0) rectangle (20cm,28cm);
+  	%\draw[fill=red,opacity=0.5cm] (0,28cm) rectangle (-0.5cm,28.7cm);
+  	\node at (-0.4cm,0cm) {};
+  	\node at (20cm,28.7cm) {};
+  
+  	% premiere ligne
+  	\node[anchor=west,color=polytechorange,align=left,inner sep=0cm, outer sep=0cm] (headline) at (0,28cm) {%
+  		\csuse{polytech@font@poster@typereport}\csuse{polytech@output@typereport}%
+  	};
+  	\path (headline.east); \pgfgetlastxy{\headlinexN}{\headlineyN}
+  	\draw[fill=blue,line width=0.3cm,color=polytechorange] (\headlinexN+0.5cm,28cm)--(20cm,28cm);
+  
+    % titre
+  	\node[anchor=north west, color=polytechlightblue,align=justify,inner sep=0cm, outer sep=0cm, text width=20cm] (title) at (0cm,27.5cm) {%
+  		\csuse{polytech@font@poster@title}\csuse{polytech@title}
+  		\ifcsdef{polytech@subtitle}{%
+  			: \csuse{polytech@font@poster@subtitle}\csuse{polytech@subtitle}%
+  		}{}%
+  	};
+  
+  	% auteurs, superviseurs, entreprise
+  	\ifcsdef{polytech@company@db@name}{%
+  		\node[anchor=north west, color=polytechdarkblue,align=justify,inner sep=0cm, outer sep=0cm, text width=14.5cm, yshift=-0.5cm] (authors) at (title.south west) {%
+  		  \parskip0pt%
+  			{\csuse{polytech@font@poster@authors}\csuse{polytech@output@students@simple}}\par\vspace{0.5em}%
+  			{\csuse{polytech@font@poster@supervisors}\csuse{polytech@poster@encadrement@\csuse{polytech@lang}} : \csuse{polytech@output@academicsupervisors@simple}}%
+  		};
+  		\path (authors.south); \pgfgetlastxy{\authorsxS}{\authorsyS}
+  		\path (authors.north); \pgfgetlastxy{\authorsxN}{\authorsyN}
+  		\node[anchor=north east, color=polytechdarkblue,align=center,inner sep=0cm, outer sep=0cm, text width=5cm, yshift=-0.3cm] at (title.south east) {%
+  		  \parskip0pt%
+  			\setlength{\polytechposterlogoheight}{\authorsyN-\authorsyS-2em+0.2cm}%
+  			\ifcsdef{polytech@company@db@logo}{%
+          \fitimagetobox{5cm}{\polytechposterlogoheight}{\csuse{polytech@company@db@logo}}%
+  				\par%
+  			}{%
+  				\vspace{0.5\polytechposterlogoheight}%
+  				\par%
+  			}%
+  			{\csuse{polytech@font@poster@company}\csuse{polytech@poster@collab@\csuse{polytech@lang}}~\linebreak[0]\csuse{polytech@output@company@simple}}%
+  		};
+  	}{
+  		\node[anchor=north west, color=polytechdarkblue,align=justify,inner sep=0cm, outer sep=0cm, text width=20cm, yshift=-0.5cm] (authors) at (title.south west) {%
+  		  \parskip0pt%
+  			\csuse{polytech@font@poster@authors}\csuse{polytech@output@students@simple}\par\vspace{0.5em}%
+  			\csuse{polytech@font@poster@supervisors}\csuse{polytech@poster@encadrement@\csuse{polytech@lang}} : \csuse{polytech@output@academicsupervisors@simple}%
+  		};
+  		\path (authors.south); \pgfgetlastxy{\authorsxS}{\authorsyS}
+  		\path (authors.north); \pgfgetlastxy{\authorsxN}{\authorsyN}
+  	}
+  
+  	% dernière ligne
+  	\node[anchor=south west,color=polytechdarkblue,align=right,inner sep=0cm, outer sep=0cm,text width=13.5cm] (0cm,1cm) {%
+  		\csuse{polytech@font@poster@school}\csuse{polytech@output@poster@school}%
+  	};
+  	\setlength{\polytechposterschooldepartmentshift}{\csuse{polytech@schooldepartment@postershift@\csuse{polytech@schooldepartment}@\csuse{polytech@lang}}}
+  	\node[anchor=south east,color=black,inner sep=0cm, outer sep=0cm,align=center,text width=6cm,yshift=\polytechposterschooldepartmentshift] (logo) at (20cm,0cm) {%
+  	  \fitimagetowidth{6cm}{polytech/polytech}%
+  	};
+  	\path (logo.north); \pgfgetlastxy{\logoxN}{\logoyN}
+  	\node[anchor=south east,color=polytechdarkblue,inner sep=0cm, outer sep=0cm,align=right,text width=6cm] at (20cm,0cm) {%
+  		\csuse{polytech@font@poster@department}\csuse{polytech@schooldepartment@poster@\csuse{polytech@schooldepartment}@\csuse{polytech@lang}}%
+  	};
+  	\draw[line width=0.3cm,color=polytechorange] (0cm,\logoyN-0.15cm)--(13.5cm,\logoyN-0.15cm);
+  	\node[anchor=north west, color=polytechdarkblue,align=left,inner sep=0cm, outer sep=0cm, text width=20cm] (footer) at (0cm,\logoyN+0.2cm) {};
+  	\path (footer.north); \pgfgetlastxy{\footerxS}{\footeryS}
+  
+  	% add 0.5cm after head, 0.5cm before footer and 0.5cm between the 3 blocks : divide all height in 6 parts
+  	\setlength{\polytechpostervertspace}{((\footeryS+0.3cm)-(\authorsyS-0.3cm)+0.3cm+0.3cm)/6}
+  	% position of the first block center
+  	\setlength{\polytechpostervertanchor}{\authorsyS-0.3cm+\polytechpostervertspace}
+  	% one block need to advance position by 2 parts
+  	\addtolength{\polytechpostervertspace}{\polytechpostervertspace}
+  	\setlength{\polytechmaxblockheight}{-\polytechpostervertspace+\polytechblockheightallowedoverflow}
+  
+  	%\draw[fill=green] (-0.1cm,\authorsyS-1cm) -- (20cm,\authorsyS-1cm) -- (20cm,\footeryS+1cm) -- (-0.1cm,\footeryS+1cm);
+  
+  	\let\polytech@oldtextbf\textbf
+  	\renewcommand{\textbf}[1]{{\csuse{polytech@font@poster@block@bf}##1}}
+  	\csuse{polytech@output@poster@blocksvert}
+  	\let\textbf\polytech@oldtextbf
+  
+  \end{tikzpicture}%
+}
+ 
+% a4 paper horizontal
+\csdef{polytech@output@posterhoriz@aiv}{%
+  % largeur : 20cm, hauteur : 28.7cm
+  % top left = (0cm,28.7cm)
+  % bottom right = (20cm,0cm)
+  \begin{tikzpicture}
+    %\draw[fill=yellow,opacity=0.5cm] (0,0) rectangle (28cm,19.5cm);
+    \node at (-0.8cm,-0.5cm) {};
+    \node at (28cm,20cm) {};
+  
+    % premiere ligne
+    \node[anchor=west,color=polytechorange,align=left,inner sep=0cm, outer sep=0cm] (headline) at (0,19cm) {%
+      \csuse{polytech@font@poster@typereport}\csuse{polytech@output@typereport}%
+    };
+    \path (headline.east); \pgfgetlastxy{\headlinexN}{\headlineyN}
+    \draw[line width=0.3cm,color=polytechorange] (\headlinexN+0.5cm,19cm)--(28cm,19cm);
+
+    % titre
+    \node[anchor=north west, color=polytechlightblue,align=justify,inner sep=0cm, outer sep=0cm, text width=28cm] (title) at (0cm,18.5cm) {%
+      \parskip0pt%
+      \csuse{polytech@font@poster@title}\csuse{polytech@title}
+      \ifcsdef{polytech@subtitle}{%
+        : \csuse{polytech@font@poster@subtitle}\csuse{polytech@subtitle}%
+      }{}%
+    };
+
+    % auteurs, superviseurs, entreprise
+    \ifcsdef{polytech@company@db@name}{%
+      \node[anchor=north west, color=polytechdarkblue,align=justify,inner sep=0cm, outer sep=0cm, text width=20cm, yshift=-0.3cm] (authors) at (title.south west) {%
+        \parskip0pt%
+        {\csuse{polytech@font@poster@authors}\csuse{polytech@output@students@simple}}\par\vspace{0.5em}%
+        {\csuse{polytech@font@poster@supervisors}\csuse{polytech@poster@encadrement@\csuse{polytech@lang}} : \csuse{polytech@output@academicsupervisors@simple}}%
+      };
+      \path (authors.south); \pgfgetlastxy{\authorsxS}{\authorsyS}
+      \path (authors.north); \pgfgetlastxy{\authorsxN}{\authorsyN}
+      \node[anchor=north east, color=polytechdarkblue,align=center,inner sep=0cm, outer sep=0cm, text width=7.5cm, yshift=-0.1cm] at (title.south east) {%
+        \parskip0pt%
+        \setlength{\polytechposterlogoheight}{\authorsyN-\authorsyS-2em+0.2cm}%
+        \ifcsdef{polytech@company@db@logo}{%
+          \fitimagetobox{7.5cm}{\polytechposterlogoheight}{\csuse{polytech@company@db@logo}}%
+          \par%
+        }{%
+          \vspace{0.5\polytechposterlogoheight}%
+          \par%
+        }%
+        {\csuse{polytech@font@poster@company}\csuse{polytech@poster@collab@\csuse{polytech@lang}}~\linebreak[0] \csuse{polytech@output@company@simple}}%
+      };
+    }{
+      \node[anchor=north west, color=polytechdarkblue,align=justify,inner sep=0cm, outer sep=0cm, text width=28cm, yshift=-0.3cm] (authors) at (title.south west) {%
+        \parskip0pt%
+        \csuse{polytech@font@poster@authors}\csuse{polytech@output@students@simple}\par\vspace{0.5em}%
+        \csuse{polytech@font@poster@supervisors}\csuse{polytech@poster@encadrement@\csuse{polytech@lang}} : \csuse{polytech@output@academicsupervisors@simple}%
+      };
+      \path (authors.south); \pgfgetlastxy{\authorsxS}{\authorsyS}
+      \path (authors.north); \pgfgetlastxy{\authorsxN}{\authorsyN}
+    }
+
+    % dernière ligne
+
+    \node[anchor=south west,color=polytechdarkblue,align=right,inner sep=0cm, outer sep=0cm,text width=21.5cm] (0cm,1cm) {%
+      \csuse{polytech@font@poster@school}\csuse{polytech@output@poster@school}%
+    };
+    \setlength{\polytechposterschooldepartmentshift}{\csuse{polytech@schooldepartment@postershift@\csuse{polytech@schooldepartment}@\csuse{polytech@lang}}}
+    \node[anchor=south east,color=black,inner sep=0cm, outer sep=0cm,align=center,text width=6cm,yshift=\polytechposterschooldepartmentshift] (logo) at (28cm,0cm) {%
+      \fitimagetowidth{6cm}{polytech/polytech}%
+    };
+    \path (logo.north); \pgfgetlastxy{\logoxN}{\logoyN}
+    \node[anchor=south east,color=polytechdarkblue,inner sep=0cm, outer sep=0cm,align=right,text width=6cm] at (28cm,0cm) {%
+      \csuse{polytech@font@poster@department}\csuse{polytech@schooldepartment@poster@\csuse{polytech@schooldepartment}@\csuse{polytech@lang}}%
+    };
+    \draw[line width=0.3cm,color=polytechorange] (0cm,\logoyN-0.15cm)--(21.5cm,\logoyN-0.15cm);
+    \node[anchor=north west, color=polytechdarkblue,align=left,inner sep=0cm, outer sep=0cm, text width=21.5cm] (footer) at (0cm,\logoyN) {};
+    \path (footer.north); \pgfgetlastxy{\footerxS}{\footeryS}
+
+    % add 0.5cm after head, 0.5cm before footer and 0.5cm between the 3 blocks : divide all height in 6 parts
+    \setlength{\polytechpostervertspace}{((\footeryS+0.2cm)-(\authorsyS-0.3cm)+0.3cm)/4}
+    % position of the first block center
+    \setlength{\polytechpostervertanchor}{\authorsyS-0.3cm}
+    % one block need to advance position by 2 parts
+    \addtolength{\polytechpostervertspace}{\polytechpostervertspace}
+
+    \setlength{\polytechposterhorizspace}{(28cm-0.5cm-0.5cm)/3}
+    \setlength{\polytechposterhorizanchor}{0cm}
+    \setlength{\polytechmaxblockheight}{-\polytechpostervertspace+\polytechblockheightallowedoverflow}
+
+    %\draw[fill=green] (-0.1cm,\authorsyS-1cm) -- (20cm,\authorsyS-1cm) -- (20cm,\footeryS+1cm) -- (-0.1cm,\footeryS+1cm);
+
+    \let\polytech@oldtextbf\textbf
+    \renewcommand{\textbf}[1]{{\csuse{polytech@font@poster@block@bf}##1}}
+    \csuse{polytech@output@poster@blockshoriz}
+    \let\textbf\polytech@oldtextbf
+  
+  \end{tikzpicture}%
+}
+
+
+
+\csdef{polytech@output@poster}{%
+  \cleardoublepage
+  % add to PDF bookmark
+  \bookmarksetupnext{level=part}%
+  \phantomsection%
+  \pdfbookmark[0]{Poster 1}{poster1}%
+  % resize paper
+  \newgeometry{margin=0cm}%
+  \thispagestyle{empty}%
+  \csuse{polytech@output@postervert@aiv}%
+  \cleardoublepage%  
+  % add to PDF bookmark
+  \bookmarksetupnext{level=part}%
+  \phantomsection%
+  \pdfbookmark[0]{Poster 2}{poster2}%
+  \thispagestyle{empty}%
+  \begin{landscape}
+  \csuse{polytech@output@posterhoriz@aiv}%    
+  \end{landscape}
+  \cleardoublepage%
+  \restoregeometry%
+}
+
+
+%###

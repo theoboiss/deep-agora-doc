@@ -1,0 +1,220 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{polytech/floats}[\polytechfiledate\space\polytechfileversion\space Polytech document class sub package]
+
+%###
+
+% set caption below
+\floatstyle{plain}
+\restylefloat{figure}
+
+% set caption above
+\floatstyle{plaintop}
+\restylefloat{table}
+
+% définit le format des légendes
+\DeclareCaptionLabelFormat{polytech}{#1~#2}
+
+% general caption setup
+\captionsetup{%
+  labelformat=polytech,
+  format=hang,
+  labelfont=bf,
+  font=small,
+  justification=centering,
+  font={small},
+  textfont=it,
+  labelfont={bf},
+  margin=1cm,
+  figurename=Figure,
+  tablename=Table,
+  skip=5pt plus 1pt minus 1pt,
+  singlelinecheck=false,
+  figurewithin=chapter,
+  tablewithin=chapter,
+  subrefformat=subsimple
+}
+
+% we remove the margin in subfloat
+\captionsetup[subfloat]{%
+  margin=0cm,
+  labelformat=parens,
+  subrefformat=subsimple
+}
+
+% we add parenthesis for subfigure number
+%\renewcommand\thesubfigure{(\alph{subfigure}):}
+
+\renewcommand\thefigure{\arabic{figure}}
+\renewcommand\thetable{\arabic{table}}
+
+% save current definition
+\let\polytech@oldfigure\figure
+\let\polytech@endoldfigure\endfigure
+\let\polytech@oldtable\table
+\let\polytech@endoldtable\endtable
+\let\polytech@oldsubfloat\subfloat
+
+\let\polytech@oldalgorithm\algorithm
+\let\polytech@oldendalgorithm\endalgorithm
+
+% we override subfloat to disable label storage
+\RenewDocumentCommand{\subfloat}{oom}{%
+  \global\boolfalse{polytech@ref@savelabel}% disable save label
+  \IfValueTF{#1}{%
+    \IfValueTF{#2}{%
+      \polytech@oldsubfloat[#1][#2]{#3}%
+    }{%
+      \polytech@oldsubfloat[#1]{#3}%
+    }%
+  }{%
+    \polytech@oldsubfloat{#3}%
+  }%
+  \global\booltrue{polytech@ref@savelabel}% enable save label
+}
+
+% we redefine the figure environment
+\RenewDocumentEnvironment{figure}{o}{%
+  % #1 if ignored since we impose it
+  \polytech@oldfigure[H]%
+  % prepare caption saving
+  \global\csletcs{polytech@oldcaption}{caption}%
+  \csundef{polytech@figure@caption}%
+  \csundef{polytech@figure@captionalt}%
+  \RenewDocumentCommand{\caption}{om}{%
+    \IfValueTF{##1}{% we save the short caption
+      \csdef{polytech@figure@captionalt}{##1}%
+    }{}%
+    \csdef{polytech@figure@caption}{##2}%
+  }%
+  % we need the label later
+  \global\booltrue{polytech@ref@savelabel}%
+  \csundef{polytech@ref@savedlabel}{}%
+  % we center things
+  \centering%
+}{%
+  % we restore caption
+  \csletcs{caption}{polytech@oldcaption}%
+  % we set the caption
+  \ifcsdef{polytech@figure@captionalt}{%
+    \caption[\csuse{polytech@figure@captionalt}]{\csuse{polytech@figure@caption}}%
+  }{%
+    \ifcsdef{polytech@figure@caption}{%
+      \caption{\csuse{polytech@figure@caption}}%
+    }{%
+      \polytechwarning{Missing caption on figure}%
+    }%
+  }%
+  \ifcsdef{polytech@ref@savedlabel}{%
+    \label{\csuse{polytech@ref@savedlabel}}%
+  }{%
+    \polytechwarning{Missing label on figure}%
+  }%
+  % restore normal \label behavior 
+  \global\boolfalse{polytech@ref@savelabel}%
+  \polytech@endoldfigure%
+}
+
+
+% we redefine the figure environment
+\RenewDocumentEnvironment{table}{o}{%
+  % #1 if ignored since we impose it
+  \polytech@oldtable[H]%
+  % prepare caption saving
+  \global\csletcs{polytech@oldcaption}{caption}%
+  \csundef{polytech@figure@caption}%
+  \csundef{polytech@figure@captionalt}%
+  \RenewDocumentCommand{\caption}{om}{%
+    \IfValueTF{##1}{% we save the short caption
+      \csdef{polytech@figure@captionalt}{##1}%
+    }{}%
+    \csdef{polytech@figure@caption}{##2}%
+  }%
+  % we need the label later
+  \global\booltrue{polytech@ref@savelabel}%
+  \csundef{polytech@ref@savedlabel}{}%
+  % we center things
+  \centering%
+}{%
+  % we restore caption
+  \csletcs{caption}{polytech@oldcaption}%
+  % we set the caption
+  \ifcsdef{polytech@figure@captionalt}{%
+    \caption[\csuse{polytech@figure@captionalt}]{\csuse{polytech@figure@caption}}%
+  }{%
+    \ifcsdef{polytech@figure@caption}{%
+      \caption{\csuse{polytech@figure@caption}}%
+    }{%
+      \polytechwarning{Missing caption on table}%
+    }%
+  }%
+  \ifcsdef{polytech@ref@savedlabel}{%
+    \label{\csuse{polytech@ref@savedlabel}}%
+  }{%
+    \polytechwarning{Missing label on table}%
+  }%
+  % restore normal \label behavior 
+  \global\boolfalse{polytech@ref@savelabel}%
+  \polytech@endoldtable%
+}
+
+\ifcsdef{algorithm}{
+  % we redefine the figure environment
+  \RenewDocumentEnvironment{algorithm}{o}{%
+    \polytech@oldalgorithm[H]%
+    % prepare caption saving
+    \global\csletcs{polytech@oldcaption}{caption}%
+    \csundef{polytech@figure@caption}%
+    \csundef{polytech@figure@captionalt}%
+    \RenewDocumentCommand{\caption}{om}{%
+      \IfValueTF{##1}{% we save the short caption
+        \csdef{polytech@figure@captionalt}{##1}%
+      }{}%
+      \csdef{polytech@figure@caption}{##2}%
+    }%
+    % we need the label later
+    \global\booltrue{polytech@ref@savelabel}%
+    \csundef{polytech@ref@savedlabel}{}%
+  }{
+     % we restore caption
+    \csletcs{caption}{polytech@oldcaption}%
+    % we set the caption
+    \ifcsdef{polytech@figure@captionalt}{%
+      \caption[\csuse{polytech@figure@captionalt}]{\csuse{polytech@figure@caption}}%
+    }{%
+      \ifcsdef{polytech@figure@caption}{%
+        \caption{\csuse{polytech@figure@caption}}%
+      }{%
+        \polytechwarning{Missing caption on algorithm}%
+      }%
+    }%
+    \ifcsdef{polytech@ref@savedlabel}{%
+      \label{\csuse{polytech@ref@savedlabel}}%
+    }{%
+      \polytechwarning{Missing label on algorithm}%
+    }%
+    % restore normal \label behavior 
+    \global\boolfalse{polytech@ref@savelabel}%
+    \polytech@oldendalgorithm%
+  }
+}{}
+
+\renewcommand\floatpagefraction{.9}
+\renewcommand\topfraction{.9}
+\renewcommand\bottomfraction{.9}
+\renewcommand\textfraction{.1}
+\setcounter{totalnumber}{50}
+\setcounter{topnumber}{50}
+\setcounter{bottomnumber}{50}
+
+ \patchcmd{\sf@@sub@label}
+  {\sf@oldlabel{#1}}
+  {%
+    \sf@oldlabel{#1}%
+    \zref@setcurrent{issubfloat}{1}%
+    \polytech@zlabel{sub@#1}%    
+  }
+  {}
+  {
+    \polytechfatalerror{Can not patch \string\sf@@sub@label.}
+  }
+

@@ -1,0 +1,158 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{polytech/headings}[\polytechfiledate\space\polytechfileversion\space Polytech document class sub package]
+
+% header/footer
+\csdef{polytech@header@font}{\bfseries\scshape\large}
+\csdef{polytech@footer@font}{\bfseries\scshape\large}
+
+\ifbool{polytech@blackandwhite}{
+	\colorlet{polytech@headings@head@fg}{white}
+	\colorlet{polytech@headings@head@bg}{black!50}
+	\colorlet{polytech@headings@foot@fg}{white}
+	\colorlet{polytech@headings@foot@bg}{black!50}
+}{
+	\colorlet{polytech@headings@head@fg}{white}
+	\colorlet{polytech@headings@head@bg}{polytechdarkblue}
+	\colorlet{polytech@headings@foot@fg}{white}
+	\colorlet{polytech@headings@foot@bg}{polytechdarkblue}
+}
+
+\newcommand{\polytech@fancyheadodd}[1]{%
+  \begin{tikzpicture}
+    \node[
+      color=polytech@headings@head@bg,
+      fill=polytech@headings@head@bg,
+      overlay,
+      text width=\textwidth + 5cm,
+      inner sep=0.2cm,
+      inner ysep=0.3cm,
+      yshift=0.35cm,
+      ] (0,0) {\vspace{1em}} ;
+    \node[
+      text width=\textwidth,
+      inner sep=0cm,
+      inner ysep=0cm,
+      xshift=0cm,
+      color=polytech@headings@head@fg,
+      anchor=center,
+      align=right,
+      overlay,
+      yshift=0.35cm,
+     ] (0,0) {\polytech@header@font#1};
+ \end{tikzpicture}%
+}
+
+\newcommand{\polytech@fancyheadeven}[1]{%
+  \begin{tikzpicture}
+    \node[
+				color=polytech@headings@head@bg,
+				fill=polytech@headings@head@bg,
+				overlay,
+				text width=\textwidth + 5cm,
+				inner sep=0.2cm,
+				inner ysep=0.3cm,
+				yshift=0.35cm,
+			] (0,0) {\vspace{1em}} ;
+    \node[
+	      text width=\textwidth,
+	      inner sep=0cm,
+	      inner ysep=0cm,
+	      xshift=0cm,
+	      color=polytech@headings@head@fg,
+	      anchor=center,
+	      align=left,
+	      overlay,
+	      yshift=0.35cm,
+ 		] (0,0) {\polytech@header@font#1};
+ \end{tikzpicture}%
+}
+
+\newcommand{\polytech@fancyfootodd}{%
+  \begin{tikzpicture}
+    \node[
+      text width=\textwidth,
+      inner sep=0cm
+    ] (mark) {};
+  	\node[
+      color=polytech@headings@foot@fg,
+      fill=polytech@headings@foot@bg,
+      overlay,
+      anchor=west,
+      inner sep=0.2cm,
+      inner ysep=0.3cm,
+      xshift=0.5cm,
+      text width=5cm
+    ] at (mark.east) {\polytech@footer@font\thepage{}} ;
+ \end{tikzpicture}%
+}
+
+\newcommand{\polytech@fancyfooteven}{%
+	\begin{tikzpicture}
+    \node[
+      text width=\textwidth,
+      inner sep=0cm
+    ] (mark) {};
+
+    \node[
+      color=polytech@headings@foot@fg,
+      fill=polytech@headings@foot@bg,
+      overlay,
+      anchor=east,
+      inner sep=0.2cm,
+      inner ysep=0.3cm,
+      xshift=-0.5cm,
+      text width=5cm,
+      align=right
+    ] at (mark.west) {\polytech@footer@font\thepage{}} ;
+ 	\end{tikzpicture}%
+}
+
+\pagestyle{empty}
+
+%% common settings
+%\fancyhf{} % clear all header and footer fields
+
+\fancypagestyle{polytech}{
+  \fancyhf{} % clear all header and footer fields
+  \ifbool{polytech@twoside}{
+  	\fancyhead[CO]{\polytech@fancyheadodd{\leftmark}}
+  	\fancyhead[CE]{\polytech@fancyheadeven{\leftmark}}
+  	\fancyfoot[CO]{\polytech@fancyfootodd}
+  	\fancyfoot[CE]{\polytech@fancyfooteven}
+  }{
+  	\fancyhead[CO]{\polytech@fancyheadodd{\leftmark}}
+  	\fancyhead[CE]{\polytech@fancyheadodd{\leftmark}}
+  	\fancyfoot[CO]{\polytech@fancyfootodd}
+  	\fancyfoot[CE]{\polytech@fancyfootodd}
+  }
+}
+
+
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\fancypagestyle{plain}{
+  \fancyhf{} % clear all header and footer fields
+  \fancyhead[H]{}
+  \ifbool{polytech@twoside}{
+		\fancyfoot[CO]{\polytech@fancyfootodd}
+		\fancyfoot[CE]{\polytech@fancyfooteven}
+	}{
+		\fancyfoot[CO]{\polytech@fancyfootodd}
+		\fancyfoot[CE]{\polytech@fancyfootodd}
+	}
+}
+
+\fancypagestyle{empty}{
+  \fancyhf{} % clear all header and footer fields
+  \fancyhead[H]{}
+  \fancyfoot[F]{}
+}
+
+
+% disable uppercase heading set by fancyhdr
+\appto{\ps@fancy}{\def\MakeUppercase{}}
+
+
+
+

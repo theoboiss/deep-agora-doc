@@ -1,0 +1,319 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{polytech/couchoud}[\polytechfiledate\space\polytechfileversion\space Polytech document class sub package]
+
+\RequirePackage[at]{easylist}
+%\AtBeginEnvironment{easylist}
+%        {\ListProperties(Progressive*=3ex, Start1=1)}
+%        {}
+%        {}
+\RequirePackage{ifthen}
+\RequirePackage{lmodern}
+\RequirePackage{textcomp}
+
+\RequirePackage{float}
+\RequirePackage{ltablex}
+\RequirePackage{graphicx}
+\RequirePackage[justification=centering]{caption}
+
+\RequirePackage{tabularx}
+\newcolumntype{Y}{>{\centering\arraybackslash}X}
+
+\RequirePackage{dirtree}
+
+\RequirePackage{xargs}
+\RequirePackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
+\newcommandx{\todoo}[2][1=]{%
+	\todo[linecolor=red,backgroundcolor=red!25,bordercolor=red,#1]{#2}%
+	%\PackageError{MCC}{TODO}{#2}%
+}
+\newcommandx{\todooi}[2][1=]{%
+	\todo[linecolor=red,backgroundcolor=red!25,bordercolor=red,inline,inlinewidth=0.9\textwidth,#1]{#2}%
+	%\PackageError{MCC}{TODO}{#2}%
+}
+
+\newcommand{\img}[4][]{%
+	\begingroup
+	\catcode`\_=12\relax
+	\ifbool{polytech@noimg}{}{
+		\begin{center}
+			\centering%
+			\captionsetup{type=figure}%
+			\IfFileExists{./pic/#2}{%
+				\ifthenelse{\equal{#4}{}}{
+					\includegraphics[width=\textwidth,keepaspectratio]{./pic/#2}%
+				}{
+					\includegraphics[#4]{./pic/#2}%
+				}
+			}{%
+				\missingfigure{./pic/#2 - #3}
+				%\PackageError{MCC}{TODO}{Image #2}%
+			}%
+			\captionof{figure}{#3}%
+			\ifthenelse{\equal{#1}{}}{
+			}{
+				\label{fig:#1}%
+			}
+		\end{center}
+	}
+	\endgroup
+}
+
+\newcommand{\imgl}[5][]{%
+	\begingroup
+	\catcode`\_=12\relax
+	\ifbool{polytech@noimg}{}{
+		\begin{center}
+			\centering%
+			\captionsetup{type=figure}%
+			\IfFileExists{./pic/#2}{%
+				\ifthenelse{\equal{#5}{}}{
+					\includegraphics[width=\textwidth,keepaspectratio]{./Images/#2}%
+				}{
+					\includegraphics[#5]{./Images/#2}%
+				}
+			}{%
+				\missingfigure{./Images/#2 - #3}
+				%\PackageError{MCC}{TODO}{Image #2}%
+			}%
+			\captionof{figure}[#4]{#3}%
+			\ifthenelse{\equal{#1}{}}{
+			}{
+				\label{fig:#1}%
+			}
+		\end{center}
+	}
+	\endgroup
+}
+
+\newcommand{\codec}[1]{\texttt{#1}}
+\newcommand{\graph}[2][]{
+	\begin{figure}[H]%
+		\centering%
+		\IfFileExists{./Graphs/#2.tex}{%
+			\input{./Graphs/#2.tex}%
+		}{%
+			\missingfigure{Graph #2 - #1}
+			%\PackageError{MCC}{TODO}{Graph #2}%
+		}%
+		\captionof{figure}{#1}%
+		\label{gr:#2}%
+	\end{figure}%
+}
+
+\RequirePackage{algorithm}
+%\RequirePackage{algorithmicx}
+\RequirePackage{algpseudocode}
+\RequirePackage{mathtools}
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}%
+\DeclarePairedDelimiter\norm{\lVert}{\rVert}%
+\makeatletter
+	\let\oldabs\abs
+	\def\abs{\@ifstar{\oldabs}{\oldabs*}}
+	\let\oldnorm\norm
+	\def\norm{\@ifstar{\oldnorm}{\oldnorm*}}
+\makeatother
+
+\newcommand{\tend}[1]{\underset{#1}{\longrightarrow}}
+\newcommand{\prive}[1]{\setminus\left\lbrace #1\right\rbrace}
+\newcommand{\parmi}[2]{\binom{#2}{#1}}
+\newcommand{\ssi}{si et seulement si~}
+\newcommand{\va}{variable aléatoire~}
+\newcommand{\vas}{variables aléatoires~}
+\newcommand{\qfc}{quasi-fortement connexe~}
+\newcommand{\smallo}[1]{\overline{o}\left(#1\right)}
+\newcommand{\bigo}[1]{\underline{O}\left(#1\right)}
+\newcommand{\cqfd}{\begin{flushright}\textit{Quod erat demonstrandum}~\qedsymbol\end{flushright}}
+\newcommand{\tq}{\text{ tq }}
+\newcommand{\rr}{\mathbb{R}}
+\newcommand{\kk}{\mathbb{K}}
+\newcommand{\cc}{\mathbb{C}}
+\newcommand{\nn}{\mathbb{N}}
+\newcommand{\zz}{\mathbb{Z}}
+\newcommand{\erange}[2]{\llbracket #1 ; #2 \rrbracket}
+\newcommand{\e}[1]{e^{#1}}
+\newcommand{\rg}[1]{\text{rg}\left(#1\right)}
+\newcommand{\dl}[2]{DL_{#1}(#2)}
+\newcommand{\PP}[1]{P\left( #1 \right)}
+\newcommand{\PS}[2]{P_{#1}\left( #2 \right)}
+\newcommand{\BR}[2]{%
+	\par\smallskip%
+   	\noindent\makebox[\textwidth][l]{$\left.
+    	\begin{minipage}{\textwidth}
+    	#1
+    	\end{minipage}
+  		\right\}\text{#2}\nulldelimiterspace=0pt$
+  	}\par\smallskip
+}
+\newcommand{\set}[1]{\left\{#1\right\}}
+\newcommand{\cpl}[2]{\left(#1,#2\right)}
+
+\floatplacement{figure}{H}
+\floatplacement{table}{H}
+
+\everymath{\displaystyle}
+
+\def\backtick{\char18}
+\definecolor{mcc@delim}{RGB}{20,105,176}
+\colorlet{mcc@punct}{red!60!black}
+\colorlet{mcc@numb}{magenta!60!black}
+\colorlet{mcc@key}{polytechdarkblue}
+\definecolor{mcc@com}{RGB}{0,0.5,0}
+\colorlet{mcc@str}{red}
+\colorlet{mcc@var}{polytechlightblue}
+
+\lstdefinelanguage{text}{
+}
+\lstdefinelanguage{json}{
+	morestring=[b]",
+	literate=%
+	{:}{{{\color{mcc@punct}{:}}}}{1}
+	{,}{{{\color{mcc@punct}{,}}}}{1}
+	{\{}{{{\color{mcc@delim}{\{}}}}{1}
+	{\}}{{{\color{mcc@delim}{\}}}}}{1}
+	{[}{{{\color{mcc@delim}{[}}}}{1}
+	{]}{{{\color{mcc@delim}{]}}}}{1},
+	literate=%
+	*{0}{{{\color{mcc@numb}0}}}{1}
+	{1}{{{\color{mcc@numb}1}}}{1}
+	{2}{{{\color{mcc@numb}2}}}{1}
+	{3}{{{\color{mcc@numb}3}}}{1}
+	{4}{{{\color{mcc@numb}4}}}{1}
+	{5}{{{\color{mcc@numb}5}}}{1}
+	{6}{{{\color{mcc@numb}6}}}{1}
+	{7}{{{\color{mcc@numb}7}}}{1}
+	{8}{{{\color{mcc@numb}8}}}{1}
+	{9}{{{\color{mcc@numb}9}}}{1}
+}
+\lstdefinelanguage{csv}{
+	literate=%
+	{;}{{{\color{mcc@punct}{;}}}}{1}
+	{,}{{{\color{mcc@punct}{,}}}}{1}
+}
+\lstdefinelanguage{yaml}{
+	keywords={true,false,null,y,n},
+	sensitive=false,
+	comment=[l]{\#},
+	morecomment=[s]{/*}{*/},
+	moredelim=[l][\color{mcc@punct}]{\&},
+	moredelim=[l][\color{mcc@punct}]{*},
+	moredelim=**[il][\color{mcc@punct}{:}]{:},
+	morestring=[b]',
+	morestring=[b]",
+	literate =%
+	{---}{{\ProcessThreeDashes}}3
+	{>}{{\color{mcc@delim}\textgreater}}1     
+	{|}{{\color{mcc@delim}\textbar}}1 
+	{\ -\ }{{\mdseries\ -\ }}3
+}
+\lstdefinelanguage{js}{
+	keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break},
+	keywordstyle=\color{mcc@key}\bfseries,
+	ndkeywords={class, export, boolean, throw, implements, import, this},
+	ndkeywordstyle=\color{magenta}\bfseries,
+	identifierstyle=\color{mcc@var},
+	sensitive=false,
+	comment=[l]{//},
+	morecomment=[s]{/*}{*/},
+	commentstyle=\color{mcc@comment}\ttfamily,
+	stringstyle=\color{mcc@str}\ttfamily,
+	literate={`}{\backtick}1,
+	morestring=[b]',
+	morestring=[b]\backtick',
+	morestring=[b]"
+}
+\lstdefinelanguage{xml}{
+	morestring=[b]",
+	moredelim=[s][\color{mcc@delim}]{<}{\ },
+	moredelim=[s][\color{mcc@delim}]{</}{>},
+	moredelim=[l][\color{mcc@delim}]{/>},
+	moredelim=[l][\color{mcc@delim}]{>},
+	morecomment=[s]{<?}{?>},
+	morecomment=[s]{<!--}{-->},
+	commentstyle=\color{mcc@com},
+	stringstyle=\color{mcc@str},
+	identifierstyle=\color{mcc@var}
+}
+\lstdefinelanguage{docker}{
+	keywords={FROM, RUN, COPY, ADD, ENTRYPOINT, CMD,  ENV, ARG, WORKDIR, EXPOSE, LABEL, USER, VOLUME, STOPSIGNAL, ONBUILD, MAINTAINER},
+	keywordstyle=\color{mcc@key}\bfseries,
+	identifierstyle=\color{mcc@var},
+	sensitive=false,
+	comment=[l]{\#},
+	commentstyle=\color{mcc@com}\ttfamily,
+	stringstyle=\color{mcc@str}\ttfamily,
+	morestring=[b]',
+	morestring=[b]"
+}
+
+\newsourceformat{text}{Text}
+\newsourceformat{json}{JSON}
+\newsourceformat{csv}{CSV}
+\newsourceformat{yaml}{YAML}
+\newsourceformat{js}{JavaScript}
+\newsourceformat{xml}{XML}
+\newsourceformat{docker}{Docker}
+
+\def\checkmark{\tikz\fill[scale=0.4](0,.35) -- (.25,0) -- (1,.7) -- (.25,.15) -- cycle;} 
+\raggedbottom
+
+\RequirePackage{mdframed}
+\newenvironment{important}[1][]{%
+   \begin{mdframed}[%
+      backgroundcolor={red!15},
+      hidealllines=true,
+      skipabove=0.7\baselineskip,
+      skipbelow=0.7\baselineskip,
+      splitbottomskip=2pt,
+      splittopskip=4pt,
+      #1
+   ]%
+   \makebox[0pt]{% ignore the width of !
+      \smash{% ignore the height of !
+         \fontsize{32pt}{32pt}\selectfont% make the ! bigger
+         \hspace*{-19pt}% move ! to the left
+         \raisebox{-2pt}{% move ! up a little
+            {\color{red!70!black}\sffamily\bfseries !}% type the bold red !
+         }%
+      }%
+   }%
+}{\end{mdframed}}
+\newenvironment{warn}[1][]{%
+   \begin{mdframed}[%
+      backgroundcolor={orange!15},
+      hidealllines=true,
+      skipabove=0.7\baselineskip,
+      skipbelow=0.7\baselineskip,
+      splitbottomskip=2pt,
+      splittopskip=4pt,
+      #1
+   ]%
+   \makebox[0pt]{%
+      \smash{%
+         \fontsize{32pt}{32pt}\selectfont%
+         \hspace*{-19pt}%
+         \raisebox{-2pt}{%
+            {\color{orange!70!black}\sffamily\bfseries *}%
+         }%
+      }%
+   }%
+}{\end{mdframed}}
+\newenvironment{info}[1][]{%
+   \begin{mdframed}[%
+      backgroundcolor={blue!15},
+      hidealllines=true,
+      skipabove=0.7\baselineskip,
+      skipbelow=0.7\baselineskip,
+      splitbottomskip=2pt,
+      splittopskip=4pt,
+      #1
+   ]%
+   \makebox[0pt]{%
+      \smash{%
+         \fontsize{32pt}{32pt}\selectfont% 
+         \hspace*{-19pt}%
+         \raisebox{-2pt}{%
+            {\color{orange!70!black}\sffamily\bfseries i}%
+         }%
+      }%
+   }%
+}{\end{mdframed}}

@@ -1,0 +1,45 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{polytech/weeklyreports}[\polytechfiledate\space\polytechfileversion\space Polytech document class sub package]
+
+% the weekly report counter
+\newcounter{polytech@weeklyreport@counter}
+
+% Define a weekly report 
+% Usage : \weeklyreport{date}{text}
+% Param date : the date of the weekly report
+% Param text : the text of the report
+\newcommand{\weeklyreport}[2]{%
+  \ifbool{polytech@hideweeklyreports}{}{
+    \csappto{polytech@output@weeklyreports}{
+      \begingroup
+        \setlength{\FrameSep}{0.1cm}
+        \begin{oframed}
+        \setlength{\linewidth}{\textwidth-40pt}
+        \refstepcounter{polytech@weeklyreport@counter}%
+        \textbf{%
+          \csuse{polytech@weeklyreports@reporttitle@\csuse{polytech@lang}}{\thepolytech@weeklyreport@counter}{#1}%
+          \nopagebreak[4]
+        }%
+        \nopagebreak[4]
+        \par\nopagebreak[4]
+        \hrule\nopagebreak[4]
+        \widowpenalty=10000 % change linebreaking penalty to reduce isolated body lines
+        \clubpenalty=10000
+        #2
+        \end{oframed}
+      \endgroup
+    }
+  }
+}
+
+% output the weekly report chapter
+\csdef{polytech@output@weeklyreportspart}{
+  \ifbool{polytech@hideweeklyreports}{}{
+    \ifcsdef{polytech@output@weeklyreports}{
+      \chapter{\csuse{polytech@weeklyreports@title@\csuse{polytech@lang}}}
+      \csuse{polytech@output@weeklyreports}
+    }{}
+  }
+}
+  
+
