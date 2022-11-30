@@ -46,7 +46,8 @@
 
 % Prepare document in english
 \newbool{polytech@english}
-\csdef{polytech@lang}{fr}
+\booltrue{polytech@english}
+\csdef{polytech@lang}{en}
 \DeclareOption{english}{
 	\setbool{polytech@english}{true}
 	\csgdef{polytech@lang}{en}
