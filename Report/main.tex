@@ -58,36 +58,24 @@
 
 
 \resume{%
-Voici le résumé de ce PRD.
-Voici le résumé de ce PRD.
-Voici le résumé de ce PRD.
-Voici le résumé de ce PRD.
-Voici le résumé de ce PRD.
-Voici le résumé de ce PRD.
-Voici le résumé de ce PRD.
-Voici le résumé de ce PRD.
-Voici le résumé de ce PRD.
+La collaboration avec le CESR a donné naissance au logiciel Agora (issu du projet PaRADIIT) qui réalise simultanément l'analyse de la mise en page, la séparation texte/graphique et l'extraction de motifs.
+L'objectif de ce projet est de faire une refonte complète d'Agora en utilisant une nouvelle approche orientée vers l'apprentissage profond.
 }
-
-\motcle{motcle1}
-\motcle{motcle2}
-\motcle{etc.}
+\motcle{document}
+\motcle{ancien}
+\motcle{segmentation}
+\motcle{sémantique}
 
              
 \abstract{
-Here is the abstract of this project.
-Here is the abstract of this project.
-Here is the abstract of this project.
-Here is the abstract of this project.
-Here is the abstract of this project.
-Here is the abstract of this project.
-Here is the abstract of this project.
-Here is the abstract of this project.
-Here is the abstract of this project.
+The collaboration with the CESR resulted in the Agora software (from PaRADIIT Project) which simultaneously performs page layout analysis, text/graphics separation and pattern extraction.
+The objective of this project is to do a complete overhaul of Agora using a new approach oriented towards deep learning.
 }
-\keyword{word1}
-\keyword{word2}
-\keyword{etc.}
+\keyword{historical}
+\keyword{document}
+\keyword{semantic}
+\keyword{segmentation}
+\keyword{alto}
 
 %
 % Le poster. Il faut exactement 3 blocs.
@@ -149,9 +137,9 @@ Voici du texte.
 \chapter{Introduction}
 \section{Actors, issues and context}
 
-The \gls{rdp} is the final work that the student engineer must complete to obtain his diploma.
+The \gls{rdp} is the final work that a student engineer must complete to obtain his diploma.
 It places the future engineer in a project situation by making him/her produce personal work and invites him/her to show initiative and maturity regarding a specific high-level problem.
-The R\&D project, which lasts at least two days a week throughout the fifth year, i.e. 26 weeks, is the subject, each semester, of a dissertation and an oral presentation to a jury.
+The R\&D project is the subject of a dissertation and an oral presentation to a jury each semester, which lasts at least two days a week throughout the fifth year, i.e. 26 weeks.
 
 This report aims to provide both the main document that everyone can read and all the technical and methodological elements.
 It consists mainly of complete sections of the different documents produced, with the technical sections in the appendix.
@@ -159,19 +147,22 @@ It consists mainly of complete sections of the different documents produced, wit
 The actors of this project are:
 \begin{itemize}
 \item the client, which here are \gls{cesr}, for which a contact is Rémi Jimenes, lecturer and researcher.
-\item the \gls{moa}, who is Jean-Yves Ramel, professor of computer science, director of \gls{lifat} and academic tutor for this project. He is responsible for representing the client by ensuring that the deadlines are met and that the product conforms.
-\item the \gls{moe}, who is me, Théo Boisseau, an engineering student in his final year of study. I decide on the technical means used to design the product by what was defined by the product owner.
+\item the \gls{moa}, who is Jean-Yves Ramel, professor of computer science, director of \gls{lifat} and academic tutor for this project.
+He is responsible for representing the client by ensuring that the deadlines are met and that the product conforms.
+\item the \gls{moe}, Théo Boisseau (that is me), an engineering student in his final year of study.
+I decide on the technical means used to design the product by what was defined by the product owner.
 \end{itemize}
 
-To convert historical books into accessible digital libraries, LIFAT is developing image processing software that participates in a complete processing chain, including layout analysis, text/illustration separation (i.e. segmentation of content elements), optical character recognition (i.e. OCR) and text transcription.
-This project focuses on layout analysis and segmentation of content elements of historical documents.
-
-The client expressed the need for easy-to-use interactive software so that its users, historians, could create their own scenarios for extracting \gls{eocs} from images of historical documents. These historical documents are mainly Renaissance corpora, accessible from the CESR database, and contain mainly printed or manuscript text, illustrations and page ornaments.
+The client expressed the need for easy-to-use interactive software so that its users, historians, could create their own scenarios for extracting \gls{eocs} from images of historical documents.
+These historical documents are mainly Renaissance corpora, accessible from the CESR database, and contain mainly printed or manuscript text, illustrations and page ornaments.
 
 The simplicity of creating extraction scenarios, their reuse and their adaptation to different documents are essential dimensions of the requirement.
 
 However, this simplicity should not unduly compromise the reliability and performance of the software.
 Image processing of historical documents is a particularly difficult task notably because of broken characters, stains, and poor paper quality.
+
+To convert historical books into accessible digital libraries, LIFAT is developing image processing software that participates in a complete processing chain, including layout analysis, text/illustration separation (i.e. segmentation of elements of content), optical character recognition (i.e. OCR) and text transcription.
+This project focuses on layout analysis and segmentation of elements of content of historical documents.
 
 In recent years, the performance of some deep learning techniques has surpassed that of shallow methods established by experts on various image processing tasks.
 As this progress has made many computer vision tools available, it now seems possible to meet this need with a completely new approach.
@@ -183,53 +174,98 @@ This project aims to propose a new approach based on deep learning neural networ
 
 To this end, the Deep-Agora R\&D project aims to build a prototype of an optimisation software capable of extracting textual and decorative elements of content from images of historical documents.
 
-The user should not be responsible for training the models. Therefore, several deep learning models can be created and trained to extract the content elements required in the different use cases of the software.
+The user should not be responsible for training the models.
+Therefore, several deep learning models can be created and trained to extract the elements of content required in the different use cases of the software.
 
-Due to its nature as a prototype, the system will need to be composed of computational documents combining scripts and good documentation. It must also provide access to training datasets and parameter storage files to reproduce the deep learning models created.
+Due to its nature as a prototype, the system needs to be composed of computational documents combining scripts and good documentation.
+It must also provide access to training datasets and parameter storage files to reproduce the deep learning models created.
 
 If the objective is achieved, the project can be continued and a scenario creation subsystem can be implemented to deploy the models created within it.
 
 
 \section{Hypotheses}
 
-Blablabla.
+For this project, we suppose there are no different typefaces in a single line of text.
+However, there may be, so it will only be taken into account in future versions of this project.
+
+The end users will only look for these elements of content:
+\begin{itemize}
+\item Blocks of texts
+\item Printed and handwritten text-lines
+\item Handwritten annotation
+\item Initial capitals
+\item Banners
+\item Figures with (or without) their caption
+\item Decorations
+\end{itemize}
+
+And will not look for more modern or scientific ornaments, such as:
+\begin{itemize}
+\item photographs
+\item tables
+\item graphics
+\item formulas
+\end{itemize}
+Either way, new data sets should be used to train new neural network models.
+
+Ideally, there should be a model for each element of content.
+Otherwise, models can extract groups of elements of content, as few as possible.
+
+Agora will continue to evolve over the years and new needs may arise.
+Thus, documentation should be very good to ensure a successful takeover of the project.
+
+A long period of time will be devoted to understanding the tools for deep learning, working on the data and training models.
+If it wastes time on the project, the issue should be referred to the product owner.
+
 
 \section{Methodological bases}
 
-An Agile project management method will be used to create learning loops to quickly gather and integrate feedback. Therefore, the Scrum method should be preferred in which ideology is to:
+An Agile project management method is used to create learning loops to quickly gather and integrate feedback.
+Therefore, the Scrum method should be preferred in which ideology is to:
 \begin{itemize}
 \item learn from experience
 \item to self-organise and prioritise
 \item to reflect on gains and losses to continuously improve
 \end{itemize}
 
-Therefore, contact with the product owner should be maintained as much as possible, as it will help me to improve and learn considerably as the project progresses.
+Contact with the product owner should be maintained as much as possible, as it helps to improve and learn considerably as the project progresses.
 
-To this end, we set sprints with a fixed duration of 2 weeks.
+To this end, we set sprints with a fixed duration of 2 weeks, which means there are 5 sprints.
 At least one deliverable, containing an e-mail, should be sent to the product owner at least every two weeks and preferably once a week.
 During the implementation phase, a meeting to get feedback about the product should be scheduled at the end of each sprint.
+The implementation phase starts on 4 January and ends with a final presentation around 3 April.
 
-I use GitHub for configuration management, by creating two different repositories:
+GitHub is used for configuration management, by creating two different repositories:
 \begin{itemize}
 \item Deep-Agora, which contains the source code of the project
-\item Deep-Agora_DOC, which contains all the deliverables of the specification, analysis and modelling part of the first semester
+\item Deep-Agora_DOC, which contains all the deliverables of the specification, analysis and modelling part of the semester 9
 \end{itemize}
-As a project management tool, I will also use GitHub. As of this year, it offers a similar feature to Trello called Projects, an adaptable spreadsheet that can also integrate with my issues and pull requests on GitHub to help me plan and track my work efficiently.
 
-? programming rules, references to supporting documents such as the quality assurance and/or test plan?
+GitHub can also be used as a project management tool.
+It offers a similar feature to Trello called Projects, an adaptable spreadsheet that can also integrate with my issues and pull requests on GitHub to help me plan and track my work efficiently.
+
+Files of elements of content and their vignettes have an explicit naming convention to locate them by name.
+It should indicate their encapsulation in other elements of content, hierarchically and separated by dots.
+For example: 1.10.5 (<page>.<paragraph>.<line>) or 1.1 (<page>.<illustration>).
+
+
 
 \chapter{General description}
+
+
 \section{Project environment}
 
-This project is part of a larger research project between CESR and LIFAT. It is currently being carried out as part of a programme for the regional valorisation of old books (mainly dating from the Renaissance), namely the {\it Humanist Virtual Libraries} controlled by the CESR.
+This project is part of a larger research project between CESR and LIFAT.
+It is currently being carried out as part of a programme for the regional valorisation of old books (mainly dating from the Renaissance), namely the {\it Humanist Virtual Libraries} controlled by the CESR.
+
+Within this programme, projects such as TypoRef which aims to identify specimens of similar typical characters, and BaTyr, a database of illustrations extracted, need software that meets the requirements of this project.
 
 CESR does not have powerful computing machines capable of training deep neural networks, but it has several machines and a large amount of remote and on-premises storage.
 
-Agora, the software developed and published ten years ago by LIFAT to process images of historical documents, is undergoing a complete overhaul in this project. Its technologies need to be updated and, above all, its overhaul should meet the previously unattainable need for simplicity in scenario creation.
+Agora, the software developed and published ten years ago by LIFAT to process images of historical documents, is undergoing a complete overhaul in this project.
+Its technologies need to be updated and, above all, its overhaul should meet the previously unattainable need for simplicity in scenario creation.
 
 Therefore, no takeover of the existing system is planned, as it has to be completely redesigned.
-
-The developer will train deep neural networks, whose task is not intended for the end users of Deep-Agora. This part of the project is to be carried out outside the software system, but within the environment, as an engineer's system.
 
 
 \section{User characteristics}
@@ -244,78 +280,477 @@ They do not need user access rights to use Agora.
 
 \section{System features}
 
-\begin{figure*}[ht] 
-    \centering 
-    \includegraphics[width=0.6\textwidth]{pic/20221116DiagUseCase.png} 
-    \caption{Use cases diagram}
-    \label{diagUC}
-\end{figure*}
+Users use this software to extract patterns.
+For this purpose, they should:
+\begin{itemize}
+\item import a manifest (redirecting to a collection of images)
+\item import images directly
+\item import an existing scenario from their file system
+\item define a scenario by defining iterative operations
+\item run the scenario to view the extracted content items
+\item export the results to an ALTO file
+\item export the scenario to the file system, making it available for import.
+\end{itemize}
 
-blablabla....
+In practice, from all the images in a collection, users select a typical one on which they build and test their scenarios to extract elements of content, label them, split them and iteratively merge them.
+They can then save their scenarios and run them on other collections.
+\\
+\img{20221116DiagUseCase.png}{Use cases diagram}{width=\textwidth}\label{diagUC}
 
 \section{General structure of the system}
 
-blablabla....
+Training deep neural network models is not a task intended for Deep-Agora end users.
+This part of the project is to be carried out outside the software system, but within the environment, as the engineer's system.
+It includes training data preparation of the datasets found on the internet and the deep learning laboratory where the neural network models are trained.
 
-\begin{figure*}[ht] 
-    \centering 
-    \includegraphics[width=\textwidth]{pic/20221116DiagComponent.png} 
-    \caption{Component diagram}
-    \label{diagComp}
-\end{figure*}
+The software itself, Deep-Agora, simply receives trained neural network models and uses them as operations in the scenarios to extract elements of content.
 
-blablabla....
+Rules are another type of operation that can complete the scenarios with a more descriptive approach, to specifically label or merge elements.
+This type of operation exists and will be part of Deep-Agora but is not the subject of this project.
+
+The scenarios are managed by projects that deliver the images, provide them with available operations and save their results.
+
+Image importation provides projects with usable images that are either directly provided or whose IIIF links allow them to be found from a manifest.
+
+ALTO export converts the results of the scenarios to an ALTO XML data structure and saves them to ALTO files.
+
+\img{20221116DiagComponent.png}{Component diagram}{width=\textwidth}\label{diagComp}
+
+
 
 \chapter{State of the art / Technology watch}
 
-Sujet a définir en concertation avec votre encadrant Polytech
 
-\section{Section 1}
+\section{Existing system}
 
-PENSEZ à bien insérer TOUTES les références bibliographiques
-utilisées dans votre bibliographie.
+Ten years ago, LIFAT developed and published Agora to segment images of historical documents.
 
-Voici un exemple de citation: \cite{DBLP:journals/corr/abs-1804-02767}.
-Et une autre: \linebreak \cite{DBLP:journals/corr/RedmonDGF15}.
+It works page by page by structuring them into elements of content called EOCs.
+For each page, the resulting structure is a tree of EOCs, some of which are the parents of others, just as text boxes are the parents of text lines.
+The input of the software is a list of images to be segmented, and the output is composed of an ALTO file and vignettes of EOCs.
 
-\paragraph{Paragraph 1}
+The software is not automatic.
+It uses a strong interaction with the user.
+Among all the images in a document/collection, the expert (user) selects a typical one on which to build and test specific scenarios, which are then applied to all others.
 
-blablabla
+The software was typically used for 2 cases:
+\begin{itemize}
+\item to extract all content items of a document. These items can then be used by the Retro software to recognise characters for transcription or .
+\item to extract only figures such as initial capitals and banners. These figures can be stored in a database such as the CESR's Base de Typographie de la Renaissance (BaTyR) for renaissance typography, in order to study their history and thus that of their creators.
+\end{itemize}
 
-\begin{figure*}[ht] 
-    \centering 
-    \includegraphics[width=0.5\textwidth]{pic/barre.png} 
-    \caption{Fouille de données et visualisation} 
-    \label{fdv} 
-\end{figure*}
+\paragraph{Definition of rules}
 
-\paragraph{Paragraph 2}
+After the document image has been binarised with the possibility to choose between different binarisation algorithms, the black pixels are processed by scenarios.
+Scenarios are sets of steps to build the tree of EOCs.
+Each step is a configurable operation on the EOC tree.
+Operations can consist of deleting or editing an element of content or of creating new ones by setting up rules.
 
-blablabla
+These rules are either labelling rules or merger rules.
+The labelling rules concern the position, size and neighbourhood of the content items.
+They give a label to regions of the image.
+For example, "if black pixels touch each other, they are connected components".
+The merger rules concern only the neighbourhood of the content items. For example, "if the distance between two elements of content identified as characters is less than 3 pixels horizontally, they are merged into a single character".
 
-\section{Section 2}
+\paragraph{Export to ALTO format}
 
-blablabla
+ALTO (Analyzed Layout and Text Object) is a standardized XML format to store layout information and OCR-recognized text of pages of any kind of printed documents like books, journals and newspapers.
+
+It is designed to be used as an extension schema to METS (Metadata Encoding and Transmission Standard), where METS provides metadata and structural information while ALTO contains content and physical information.
+However, ALTO instances can also exist as a standalone document used independently of METS.
+
+There is one ALTO file per image.
+Each ALTO file contains a style section where different styles (similar to classes) are listed.
+The layout section contains what is on the page.
+A page is divided into several regions:
+
+\img{margins.jpg}{Regions of a page}{width=0.3\textwidth}\label{margins}
+
+\paragraph{To change}
+
+The software interface is complex and therefore too difficult for the end user to use.
+Indeed, most of the rules require a lot of parameters and without being an expert user of AGORA, it can be very easy to get lost in the interface of complex scenarios.
+
+Historical documents are very often damaged in some way: characters are broken, there is the presence of stains, or the paper is of poor quality.
+As a result, binarisation is problematic as multiple algorithms have already been implemented that cannot satisfy sufficient efficiency on this type of document.
+
+Deep learning could be a solution to binarisation and to this complexity of rules by avoiding all these configurations.
+DL modules could then be used iteratively with simpler scenarios to extract specifically defined elements of content (EOCs).
+
+
+\section{Segmentation using deep learning approaches}
+
+It is not necessarily the case that deep learning is the best way to segment historical documents.
+The best approach will depend on the specific characteristics of the documents and the goals of the segmentation.
+
+Deep learning approaches, such as convolutional neural networks (CNNs) and recurrent neural networks (RNNs), can be effective for solving the segmentation problem of historical documents because they are able to learn complex patterns in the data and can handle large amounts of unstructured data.
+This can be especially useful for segmenting historical documents, which may have various types of formatting and layout, and may use old or archaic language and writing conventions.
+
+However, there are also several potential drawbacks to using deep learning for segmenting historical documents.
+One disadvantage is that deep learning approaches often require a large amount of labelled training data, which may not be available for historical documents.
+Additionally, deep learning approaches can be computationally intensive, which may be a concern for large datasets or for documents with complex layouts.
+
+Overall, it is important to consider the specific characteristics of the historical documents being analyzed, as well as the goals of the segmentation, when deciding whether to use deep learning or another approach for segmenting these documents.
+This is why other approaches, such as rule-based approaches may be used on demand by the Deep-Agora users.
+
+
+\subsection{U-Net}
+
+A U-Net is a type of convolutional neural network (CNN) that takes an image as input for image segmentation tasks, developed by Olaf Ronneberger, Philipp Fischer, and Thomas Brox in 2015.
+It is designed to be efficient and easy to train, making it a popular choice for image segmentation tasks.
+Its architecture is shaped like a U by consisting of an encoder network and a decoder network connected by a series of skip connections.
+
+The encoder network processes the input image and extracts features from it.
+It consists of a series of convolutional layers and max pooling layers.
+The convolutional layers are responsible for learning features from the input image, while the max pooling layers downsize the feature maps and reduce the computational complexity of the network.
+
+The U-Net uses skip connections, also known as shortcut connections, to connect the encoder and decoder networks.
+These connections allow the U-Net to preserve information about the spatial context of the image, which is important for accurate image segmentation.
+
+The decoder network uses the features from the encoder to generate a segmentation mask that indicates the boundaries between different regions of elements of content in the image.
+It typically consists of a series of transposed convolutional layers.
+These layers apply a transposed convolution operation to the input, which upsamples the feature maps and increases the spatial resolution.
+The transposed convolutional layers use the skip connections from the encoder network to incorporate information about the spatial context of the image.
+
+Finally, the output of the U-Net is a segmentation mask where each pixel value corresponds to the probability of a specific label, such as an element of content or a combination of elements of content.
+The U-Net can then be trained to predict multiple labels, so different elements of content.
+
+
+\subsection{Transfer learning}
+
+Transfer learning can be a useful technique for deep learning historical document processing, particularly when there is a limited amount of labelled training data available.
+By using a pre-trained model as a starting point and fine-tuning it on a new task or dataset, it is possible to leverage the knowledge learned from the pre-trained model to improve the performance of the model on the new task.
+
+For example, if a pre-trained model has already been trained on a large dataset of modern documents, it may be possible to use transfer learning to fine-tune the model on a smaller dataset of historical documents.
+This could allow the model to learn important features and patterns specific to historical documents, improving its ability to classify, transcribe, or extract information from them.
+
+Transfer learning can also be useful for segmentation in historical documents, as it allows the model to leverage the knowledge learned from modern images and objects to identify similar features in historical documents.
+
+
+The VGG (Visual Geometry Group) network is a CNN architecture that was initially developed for image classification tasks.
+In the case of segmentation tasks, the VGG network can be used as a starting point for developing a CNN architecture that is specifically designed for segmentation.
+
+For example, the VGG network could be modified and extended by adding additional convolutional and pooling layers, as well as skip connections, to better handle the complexity and spatial resolution of the segmentation task.
+The modified VGG network could then be trained on a large dataset of labelled images, where the boundaries between different objects or regions of interest have been manually annotated.
+
+In the case of transfer learning, the VGG network can be used as a pre-trained model to initialize the weights of a U-Net architecture that is being trained for a different task.
+
+Therefore, in state-of-the-art DL frameworks for historical documents, models have a U-Net network in which the first layers are from a pre-trained VGG network.
+The actual U-Net network can then be trained on a smaller dataset of historical documents.
+
+
+\section{Frameworks for historical document processing}
+
+Frameworks are platforms that provide a foundation for developing applications by providing generic functionality.
+These functionalities can be selected or edited to provide a more specific application.
+
+In our case, we need a framework for Historical Document Processing.
+Its generic approach should allow to segment various elements of content and extract them from different documents.
+For example, a framework using deep learning can help to train convolutional neural networks (CNN) or recurrent neural networks (RNN) on a dataset of labelled historical documents.
+The operation using a trained network model could then be used to predict the regions of elements of content in new, unseen documents.
+
+Frameworks using deep learning approaches can be very effective for solving the segmentation problem of historical documents, but they also require a large amount of labelled training data and may be computationally intensive.
+
+Existing state-of-the-art training datasets for historical document processing have been created:
+
+\img{20221110SpecsDataSets.png}{Sample of state-of-the-art datasets for historical document processing}{width=0.9\textwidth}\label{datasets}
+
+For training a model, training data and configuration must be provided to the framework:
+\begin{itemize}
+\item Training data which can be a directory containing the images, a list of image filenames, or a path to a csv file.
+\item Evaluation data which is used for validation, under the same format as training data.
+\item A directory for model output
+\item A class file coding each region to segment
+\item Additional parameters for training, such as:
+	\begin{itemize}
+	\item Data augmentation to scale, rotate or editing the images
+	\item Batch size
+	\item Make patches by cropping image in smaller pieces
+	\item Number of epochs to cycle trough data
+	\item GPU
+	\end{itemize}
+\end{itemize}
+
+After training, the inference of a model can be operated on a directory of input data, that returns a probability maps for each label
+
+
+To choose the right framework, certain features should be taken into account.
+
+It must explicitly handle historical documents.
+Indeed, frameworks designed for historical document layout analysis usually use additional features than others, in order to take into account broken characters, stains, poor paper quality, and so on.
+
+No binarisation algorithm should be used by the framework as preprocessing.
+It has been revealed that binarisation algorithms were not efficient enough in previous versions of Agora, so they should avoided as a pre-processing requirement.
+
+It must allow at least a segmentation at the line level.
+Agora must extract text lines in text blocks.
+As historical document analysis frameworks are usually designed for further OCR operations, they very often extract text lines.
+
+It must allow decoration segmentation.
+In historical documents are all types of visual EOC that are extremely valuable for their amount of historical information.
+
+It should be compatible with handwritten text.
+In the case of handwritten documents, one or more characters, words or even lines tend to touch each other and are treated as the same content items.
+Therefore, the extraction of handwritten content items is impossible because too many of them touch each other.
+
+The framework should learn from annotated masks.
+Each training sample consists in an image of a document and its corresponding parts to be predicted.
+Additionally, a text file encoding the RGB values of the classes needs to be provided.
+In this case if we want the classes "background", "document" and "photograph" to be respectively classes 0, 1, and 2 we need to encode their color line-by-line:
+\begin{table}[]
+\definecolor{C}{HTML}{305496}
+\begin{tabular}{|lll|}\hline
+0 & 255 & 0 \\\hline
+255 & 0 & 0 \\\hline
+0 & 0  &255 \\\hline
+\end{tabular}
+\end{table}
+
+The user expressed the need to have an ALTO file as output of Agora.
+So it would be even better if the framework as an output well structured.
+
+The Deep-Agora project should be continued.
+Therefore, it would be better if the tools it uses were also pursued.
+
+Good documentation of the tool would also help to shorten the developer's adaptation phase.
+
+Because of these criteria, two good frameworks could be used: dhSegment and Kraken.
+
+\paragraph{dhSegment}
+
+Even if dhSegment seems to be the most suitable framework, its documentation is limited, especially for the last versions, and there is no ALTO conversion routine for its results.
+
+\paragraph{Kraken}
+
+Kraken offers great documentation and an ALTO conversion routine for its results.
+However, it is not designed to segment visual elements of content and it seems that no good substitute for binarisation as a pre-processing operation has been found.
+
 
 
 \chapter{Analysis and design}
 
 \section{Analysis}
 
+
 \subsection{Assumptions used}
-blablabla
+
+State-of-the-art DL frameworks are not good enough to segment handwritten characters in images of historical documents.
+If one appears during the development in the deep learning lab, it should be used in the project.
+
+The elements of content to extract are:
+\begin{itemize}
+\item Blocks of texts
+\item Printed and handwritten text-lines
+\item Handwritten annotation
+\item Initial capitals
+\item Banners
+\item Figures with (or without) their caption
+\item Decorations
+\end{itemize}
+Ideally, there should be a model for each element of content.
+Otherwise, models can extract groups of elements of content, as few as possible.
+
+No other methods than grouping connected black pixels exist in frameworks to post-process the binary mask of predictions.
+Because of that, the segmentation of characters is not possible for handwritten text and it has been removed from the list of elements of content.
+If state-of-the-art frameworks actually enable that, then it could be a solution to segment characters in images of historical documents.
+Appropriate new data sets with each character labelled individually should be used to train new neural network models.
+ALTO files could also identify each character by a Glyph tag.
+
+The DL frameworks do not use binarization algorithms as a pre-processing step.
+If they actually do, the efficiency would not be as good.
+
+Since the DL modules to develop cannot segment characters, ALTO is not the best format to export results.
+This is because the ALTO format assumes that the bounding boxes are rectangular and either vertical or horizontal, which is not what the DL models return.
+If it would be possible to segment characters, then it would not be that much of an issue.
+The client expressed that they need an ALTO output, so it must be used.
+A simpler version can be used if it wastes time on the project.
+
 
 \subsection{Specifications}
-Inclure ici un résumé du cahier de spécification qui sera inséré en ANNEXE
+
+\subsubsection{System}
+
+The Deep-Agora software takes images of the CESR as inputs and output ALTO files and vignettes of the elements of content extracted.
+To operate, it uses trained neural network models in operations.
+Scenarios can also be saved and restored.
+Neural network models must be trained outside of the software system: in the engineer's system.
+Only after new models have been trained on prepared training datasets, they can be deployed in the software system.
+\\
+\img{20221117TasksInSystemEnvironmentLeg.png}{Tasks in the context of the system}{width=\textwidth}\label{diagSysEnv}
+
+\paragraph{Import data}
+
+Importing data consists of implementing a pipeline that acquires and prepares a dataset for each neural network model.
+This way, downloaded datasets from the internet under different formats and containing different elements of content can be selected and merged to provide correctly structured ones.
+
+\paragraph{Train new neural network models}
+
+Training new neural network models consists of implementing a generic framework for historical document processing to segment images into targeted elements of content.
+After acquiring the right prepared dataset, the model can be trained until it passes tests.
+
+\paragraph{Operate neural network model}
+
+Operating neural network model consists of implementing a module to operate a trained neural network model as an operation in scenarios.
+For an image and an element of content to extract, the right model is restored to infer the image and returns a probability map for the element of content.
+It can then be thresholded to segment the image.
+
+\paragraph{Export results}
+
+Exporting results consists of editing the outputs of scenarios to convert them into ALTO files and vignettes.
+When multiple elements of content are extracted from the same image, they are first structured hierarchically.
+Then, their name following the naming convention, their label and their coordinates can be altogether either written in an ALTO file or used to build vignettes extracted from the original image.
+
+\paragraph{Manage scenarios}
+
+Managing scenarios consists of easing the end users' projects.
+Beyond importing images via manifests, the end users can manage their projects and refine the elements of content they want.
+Scenarios can be saved or loaded, and run on a directory of images.
+
+
+\subsubsection{Data}
+
+The structure of a document refers to the organization of every element within it.
+The organization of these elements in specific places of the document constitutes the layout of the document.
+Detecting and extracting information is essential to get the geometry presented in a document.
+A document may consist of several blocks of text such as title, paragraphs, main body text, text lines, graphics, tables and more.
+Many datasets are publicly available to promote research that deals with the structure of documents.
+
+The datasets to use should therefore contain labels such as layout, text-line and graphics.
+
+The percentage of training and test data of the datasets should be defined during the project, accordingly to the amount of data available for selected elements of content and during the evaluation of the models.
+
 
 \section{Proposed modelling}
 
-Inclure ici une description du système à développer
-pouvant notamment inclure les principaux diagrammes UML non détaillés
-et démontrant sa faisabilité durant la phase de mise en œuvre.
+\subsection{Data pipeline}
 
-Les modes de validation prévus pour les différents éléments à produire
-pourront être précisés ici.
+To train our models on appropriate data, we need to develop a series of processes that are used to extract, transform, and load data from one or more sources to a destination.
+
+We first need to extract state-of-the-art training datasets by downloading them into the engineer's system.
+Once the data has been extracted, we need to transform it to make it more suitable for the models.
+In our case, this involves converting data formats.
+Images must be converted to JPEG format and be of the same size.
+Labels of EOCs written in PAGE XML files must be used to build mask images.
+Mask images are RGB images in which each colour is associated with a different EOC.
+These colours are associated with EOCs in a class file.
+
+After the different datasets have been transformed, they are ready to be selected and merged into a single one.
+This final dataset is then divided and saved in a training data folder and test, train and validation subfolders.
+For each subfolder, there is an image folder and a label folder.
+
+This pipeline is implemented in the Import data module of the engineer’s system, and this module interacts with the deep learning lab component.
+
+
+\subsection{Multilabel semantic segmentation}
+
+Regarding the class file in the previous subsection, it is important to note that in some cases, a pixel may belong to multiple classes or labels at the same time.
+In this case, the pixel is referred to as a "multilabel pixel."
+For example, if we are performing semantic segmentation on an image of a person, a pixel in the image might belong to both the "skin" class and the "hair" class.
+
+To represent the labels for each pixel in an image using dense encoding, we create a fixed-length vector for each pixel, with each element of the vector corresponding to a particular label.
+The value of each element in the vector indicates the presence or absence of the corresponding label at that pixel.
+If a pixel belongs to multiple labels at the same time, the corresponding elements in the vector would be set to 1.
+For example, if a pixel contains both skin and hair, the "skin" and "hair" elements of the vector would both be set to 1, while the "foot" element would be set to 0.
+
+Therefore, in the class file, the RGB code of each colour is associated with an attribution code.
+The class file could then look like this:
+\begin{table}[]
+\definecolor{C}{HTML}{305496}
+\begin{tabular}{|llllll|}\hline
+255 & 0 & 0 & 1 & 0 & 0\\\hline
+0 & 255 & 0 & 0 & 1 & 0 \\\hline
+0 & 0  & 255 & 0 & 0 & 1 \\\hline
+0 & 255  &255 & 0 & 1 & 1 \\\hline
+\end{tabular}
+\end{table}
+
+
+\subsection{Tree of EOCs}
+
+The output of the neural network model is equivalent to an attribution probability for each pixel of the image.
+Through the framework, we get a probability map of the image for each EOC.
+In order to output results for the end user, we need to process these by thresholding them but most importantly to turn the regions into a hierarchically structured tree of EOCs.
+
+Based on the class file and the types of EOCs, we know which regions are included in the others.
+Then, the whole region of the text line is included in the region of the text block.
+We can summarise this logic in this scheme:
+
+\img{20231215EOCHierarchy.png}{Class diagram of the EOC hierarchy}{width=0.8\textwidth}\label{EOCdiag}
+
+The objects of these classes can be structured following the exact same hierarchy.
+For example, in the case where a pixel both belongs to a text line and a text block, we know the text line is included in the text block. In the case of a banner, it is considered as belonging to an illustration block.
+
+Finally, this hierarchically structured tree can be used to name each element appropriately and to build the ALTO file.
+An example of an ALTO file with the three types of EOCs "Block of text", "Text line" and "Banner" would look like this:
+
+\begin{lstlisting}[language=XML]
+<?xml version="1.0" encoding="UTF-8"?>
+<alto xmlns="http://www.loc.gov/standards/alto/ns-v4#"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.loc.gov/standards/alto/ns-v4#
+     file:alto-4-3.xsd" SCHEMAVERSION=""
+>
+    <Description>
+        <MeasurementUnit>pixel</MeasurementUnit>
+        <sourceImageInformation>
+            <fileName>[filename .e.g XXXXX.png]</fileName>
+            <fileIdentifier fileIdentifierLocation="[path
+             .e.g ../images]"/>
+        </sourceImageInformation>
+        <Processing ID="Agora"/>
+    </Description>
+    <Styles>
+        <ParagraphStyle ID="[idString .e.g BLOCK]"/>
+        <ParagraphStyle ID="[idString .e.g BANN]"/>
+        <ParagraphStyle ID="[idString .e.g LINE]"/>
+        <ParagraphStyle .../>
+    </Styles>
+
+    <Layout>
+        <Page ID="agora.[uniqueString .e.g 0]" HEIGHT="[integer]"
+         WIDTH="[integer]" PHYSICAL_IMG_NR="0">
+            <TopMargin HEIGHT="[integer]" WIDTH="[integer]"
+             HPOS="[integer]" VPOS="[integer]">
+                ...
+            </TopMargin>
+            <LeftMargin ...>
+                ...
+            </LeftMargin>
+            <RightMargin ...>
+                ...
+            </RightMargin>
+            <BottomMargin ...>
+                ...
+            </BottomMargin>
+            <PrintSpace ...>
+                <ComposedBlock ID="agora.[uniqueString .e.g 0.0]"...>
+                    <TextBlock ID="agora.[uniqueString .e.g 0.0.0]"
+                     STYLEREFS="[idString]"
+			  HEIGHT="[integer]" WIDTH="[integer]"
+			  HPOS="[integer]" VPOS="[integer]">
+
+                        <TextLine ID="agora.[uniqueString
+                         .e.g 0.0.0.0]" .../>
+                        ...
+                    </TextBlock>
+                    ...
+                    <Illustration FILEID="agora.[uniqueString
+			  .e.g 0.0.1.jpg]"
+                     ID="agora.[uniqueString .e.g 0.0.1]" .../>
+                    <TextBlock ID="agora.[uniqueString
+			  .e.g 0.0.2]" ...>
+                        ...
+                    </TextBlock>
+                    ...
+                </ComposedBlock>
+            </PrintSpace>
+        </Page>
+    </Layout>
+</alto>
+
+\end{lstlisting}
+
+
 
 \chapter{Implementation}
 
@@ -383,190 +818,908 @@ avec d'éventuels compléments d'information sur leur mode de mise en œuvre.
 
 \section{Semester 9 review}
 
-Liste des taches faites, en cours, à faire
-CF Planning S9 et S10 à fournir en annexe
+This report took more time than excepted to be completed.
+Indeed, even after validation, it has been corrected and improved several times during holidays.
 
-\section{Review of semester 10}
+\paragraph{Tasks done}
 
-Bilan global $\Rightarrow$ respect du cahier des charges (fait / à faire)
+The following tasks have been completed:
+\begin{enumerate}
+\item Study existing system and state-of-the-art approaches
+\item Specify I/O
+\item Specify datasets
+\item Set up planning
+\item Design diagrams
+\item Write specification document
+\item Review and validate specification deliverables
+\end{enumerate}
+
+\paragraph{Tasks in progress}
+
+\begin{enumerate}
+\item Set up the environment
+\end{enumerate}
+
+This task is particularly time-consuming if I want to configure my computer for using my GPU.
+I have an NVIDIA GeForce RTX 3050 Laptop GPU, and I am experiencing trouble using it for development purposes.
+If it persists, I will contact my supervisor and try to find a solution together.
+The rest of the environment is operational.
+
+\paragraph{Tasks to do}
+
+\begin{enumerate}
+\item Finish setting up the environment
+\item Prepare dataset
+\end{enumerate}
+
+As soon as the environment is ready, the data pipeline will have to be started in order to soon try a pre-trained model of dhSegment.
+
+\section{Semester 10 review}
+
+%Bilan global $\Rightarrow$ respect du cahier des charges (fait / à faire)
 
 \section{Quality assessment}
-blablabla
+
+-
 
 \section{Self-critical review}
-blablabla
+
+-
 
 \begin{appendix}
 \selectlanguage{english}
 
-\chapter{Planning, project management}   
-
-\section{Evolution of the project}
-
-Le diagramme de Gantt Initial pour la planification de ce projet 
-\img{S10Gantt.png}{Le diagramme de Gantt Final}{width=1.0\textwidth}
 
 
-Le diagramme de Gantt Final de ce projet est comme Figure A.2.
+\chapter{Planning, project management}
 
-\img{S10Gantt.png}{Le diagramme de Gantt Final}{width=1.0\textwidth}
+\section{Specification phase}
 
+\subsection{Evolution of the project}
 
-\section{Job description}
+\img{20221115PlanningSpecs.png}{Gantt Chart for planning of the specification phase}{width=\textwidth}\label{planSpecs}
 
-\paragraph{Task 1: Speaking Heading}
+\subsection{Job description}
 
+\paragraph{Task 1: Study existing system and state-of-the-art approaches}
 \begin{itemize}
-    \item Date de début: 16/09/2019
-    \item Date de fin: 03/10/2019
-    \item Durée: 17 jours
+    \item Start date: 22/09/2022
+    \item End date: 19/01/2022
+    \item Duration: 14 days
     \item
-        Description: éléments à faire,
-        liste des entrées (pré-requis)
-        et sorties (livrables)s de la tache.
+        Description: Study and present Agora's problems and what state-of-the-art generic frameworks enable historical document processing.
 \end{itemize}
 
-\paragraph{Task 2: Speaking Heading}
-
+\paragraph{Task 2: Specify I/O}
 \begin{itemize}
-    \item Date de début: 16/09/2019
-    \item Date de fin: 03/10/2019
-    \item Durée: 17 jours
+    \item Start date: 06/10/2022
+    \item End date: 27/10/2022
+    \item Duration: 22 days
     \item
-        Description: éléments à faire,
-        liste des entrées (pré-requis)
-        et sorties (livrables)s de la tache.
+        Description: Identify and interview Deep-Agora future end-users to gather information about the inputs and outputs of the software.
 \end{itemize}
+
+\paragraph{Task 3: Specify datasets}
+\begin{itemize}
+    \item Start date: 07/11/2022
+    \item End date: 16/11/2022
+    \item Duration: 10 days
+    \item
+        Description: Specify and identify the best state-of-the-art datasets for historical document processing.
+\end{itemize}
+
+\paragraph{Task 4: Set up planning}
+\begin{itemize}
+    \item Start date: 16/11/2022
+    \item End date: 16/11/2022
+    \item Duration: 1 day
+    \item
+        Description: Set up and review the initial planning of the project.
+\end{itemize}
+
+\paragraph{Task 5: Design diagrams}
+\begin{itemize}
+    \item Start date: 16/11/2022
+    \item End date: 17/11/2022
+    \item Duration: 2 days
+    \item
+        Description: Model via diagrams the system and the components of the project.
+\end{itemize}
+
+\paragraph{Task 6: Write Specification Document}
+\begin{itemize}
+    \item Start date: 17/11/2022
+    \item End date: 01/12/2022
+    \item Duration: 15 days
+    \item
+        Description: Design and write the specifications of the project with the completion of each part to put in the final report. The completeness of the document should allow simplifying the writing of the final report.
+\end{itemize}
+
+\paragraph{Task 7: Review and validate}
+\begin{itemize}
+    \item Start date: 02/12/2022
+    \item End date: 13/12/2022
+    \item Duration: 12 days
+    \item
+        Description: Review the specifications with the product owner, present them, complete the specification document and finish the final report.
+\end{itemize}
+
+
+\section{Implementation phase}
+
+\subsection{Evolution of the project}
+
+\img{20221115Planning.png}{Initial Gantt Chart for Agile planning of the implementation phase}{width=\textwidth}\label{plan}
+
+\subsection{Job description}
+
+All these sprints aim to prioritise and propose different versions of Deep-Agora.
+
+\paragraph{Minor release 1: Prototype DL module}
+\begin{itemize}
+    \item Start date: 04/01/2023
+    \item End date: 19/01/2023
+    \item Duration: 15 days
+    \item
+        Description: The first minor release is expected to offer a prototype deep learning module that prepares a training dataset and uses a pre-trained model that semantically segments the page layout and returns certain elements of content from the list above.
+\end{itemize}
+
+\paragraph{Minor release 2: New DL module for other EOCs}
+\begin{itemize}
+    \item Start date: 25/01/2023
+    \item End date: 08/02/2023
+    \item Duration: 14 days
+    \item
+        Description: After some corrections if necessary, the second minor release should offer another deep learning module targeting other elements of content. Most of them will most likely be trained on different data sets.
+\end{itemize}
+
+\paragraph{Minor release 3: Evaluation and tuning}
+\begin{itemize}
+    \item Start date: 09/02/2023
+    \item End date: 22/02/2023
+    \item Duration: 13 days
+    \item
+        Description: After some corrections if necessary, the third minor release should allow the previous models to be evaluated and tuned for better results.
+\end{itemize}
+
+\paragraph{Minor release 4: Output export}
+\begin{itemize}
+    \item Start date: 23/02/2023
+    \item End date: 08/03/2023
+    \item Duration: 13 days
+    \item
+        Description: A secondary fourth minor release should offer a solution to export the outputs of the previously trained models to vignettes and ALTO files.
+\end{itemize}
+
+\paragraph{Major release 1: Interface for end-user}
+\begin{itemize}
+    \item Start date: 09/03/2023
+    \item End date: 22/03/2023
+    \item Duration: 13 days
+    \item
+        Description: An optional major release is to develop the functionality for end-users to import images from manifests and manage scenarios so that they can refine the elements of content they want.
+		      It should use all the modules developed in the previous sprints.
+\end{itemize}
+
+The two last sprints being optional, it is envisaged that they will only cover the remaining backlog from previous sprints.
 
 
 \chapter{Description of the interfaces}
 
 \section{Hardware/software interfaces}
 
-blablabla
+IIIF links require an Internet connection to send HTTP requests to online virtual libraries.
+
+The machine on which the engineer's system deep learning lab will be run should have a GPU to process neural network training faster.
+
+Data sets for training will be stored in the engineer's system.
+
 
 \section{Human/machine interfaces}
 
-blablabla
+The prototype should be made of computational documents combining scripts and good documentation, such as Jupyter Notebooks.
+
+The HMI of the software should display at least 4 panels:
+\begin{itemize}
+\item Scenario: different operations in iterative order
+\item Tree of EOC: elements of content organised structurally in a tree
+\item Existing label: a list of extracted labels
+\item Current image: a picture of the image being analysed
+\end{itemize}
+
+To build scenarios, operations can be accessed through different dedicated tabs.
+A File tab is dedicated to the management of the user's project.
+A project tab is dedicated to configuring it.
+A scenario Tab is dedicated to clearing it or undoing the last operation performed.
+
+The simplicity of the HIM to create scenarios, reuse them and adapt them to different documents is essential.
+
+
+\section{Software/software interfaces}
+
+To import images at the beginning of a project, databases are indirectly requested through the use of IIIF links.
+IIIF links are URLs that return images in response to a standard HTTP or HTTPS request.
+These links can redirect to internal or external networks.
+
+Trained neural network models are implemented in Deep-Agora manually, by restoring their parameters from storage files.
+
+In the engineer’s system, datasets are downloaded manually through websites, then transformed, and models are trained using a state-of-the-art generic framework for historical document processing.
+
+
 
 \chapter{Specification}
 
 \section{Functional specifications}
 
-\subsection{Features to be developed}
+\subsection{Definition of module 1: Import training data}
 
-
-%~ \setcounter{secnumdepth}{2}
-%~ \renewcommand\thesection{\arabic{section}} 
-
-\subsection{Definition of function 1: speaking title}
-
-\paragraph{Presentation of function 1 :}
+\paragraph{Presentation:}
  
-\begin{description}
-    \item[Élément 1] ~ \\
-        Entrée : ???? \\
-        Sortie : ???? \\
-        Préconditions : ???? \\
-        Postconditions : ????
-    \item[Élément 2] ~ \\
-        Entrée : ???? \\
-        Sortie : ???? \\
-        Préconditions : ???? \\
-        Postconditions : ????
-\end{description}
-
-\subsection{Definition of function 2: speaking title}
-
-\paragraph{Presentation of function 2:}
-
 \begin{itemize}
-    \item Nom de la fonction : Visualisation des statistiques
-    \item blablabla
-    \item Primordiale
+    \item Name: Training data import module
+    \item Summary: Implement a pipeline to prepare a training dataset for neural network model.
+    \item Priority: Primary
+    \item Interacting components:
+    \begin{itemize}
+        \item Deep learning lab component
+        \item File system
+        \item Datasets from the file system
+        \item Engineer’s system
+    \end{itemize}
 \end{itemize}
 
-\paragraph{Description de la fonction 2 :}
+\paragraph{Description:}
+ 
+\begin{itemize}
+    \item Inputs: State-of-the-art training datasets, with images and different labels of EOCs. 
+    \item Preconditions: Available datasets are downloaded on local storage.
+Their images are in different formats, such as TIFF or JPEG.
+Their labels are stored under PAGE XML format.
 
-blablabla
+    \item Outputs: A training data folder containing a class file and test, train and validation subfolders. Each of the subfolders contains an image folder and a label folder of mask images.
+    \item Postconditions: The original datasets were selected and merged for the pipeline.
+Dataset is split into test, train and validation folders.
+Dataset themselves divided into pairs (images, labels) of images with the same name (excluding the extension).
+The images in the image folder are in JPEG format.
+The images in the label folder are in PNG format and are RGB masks of the regions to segment with a different colour for each EOC.
+The class file is multi-label and has one row for each combination of EOC and each one has 3 RGB values and an attribution code.
+\end{itemize}
+
+\paragraph{Details:}
+
+\begin{itemize}
+    \item Prioritized features list: 
+    \begin{enumerate}
+        \item	Acquire datasets from the file system
+        \item	Distribute them in different pipelines according to the EOCs targeted by the neural network models
+        \item	Create a training data folder for each pipeline containing a class file and test, train and validation subfolders. For each subfolder, create an image folder and a label folder.
+        \item	Convert the images to JPEG format and put them in the image folders
+        \item	Convert PAGE XML label files to PNG mask images with colours associated with the class file and put them in the label folders
+    \end{enumerate}
+    \item Error handling and implementation: 
+    \begin{itemize}
+        \item	Some datasets are not available for download → Delete them from the list and evaluate again the feasibility of the model
+    \end{itemize}
+\end{itemize}
+
+
+\subsection{Definition of module 2: Deep learning lab}
+
+\paragraph{Presentation:}
+ 
+\begin{itemize}
+    \item Name: Deep learning lab component
+    \item Summary: Computational documents that implement frameworks for historical document processing to train new neural network models to semantically segment images into targeted EOCs.
+    \item Priority: Primary
+    \item Interacting components:
+    \begin{itemize}
+        \item Training data import module
+        \item Deep learning lab component
+        \item File system
+        \item Engineer’s system
+    \end{itemize}
+\end{itemize}
+
+\paragraph{Description:}
+ 
+\begin{itemize}
+    \item Inputs: A training data folder containing a class file and test, train and validation subfolders. Each of the subfolders contains an image folder and a label folder of mask images.
+    \item Preconditions: Subfolders are themselves divided into pairs (images, labels) of images with the same name (excluding the extension).
+The images in the image folder are in JPEG format.
+The images in the label folder are in PNG format and are RGB masks of the regions to segment with a different colour for each EOC.
+The class file is multi-label and has one row for each combination of EOC and each one has 3 RGB values and an attribution code.
+
+    \item Outputs: Neural network model objects stored in a file. If inference, probability map of each attribution code (combination of EOCs).
+    \item Postconditions: Neural network model objects have been saved using the framework defined for loading and saving models in the non-functional specifications.
+The probability map is pixel-wise labelled and its dimensions are image_height X image_length X number_of_attribution_codes.
+
+\end{itemize}
+
+\paragraph{Details:}
+
+\begin{itemize}
+    \item Prioritized features list: 
+    \begin{enumerate}
+        \item	For each neural network model, acquire the right pipeline according to the EOCs targeted
+        \item	Declare the training parameters of the generalist deep learning framework.
+        \item	Train the model
+        \item	Validate it or reiterate from 2.
+    \end{enumerate}
+    \item Error handling and implementation: 
+    \begin{itemize}
+        \item	The dataset does not dispose of enough samples or is not balanced enough → communicate the error to the product owner and/or pass to another model 
+    \end{itemize}
+\end{itemize}
+
+
+\subsection{Definition of module 3: Import images}
+
+\paragraph{Presentation:}
+ 
+\begin{itemize}
+    \item Name: Import module
+    \item Summary: Import images from a manifest.
+    \item Priority: Optional
+    \item Interacting components:
+    \begin{itemize}
+        \item File system
+        \item Manifests
+        \item Deep-Agora system
+    \end{itemize}
+\end{itemize}
+
+\paragraph{Description:}
+ 
+\begin{itemize}
+    \item Inputs: A manifest file
+    \item Preconditions: The manifest is in JSON format and contains page image URLs.
+    \item Outputs: A page folder containing images
+    \item Postconditions: The images in the page folder are in JPEG format and were downloaded from the manifest file.
+\end{itemize}
+
+\paragraph{Details:}
+
+\begin{itemize}
+    \item Prioritized features list: 
+    \begin{enumerate}
+        \item	Load manifest
+        \item	For each page of a corpus in the manifest, extract its IIIF links and store them in a list
+        \item	Download images from IIIF links
+        \item	Convert them to JPEG format
+        \item	Save them in the page folder
+    \end{enumerate}
+    \item Error handling and implementation: 
+    \begin{itemize}
+        \item	The IIIF link does not refer to an available image → pass to the next one
+    \end{itemize}
+\end{itemize}
+
+
+\subsection{Definition of module 4: EOCs to tree}
+
+\paragraph{Presentation:}
+ 
+\begin{itemize}
+    \item Name: Conversion of EOCs to tree
+    \item Summary: Interpret the outputs of the neural network models to construct EOC overlap trees from the attribution codes.
+    \item Priority: Secondary
+    \item Interacting components:
+    \begin{itemize}
+        \item Deep learning  extractors
+        \item Scenarios
+        \item Deep-Agora system
+    \end{itemize}
+\end{itemize}
+
+\paragraph{Description:}
+ 
+\begin{itemize}
+    \item Inputs: Probability map of each attribution code (combination of EOCs) and class file.
+    \item Preconditions: The probability map is pixel-wise labelled and its dimensions are image_height X image_length X number_of_attribution_codes.
+The class file is multi-label and has one row for each combination of EOC and each one has 3 RGB values and an attribution code.
+    \item Outputs: An XML tree structuring EOC regions
+    \item Postconditions: Each node is an EOC that is associated with its coordinates in the original image and a name according to the naming convention for vignettes.
+\end{itemize}
+
+\paragraph{Details:}
+
+\begin{itemize}
+    \item Prioritized features list: 
+    \begin{enumerate}
+        \item	Threshold the probability map to obtain the matrix of attribution codes for each pixel
+        \item	Draw bounding boxes of each label
+        \item	Structure EOC regions in an XML tree
+        \item	Associate coordinates of the bounding boxes and a name to each node according to the naming convention for vignettes
+    \end{enumerate}
+    \item Error handling and implementation: 
+    \begin{itemize}
+        \item	
+    \end{itemize}
+\end{itemize}
+
+
+\subsection{Definition of module 5: Export results}
+
+\paragraph{Presentation:}
+ 
+\begin{itemize}
+    \item Name: Export module
+    \item Summary: Export vignettes of elements of content and export their location and coordinates into ALTO files for each page.
+    \item Priority: Optional
+    \item Interacting components:
+    \begin{itemize}
+        \item Scenarios
+        \item File system
+        \item Deep-Agora system
+    \end{itemize}
+\end{itemize}
+
+\paragraph{Description:}
+ 
+\begin{itemize}
+    \item Inputs: An XML tree structuring EOC regions
+    \item Preconditions: Each node is an EOC that is associated with its coordinates in the original image and a name according to the naming convention for vignettes.
+    \item Outputs: Vignettes of each element of content, structured in a results folder and an ALTO file.
+    \item Postconditions: The vignettes in the vignette folder have their names hierarchically structured and they have the same content as the corresponding bounding boxes in the original image.
+The ALTO file structures all the input elements of content in a tree so that each EOC is included in its overlapping EOC regions.
+\end{itemize}
+
+\paragraph{Details:}
+
+\begin{itemize}
+    \item Prioritized features list: 
+    \begin{enumerate}
+        \item	For each node of the XML tree, extract vignettes from the original image and save them in the vignette folder
+        \item	Convert the XML tree to ALTO and save it in a file
+    \end{enumerate}
+    \item Error handling and implementation: 
+    \begin{itemize}
+        \item	
+    \end{itemize}
+\end{itemize}
+
+
+\subsection{Definition of module 6: End user interface}
+
+\paragraph{Presentation:}
+ 
+\begin{itemize}
+    \item Name: Manage scenarios
+    \item Summary: End users can manage their project and refine the elements of content they want.
+    \item Priority: Optional
+    \item Interacting components:
+    \begin{itemize}
+        \item Project management component
+        \item File system
+        \item Deep-Agora system
+    \end{itemize}
+\end{itemize}
+
+\paragraph{Description:}
+ 
+\begin{itemize}
+    \item Inputs: HMI instructions
+    \item Preconditions: The other modules have been implemented.
+    \item Outputs: -
+    \item Postconditions: -
+\end{itemize}
+
+\paragraph{Details:}
+
+\begin{itemize}
+    \item Prioritized features list: 
+    \begin{enumerate}
+        \item	Enable end-user to organise their project
+        \item	Enable saving and loading of scenarios
+        \item	Enable scenarios to be run on multiple images
+        \item	View results of scenarios on HMI panels
+    \end{enumerate}
+    \item Error handling and implementation: 
+    \begin{itemize}
+        \item	
+    \end{itemize}
+\end{itemize}
 
 
 \section{Non-functional specifications}
 
 \subsection{Development constraints and design}
 
-blablabla
+The state-of-the-art framework for training the neural network model is dhSegment. The programming language is Python and the computational documents are made of Jupyter Notebooks. Jupyter Notebooks can be made of any IDE or Jupyter Lab, however, they use the Conda environment. IIIF links are requested by HTTP or HTTPS protocols.
 
 \subsection{Functional and operational constraints}
 
 \subsubsection{Performance}
-blablabla
+
+There is no specific time limit for processing multiple images. However, the use of the HMI must be reactive as the construction of scenarios requires a great deal of experimentation by the user.
 
 \subsubsection{Capabilities}
-blablabla
+
+The software runs on a single computer. It takes 3 different types of neural network models: text lines, ornaments and figures. They are implemented manually and on demand. A model can process only one image at a time. The data from outside the system can consume significant storage.
+
+The software itself should be light. However, memory constraints can become a risk for neural network models. This risk will be evaluated by making the prototype, and the right specifications will be detailed in the final report.
+
+\subsubsection{Operating modes}
+
+As a prototype, it can be started with a Jupyter Notebook file after starting a Jupyter server.
+After implementing the HIM, it can be started with a python script. It remains on until the user closes the window.
 
 \subsubsection{Controllability}
-blablabla
+
+The data import should display data samples before and after pre-processing.
+The deep learning lab should display the training parameters, the learning curves, the number of live epochs and a graphic of the learning curves at the end of the training.
+During the prototype part, the results of the deep learning extractor should display the bounding boxes encapsulating the targeted elements of content on the image.
+The ALTO export and the scenario management respectively display the ALTO file and the serialised scenario produced.
 
 \subsubsection{Security}
-blablabla
+
+The level of confidentiality of the system is non-existent: there is no user access control, and no keywords or passwords.
+
+\subsubsection{Integrity}
+
+ALTO files and serialised scenarios are not protected. The end user can save them wherever they want.
+The software only connects to the Internet when a manifest requires it. There is no protection.
+
+
+\subsection{Maintenance and development of the system}
+
+Maintenance of the HIM is palliative (fr. curative), which means it should only be done punctually on specific issues.
+
+Maintenance of the operations and scenarios is curative, which means they should be restored if there is an issue. It should also be perfective to improve efficiency and evolutive since new needs can appear.
+
 
 
 \chapter{Developer's Workbook}
 
 \section{Introduction}
 
-blablabla
+-
 
 \section{Architectural diagrams and UML}
 
-blablabla
+-
 
 \section{Detailed descriptions of data used}
 
-blablabla
+-
 
 \section{Detailed descriptions of classes, modules, achievements}
 
-blablabla
+-
 
 
 \chapter{Installation document}
 
-Ce document regroupe toutes les informations nécessaires
-pour l’installation du projet sur les machines,
-ainsi que pour sa mise en production.
+-
 
 \chapter{User document}
 
-blablabla
+-
 
 \chapter{Tests}
 
-Les tests  visent à garantir l'exactitude,
-l'intégrité, la sécurité et les performances du logiciel. 
-
 \section{Unit testing}
 
-blablabla
+\subsection{Module 1: Import training data}
 
 \begin{table}[]
 \definecolor{C}{HTML}{305496}
 \begin{tabular}{|l|l|}\hline
 \color{C} IDENTIFICATION OF COMPONENT \\\hline
-Afficher toutes les missions de l'utilisateur identifié  \\\hline
-\color{C} DESCRIPTION OF THE TEST (granularity, scenario, values, actions) \\\hline
-Action :blablabla.\\ blablabla. \\\hline
+Request the right EOCs  \\\hline
+\color{C} DESCRIPTION OF THE TEST\\\hline
+Unknown EOCs are requested \\\hline
 \color{C} EXPECTED RESULTS \\\hline
-Cas 1: blblablaa.\\ Cas 2: blablabla. \\\hline
+Raise an unknown parameter exception \\\hline
 \color{C} OBTAINED RESULTS \\\hline
-blablabla \\\hline
+- \\\hline
 \end{tabular}
-\end{table}                                                                             
+\end{table}
+
+\begin{table}[]
+\definecolor{C}{HTML}{305496}
+\begin{tabular}{|l|l|}\hline
+\color{C} IDENTIFICATION OF COMPONENT \\\hline
+Datasets are split correctly  \\\hline
+\color{C} DESCRIPTION OF THE TEST\\\hline
+There are X \% of the pairs (images, labels) in the train folder, Y \% in the test folder,\\ Z \% in the validation folder, and X+Y+Z=100 \% of the pairs from the datasets \\\hline
+\color{C} EXPECTED RESULTS \\\hline
+X+Y+Z=100 \% of the pairs from the datasets \\\hline
+\color{C} OBTAINED RESULTS \\\hline
+- \\\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[]
+\definecolor{C}{HTML}{305496}
+\begin{tabular}{|l|l|}\hline
+\color{C} IDENTIFICATION OF COMPONENT \\\hline
+Image formats are respected  \\\hline
+\color{C} DESCRIPTION OF THE TEST\\\hline
+For each image in the image subfolder  \\\hline
+\color{C} EXPECTED RESULTS \\\hline
+Each has the JPEG format \\\hline
+\color{C} OBTAINED RESULTS \\\hline
+- \\\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[]
+\definecolor{C}{HTML}{305496}
+\begin{tabular}{|l|l|}\hline
+\color{C} IDENTIFICATION OF COMPONENT \\\hline
+Masks have been built  \\\hline
+\color{C} DESCRIPTION OF THE TEST\\\hline
+For each image in the image subfolder \\\hline
+\color{C} EXPECTED RESULTS \\\hline
+Each has a PNG mask with the same name in the label subfolder \\\hline
+\color{C} OBTAINED RESULTS \\\hline
+- \\\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[]
+\definecolor{C}{HTML}{305496}
+\begin{tabular}{|l|l|}\hline
+\color{C} IDENTIFICATION OF COMPONENT \\\hline
+Masks were built correctly  \\\hline
+\color{C} DESCRIPTION OF THE TEST\\\hline
+For each PNG mask in the label subfolder  \\\hline
+\color{C} EXPECTED RESULTS \\\hline
+Each uses the colours from the class file \\\hline
+\color{C} OBTAINED RESULTS \\\hline
+- \\\hline
+\end{tabular}
+\end{table}
+
+\subsection{Module 2: Deep learning lab}
+
+\begin{table}[]
+\definecolor{C}{HTML}{305496}
+\begin{tabular}{|l|l|}\hline
+\color{C} IDENTIFICATION OF COMPONENT \\\hline
+Parameters are stored correctly  \\\hline
+\color{C} DESCRIPTION OF THE TEST\\\hline
+Training parameters configuration  \\\hline
+\color{C} EXPECTED RESULTS \\\hline
+Is stored in a JSON file \\\hline
+\color{C} OBTAINED RESULTS \\\hline
+- \\\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[]
+\definecolor{C}{HTML}{305496}
+\begin{tabular}{|l|l|}\hline
+\color{C} IDENTIFICATION OF COMPONENT \\\hline
+Masks use the class file definition  \\\hline
+\color{C} DESCRIPTION OF THE TEST\\\hline
+Predicted masks   \\\hline
+\color{C} EXPECTED RESULTS \\\hline
+Use the attribution codes of the class file \\\hline
+\color{C} OBTAINED RESULTS \\\hline
+- \\\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[]
+\definecolor{C}{HTML}{305496}
+\begin{tabular}{|l|l|}\hline
+\color{C} IDENTIFICATION OF COMPONENT \\\hline
+Each EOC had a predicted probability map  \\\hline
+\color{C} DESCRIPTION OF THE TEST\\\hline
+For any image in the test folder   \\\hline
+\color{C} EXPECTED RESULTS \\\hline
+A probability map is predicted by the model for each EOC it was trained to extract \\\hline
+\color{C} OBTAINED RESULTS \\\hline
+- \\\hline
+\end{tabular}
+\end{table}
+
+\subsection{Module 3: Import images}
+
+\begin{table}[]
+\definecolor{C}{HTML}{305496}
+\begin{tabular}{|l|l|}\hline
+\color{C} IDENTIFICATION OF COMPONENT \\\hline
+Images downloaded successfully  \\\hline
+\color{C} DESCRIPTION OF THE TEST\\\hline
+For each IIIF links    \\\hline
+\color{C} EXPECTED RESULTS \\\hline
+There is a JPEG image in the page folder \\\hline
+\color{C} OBTAINED RESULTS \\\hline
+- \\\hline
+\end{tabular}
+\end{table}
+
+\subsection{Module 4: EOCs to tree}
+
+\begin{table}[]
+\definecolor{C}{HTML}{305496}
+\begin{tabular}{|l|l|}\hline
+\color{C} IDENTIFICATION OF COMPONENT \\\hline
+Tree is structured hierarchically  \\\hline
+\color{C} DESCRIPTION OF THE TEST\\\hline
+For XML trees    \\\hline
+\color{C} EXPECTED RESULTS \\\hline
+Illustrations are outside any text block, and lines of text,\\ as well as annotations, are inside text blocks \\\hline
+\color{C} OBTAINED RESULTS \\\hline
+- \\\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[]
+\definecolor{C}{HTML}{305496}
+\begin{tabular}{|l|l|}\hline
+\color{C} IDENTIFICATION OF COMPONENT \\\hline
+Each node got all its information  \\\hline
+\color{C} DESCRIPTION OF THE TEST\\\hline
+Nodes of the XML tree     \\\hline
+\color{C} EXPECTED RESULTS \\\hline
+have a label, coordinates and a name following the naming convention. \\\hline
+\color{C} OBTAINED RESULTS \\\hline
+- \\\hline
+\end{tabular}
+\end{table}
+
+\subsection{Module 5: Export results}
+
+\begin{table}[]
+\definecolor{C}{HTML}{305496}
+\begin{tabular}{|l|l|}\hline
+\color{C} IDENTIFICATION OF COMPONENT \\\hline
+Each node of the tree was used for exportation  \\\hline
+\color{C} DESCRIPTION OF THE TEST\\\hline
+Nodes of the XML tree     \\\hline
+\color{C} EXPECTED RESULTS \\\hline
+have a corresponding vignette with the same name in the vignette folder. \\\hline
+\color{C} OBTAINED RESULTS \\\hline
+- \\\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[]
+\definecolor{C}{HTML}{305496}
+\begin{tabular}{|l|l|}\hline
+\color{C} IDENTIFICATION OF COMPONENT \\\hline
+ALTO file is complete  \\\hline
+\color{C} DESCRIPTION OF THE TEST\\\hline
+Tags of the ALTO file from the XML tree      \\\hline
+\color{C} EXPECTED RESULTS \\\hline
+have an id (name), coordinates and a style (label). \\\hline
+\color{C} OBTAINED RESULTS \\\hline
+- \\\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[]
+\definecolor{C}{HTML}{305496}
+\begin{tabular}{|l|l|}\hline
+\color{C} IDENTIFICATION OF COMPONENT \\\hline
+The structure is the same as that of the tree \\\hline
+\color{C} DESCRIPTION OF THE TEST\\\hline
+For each node of the XML tree that has a parent node, the corresponding tag of the ALTO file      \\\hline
+\color{C} EXPECTED RESULTS \\\hline
+has the corresponding parent tag. \\\hline
+\color{C} OBTAINED RESULTS \\\hline
+- \\\hline
+\end{tabular}
+\end{table}
+
+\subsection{Module 6: End user interface}
+
+\begin{table}[]
+\definecolor{C}{HTML}{305496}
+\begin{tabular}{|l|l|}\hline
+\color{C} IDENTIFICATION OF COMPONENT \\\hline
+User can select images and a current image  \\\hline
+\color{C} DESCRIPTION OF THE TEST\\\hline
+Click on Import image... button.\\ Select one or more images. \\\hline
+\color{C} EXPECTED RESULTS \\\hline
+First image is loaded and displayed as the Current image.\\ Other images are loaded in the background. \\\hline
+\color{C} OBTAINED RESULTS \\\hline
+- \\\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[]
+\definecolor{C}{HTML}{305496}
+\begin{tabular}{|l|l|}\hline
+\color{C} IDENTIFICATION OF COMPONENT \\\hline
+Operations can be selected by tabs  \\\hline
+\color{C} DESCRIPTION OF THE TEST\\\hline
+Click on Import image... button.\\ Select an operation. \\\hline
+\color{C} EXPECTED RESULTS \\\hline
+The current image is processed and displayed. \\\hline
+\color{C} OBTAINED RESULTS \\\hline
+- \\\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[]
+\definecolor{C}{HTML}{305496}
+\begin{tabular}{|l|l|}\hline
+\color{C} IDENTIFICATION OF COMPONENT \\\hline
+Operations can be added to from scenarios  \\\hline
+\color{C} DESCRIPTION OF THE TEST\\\hline
+Click on the tab of the operation.\\ Set up the operation. \\\hline
+\color{C} EXPECTED RESULTS \\\hline
+The operation is added to the list of the scenario. \\\hline
+\color{C} OBTAINED RESULTS \\\hline
+- \\\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[]
+\definecolor{C}{HTML}{305496}
+\begin{tabular}{|l|l|}\hline
+\color{C} IDENTIFICATION OF COMPONENT \\\hline
+Operations can be removed from scenarios  \\\hline
+\color{C} DESCRIPTION OF THE TEST\\\hline
+Click on an operation in the scenario.\\ Click Remove. \\\hline
+\color{C} EXPECTED RESULTS \\\hline
+The operation is removed from the list of the scenario. \\\hline
+\color{C} OBTAINED RESULTS \\\hline
+- \\\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[]
+\definecolor{C}{HTML}{305496}
+\begin{tabular}{|l|l|}\hline
+\color{C} IDENTIFICATION OF COMPONENT \\\hline
+Scenarios are saved in XML files  \\\hline
+\color{C} DESCRIPTION OF THE TEST\\\hline
+Click on the tab of the project.\\ Click on Save Scenario... \\\hline
+\color{C} EXPECTED RESULTS \\\hline
+The XML of the scenario contains the parameters of the operation. \\\hline
+\color{C} OBTAINED RESULTS \\\hline
+- \\\hline
+\end{tabular}
+\end{table}
 
 \section{Integration testing}
 
-blablabla
+\subsection{Module 1: Import training data}
+
+\begin{itemize}
+\item Data fits into memory: importing datasets from the file system does not throw a memory allocation error.
+\item The module is run before the deep learning lab functions.
+\end{itemize}
+
+\subsection{Module 2: Deep learning lab}
+
+\begin{itemize}
+\item Regarding requested EOCs to Training data import module, a pipeline for these EOCs has been developed
+\item Models’ variables are serialised in the file system
+\end{itemize}
+
+\subsection{Module 3: Import images}
+
+\begin{itemize}
+\item The module connects to the Internet.
+\end{itemize}
+
+\subsection{Module 4: EOCs to tree}
+
+\begin{itemize}
+\item 
+\end{itemize}
+
+\subsection{Module 5: Export results}
+
+\begin{itemize}
+\item ALTO file is stored in the file system.
+\end{itemize}
+
+\subsection{Module 6: End user interface}
+
+\begin{itemize}
+\item Operation interface can be implemented by Deep Learning Extractors and Rules
+\item Calling the Import module fills the image folder of the project
+\item Results are an XML tree handled by the Export module
+\end{itemize}
+
 
 \end{appendix}
 
