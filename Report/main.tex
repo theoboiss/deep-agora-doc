@@ -200,10 +200,10 @@ The end users will only look for these elements of content:
 \begin{itemize}
 \item Blocks of texts
 \item Printed and handwritten text-lines
-\item Handwritten annotation
+\item Handwritten annotations
 \item Initial capitals
 \item Banners
-\item Figures with (or without) their caption
+\item Figures
 \item Decorations
 \end{itemize}
 
@@ -250,7 +250,7 @@ GitHub is used for configuration management, by creating two different repositor
 \end{itemize}
 
 GitHub can also be used as a project management tool.
-It offers a similar feature to Trello called Projects, an adaptable spreadsheet that can also integrate with my issues and pull requests on GitHub to help me plan and track my work efficiently.
+It offers a similar feature to Trello or Jira called Projects, an adaptable spreadsheet that can also integrate with my issues and pull requests on GitHub to help me plan and track my work efficiently.
 
 Files of elements of content and their vignettes have an explicit naming convention to locate them by name.
 It should indicate their encapsulation in other elements of content, hierarchically and separated by dots.
@@ -468,8 +468,8 @@ For training a model, training data and configuration must be provided to the fr
 \begin{itemize}
 \item Training data which can be a directory containing the images, a list of image filenames, or a path to a csv file.
 \item Evaluation data which is used for validation, under the same format as training data.
-\item A directory for model output
-\item A class file coding each region to segment
+\item A directory for model output.
+\item A class file coding each region to segment.
 \item Additional parameters for training, such as:
 	\begin{itemize}
 	\item Data augmentation to scale, rotate or editing the images
@@ -654,12 +654,13 @@ This pipeline is implemented in the Import data module of the engineer’s syste
 
 Regarding the class file in the previous subsection, it is important to note that in some cases, a pixel may belong to multiple classes or labels at the same time.
 In this case, the pixel is referred to as a "multilabel pixel."
-For example, if we are performing semantic segmentation on an image of a person, a pixel in the image might belong to both the "skin" class and the "hair" class.
+This case must be taken into account when developing a model capable of semantically segmenting several regions at once.
+For example, a pixel in the image might belong to both the "text line" class and the "text block" class.
 
 To represent the labels for each pixel in an image using dense encoding, we create a fixed-length vector for each pixel, with each element of the vector corresponding to a particular label.
 The value of each element in the vector indicates the presence or absence of the corresponding label at that pixel.
 If a pixel belongs to multiple labels at the same time, the corresponding elements in the vector would be set to 1.
-For example, if a pixel contains both skin and hair, the "skin" and "hair" elements of the vector would both be set to 1, while the "foot" element would be set to 0.
+For example, if a pixel contains both a line and a text block, the "text line" and "text block" elements of the vector would both be set to 1, while the "foot" element would be set to 0.
 
 Therefore, in the class file, the RGB code of each colour is associated with an attribution code.
 The class file could then look like this:
@@ -678,7 +679,7 @@ The class file could then look like this:
 
 The output of the neural network model is equivalent to an attribution probability for each pixel of the image.
 Through the framework, we get a probability map of the image for each EOC.
-In order to output results for the end user, we need to process these by thresholding them but most importantly to turn the regions into a hierarchically structured tree of EOCs.
+In order to output results for the end user, we need to turn the regions into a hierarchically structured tree of EOCs.
 
 Based on the class file and the types of EOCs, we know which regions are included in the others.
 Then, the whole region of the text line is included in the region of the text block.
@@ -763,56 +764,117 @@ An example of an ALTO file with the three types of EOCs "Block of text", "Text l
 
 \chapter{Implementation}
 
-Description de vos productions et de leurs modes de réalisation.
-
-(résumé du cahier de développement inséré en ANNEXE)
-
-blablabla
+We focused on developing deep learning models that will be employed in future software development.
+We implemented the {\it deep_learning_lab} package that allows a data scientist to prepare data, train deep neural networks and use them for inference on images.
+It resulted in the creation of deep neural networks, each specialising in the semantic segmentation of a specific element of content.
+Therefore, we only worked on single labels, not multilabels.
 
 \section{Tools and library used}
 
-blablabla
+We decided to use the {\bf dhSegment-torch} framework.
+dhSegment-torch is an external Deep-Learning framework for historical document processing cloned from the GitHub repository dhSegment-torch.
+We chose it because of its generic approach that allows to segmenting various types of regions and extracting content from different types of documents.
+Note that dhSegment-torch is currently under development and is the PyTorch version of the no longer developed dhSegment Tensorflow version.
+However, only the Tensorflow version comes with documentation.
+
+We used a Linux machine with a GPU as the processing time of training can be very long.
+The machine must have CUDA installed and the rest of the dependencies can be installed by Conda from the {\it dependencies} directory at the root of the project.
+The environment files have been edited to adapt to sm_86 CUDA architecture.
+
+Besides dhSegment-torch, some very basic libraries are used such as {\it numpy} and {\it PIL} for image processing, {\it pandas} for CSV files processing and {\it xml} for XML files parsing.
+The project's use of external dependencies and sub-modules, such as conda environment files and setup files, highlights the importance of managing dependencies and environment configurations to ensure consistency and reproducibility across different machines and environments.
+
+In addition, integration tests are managed by {\it pytest}.
+The use of tests for integration testing further enhances its reliability.
+The tests ensure that the code behaves as expected under different scenarios and edge cases, providing confidence in the code's correctness and reducing the likelihood of errors and bugs.
+
+The use of these dependencies also enables the project to leverage existing, well-tested, and reliable libraries and frameworks, reducing development time and enabling developers to focus on higher-level tasks.
 
 \section{Implementation elements, technical choices}
 
-\begin{lstlisting}[language=C++]
-#include <iostream>
-using namespace std;
+The project structure consists of multiple working directories, including the primary focus {\it deep_learning}.
+The {\it deep_learning} working directory provides a framework for data preparation, training, and inference for deep learning models.
+The {\it deep_learning_lab} package provides tools for data preparation, including patching and selecting labels, as well as training and inference tools.
+The dhSegment library provides the trainer and predictor classes for semantic segmentation.
+The project dependencies are contained in the {\it dependencies/} folder.
 
-int main () {
-    cout << "Hello, world !";
-    return 0;
-}
-\end{lstlisting}
+By organizing the project into working directories for data science, future software development, and dependencies, the project enables a clear separation of concerns and promotes modularity, making it easier to maintain, test, and update the code.
+Additionally, the separation of raw datasets into a dedicated folder and the use of sub-packages for data preparation and model training further enhances modularity and enables developers to use parts of the codebase in other projects.
 
-Un exemple de PHP:
-\begin{lstlisting}[language=php]
-class pdfOrder extends FPDF
-{
- function _check($x,$y,$width,$checked) {
-   if ($checked)
-     $this->rect($x,$y,$width,$width,'F');
-   else
-     $this->rect($x,$y,$width,$width);
- }
- function LI($sansFrais = false) {
-   $LI = 'LI';
-   $coord = 'Laboratoire informatique
-64, avenue Jean Portalis
-37200 Tours
-Tél. : 02 47 36 14 42
-Fax. : 02 47 36 14 22';
-   $this->Image(dirname(__FILE__)  .'/li.jpg',10,2,20);
-   $this->SetFont('Times','B',20);
-   $this->SetFont('Times','',9);
-   $this->setXY(35,3);
-   $this->Multicell(80,4,utf8_decode($coord),0,'LT');
- }
-\end{lstlisting}
+The {\it deep_learning_lab} package included in the project follows software engineering principles by adopting a clear module structure and defining clear interfaces between different components.
+The package also makes use of logging and configuration files, improving the project's maintainability and scalability.
+
+Future work can include implementing multi-label support for data preparation and further customization of the trainer and predictor classes.
+
+The {\it segmentation.ipynb} Jupyter Notebook acts as an application and demonstration of the use of the {\it deep_learning_lab} package.
+First, it patches raw data sets into the {\bf Training data preparation} section and demonstrates how to use the Orchestrator class.
+Next comes {\bf Deep learning lab} which shows how to use the Trainer class by training a model on a single label, and then how to use the Predictor class by using inference from the same model, on the same label and on test data.
+Finally, the section {\bf Tests} shows an example of how to use the inference results and allows the user to test the performance of the model.
 
 \section{Analysis of results, evaluation, quality}
 
-blablabla
+We trained four models, one for each of the following labels: TextLine, TextRegion, Word, ImageRegion.
+
+Here are the most useful metrics to know for our problem of semantic segmentation:
+\begin{itemize}
+\item The intersection-over-union (IoU) and mean intersection-over-union (mIoU) measures the overlap between the predicted segmentation and the ground truth segmentation by computing the ratio of the intersection between the two regions to their union.
+It varies from 0 to 1, where 1 indicates a perfect overlap between the predicted and ground truth segmentations.
+\item mIoU, on the other hand, calculates the average IoU across all classes in the dataset.
+It provides a more comprehensive measure of the overall performance of the segmentation model.
+\end{itemize}
+
+\subsection{TextLine}
+
+TextLine has the best trained model we have. Here is a good example of its performance, with the regions drawn on the image and the first 3 vignettes we extracted:
+
+\img{TextLine/good/image.png}{Good TextLine predictions on an image}{width=0.7\textwidth}
+
+\img{TextLine/good/0.png}{Predicted TextLine vignette 1}{width=1\textwidth}
+\img{TextLine/good/1.png}{Predicted TextLine vignette 2}{width=1\textwidth}
+\img{TextLine/good/2.png}{Predicted TextLine vignette 3}{width=1\textwidth}
+
+And here is an example of bad performance:
+
+\img{TextLine/bad/image.png}{Bad TextLine predictions on an image}{width=0.7\textwidth}
+
+In order to get a better understanding of the quality of the model, here come the metrics we measured using Tensorboard.
+
+
+We use this learning rate decay based on the exponential law:
+\img{TextLine/metrics/learningrate.png}{Learning rate of TextLine model on training set}{width=0.7\textwidth}
+
+We observe a fairly good loss curve on the training set:
+\img{TextLine/metrics/trainloss.png}{Loss curve of TextLine model on training set}{width=0.7\textwidth}
+
+We have the same metrics for the validation set:
+\img{TextLine/metrics/valloss.png}{Loss curve of TextLine model on validation set}{width=0.7\textwidth}
+
+
+However, we get much more information about the quality of training by looking at the following metrics on the validation set:
+\img{TextLine/metrics/valiouLabel.png}{IoU metric for TextLine of TextLine model on the validation set}{width=0.7\textwidth}
+\img{TextLine/metrics/valiouBack.png}{IoU metric for Background of TextLine model on the validation set}{width=0.7\textwidth}
+\img{TextLine/metrics/valmiou.png}{mIoU metric of TextLine model on the validation set}{width=0.7\textwidth}
+\img{TextLine/metrics/valprecision.png}{Precision metric of TextLine model on the validation set}{width=0.7\textwidth}
+
+
+\subsection{TextRegion}
+
+The TextRegion model always finds a region of text, but it is generally not fine enough and tends to create unnecessary or too few regions. Here is a good example of its performance, with the regions drawn on the image and the first 3 vignettes we extracted:
+
+\img{TextRegion/good/image28.png}{Good TextRegion predictions on an image}{width=0.7\textwidth}
+
+\img{TextRegion/good/1-28.png}{Predicted TextRegion vignette 1}{width=0.2\textwidth}
+\img{TextRegion/good/2-28.png}{Predicted TextRegion vignette 2}{width=0.2\textwidth}
+
+And here is an example of bad performance:
+
+\img{TextRegion/bad/image3.png}{Bad TextRegion predictions on an image}{width=0.7\textwidth}
+
+
+With the same learning rate decay, here are its loss curve on training and validation datasets:
+\img{TextLine/metrics/trainloss.png}{Loss curve of TextRegion model on training set}{width=0.7\textwidth}
+\img{TextLine/metrics/valloss.png}{Loss curve of TextRegion model on validation set}{width=0.7\textwidth}
+
 
 
 \section{Main HMIs}
@@ -1382,19 +1444,156 @@ Maintenance of the operations and scenarios is curative, which means they should
 
 \section{Introduction}
 
--
+The package-based structure of the {\it deep_learning_lab} module promotes code reusability and maintainability. The use of external dependencies, such as the dhSegment-torch framework, allows for faster development and reduces the amount of custom code that needs to be written. Overall, these practices contribute to a more streamlined and scalable project development process.
 
 \section{Architectural diagrams and UML}
 
--
+The {\it deep_learning_lab.data_preparation.patch} module defines the classes DataStructure, DataPatcher, AnnotationEncoder and MaskBuilder:
+\begin{itemize}
+\item Orchestrator is responsible for orchestrating the data preparation and patching process for a given set of datasets.
+\item DataStructure is a description of a dataset in the file system.
+\item DataPatcher allows to transform a dataset into a dhSegment framework compatible one containing the masks of the specified labels.
+\item AnnotationEncoder inspects a directory of annotations files to select, extract, and encode labels and their features.
+\item MaskBuilder creates masks for each labelled region in the image, given the annotations.
+\end{itemize}
+
+\img{20230403deeplearninglab.datapreparation.png}{Class diagram of the deep_learning_lab.data_preparation subpackage}{width=\textwidth}\label{dataPrep}
 
 \section{Detailed descriptions of data used}
 
--
+For training our deep neural networks, we used the 6 following datasets:
+\begin{itemize}
+\item FCR
+\item ESPOSALLES
+\item ScriptNet
+\item REID2019
+\item Pinkas
+\item ImageCLEF 2016
+\end{itemize}
+
+They constitute around 1,700 pairs (images, annotations).
+Here are the results of our analysis using the {\it Orchestrator.validate} method:
+\begin{table}[h]
+    \centering
+    \definecolor{C}{HTML}{305496}
+    \begin{tabular}{|l|l|l|l|l|}\hline
+        Dataset & TextLine & TextRegion & Word & ImageRegion \\\hline
+        FCR\_500/data & 32177 & 1701 & - & - \\\hline
+        ABP\_FirstTestCollection & 961 & 226 & - & - \\\hline
+        Bohisto\_Bozen\_SetP & 815 & 152 & - & - \\\hline
+        EPFL\_VTM\_FirstTestCollection & 252 & 38 & - & - \\\hline
+        HUB\_Berlin\_Humboldt & 693 & 81 & - & - \\\hline
+        NAF\_FirstTestCollection & 930 & 164 & - & - \\\hline
+        StAM\_Marburg\_Grimm\_SetP & 857 & 214 & - & - \\\hline
+        UCL\_Bentham\_SetP & 1024 & 191 & - & - \\\hline
+        unibas\_e-Manuscripta & 848 & 96 & - & - \\\hline
+        ABP\_FirstTestCollection & 4230 & 30 & - & - \\\hline
+        Bohisto\_Bozen\_SetP & 910 & 26 & - & - \\\hline
+        BHIC\_Akten & 2339 & 30 & - & - \\\hline
+        EPFL\_VTM\_FirstTestCollection & 2790 & 28 & - & - \\\hline
+        HUB\_Berlin\_Humboldt & 885 & 28 & - & - \\\hline
+        NAF\_FirstTestCollection & 6147 & 29 & - & - \\\hline
+        StAM\_Marburg\_Grimm\_SetP & 1064 & 30 & - & - \\\hline
+        UCL\_Bentham\_SetP & 2294 & 31 & - & - \\\hline
+        unibas\_e-Manuscripta & 1081 & 20 & - & - \\\hline
+        pinkas\_dataset & 1013 & 175 & 13744 & - \\\hline
+        IEHHR-XMLpages & 3070 & 968 & 31501 & - \\\hline
+        ImageCLEF 2016 pages\_train\_jpg & 9645 & 765 & - & - \\\hline
+        REID2019 & - & 454 & - & 3 \\\hline
+    \end{tabular}
+    \caption{Summary of label counts for each dataset}
+    \label{tab:label-counts}
+\end{table}
+
 
 \section{Detailed descriptions of classes, modules, achievements}
 
--
+\subsection{Data Preparation}
+The raw datasets are expected to be placed in the {\it raw_datasets/} folder, located in the deep_learning working directory.
+These datasets typically contain images and XML files containing their annotations.
+These annotation files cannot be used directly to train the model because they must be converted to masks.
+The {\it deep_learning_lab.data_preparation} package allows developers to select and use labels from their raw datasets to build masks.
+
+To patch a dataset, the developer must specify the main directory, the image directory, and the annotation directory.
+The {\it deep_learning_lab.data_preparation.orchestration} module provides default datasets that have been implemented inside the source code.
+Additional datasets can either be added to the defaults datasets in the source code of the module or via the {\it Orchestrator.ingestDatasets} method.
+
+The {\it deep_learning_lab.data_preparation.patch} module, which runs in the backend of the Orchestrator class, has not been validated for multi-labels since it misses the processing of one-hot encoding.
+
+To extract annotations from data sources in a format other than PAGE, the DataPatcher class can be very easily extended to support other extraction methods by using the method {\it DataPatcher._securelyExtractUsing(self, extraction_fun)}.
+Indeed, this method uses the extraction_fun method given as a parameter to parse XML files.
+Here is a simple example of how to use it:
+\begin{lstlisting}[language=Python]
+def countLabelsFiles(self, names_labels) -> dict:
+    """Counts the number of occurrences of specified label names in 
+    the given XML page.
+
+    Args:
+        names_labels (iterable): An iterable of label names to
+        				    search for.
+    Returns:
+        The number of occurrences of the specified label names in
+	the XML page.
+    
+    """
+    number_labels_name, _ = self._securelyExtractUsing(
+        lambda page: xml.countTags(
+            page,
+            names_labels,
+            self.namespaces_label
+        )
+    )
+    return number_labels_name
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python]
+def extractCoordsLabels(self) -> dict:
+    """Extracts the coordinates of specified label names from the
+    XML page.
+
+    Returns:
+        A dictionary containing the size of the page and the
+	coordinates of the specified labels.
+        A list of any anomalies encountered during extraction.
+    
+    """
+    shapes_label_name, anomalies = self._securelyExtractUsing(
+        lambda page: {
+            'size': self._getPageSize(page),
+            'coords': xml.extractAttributesTag(
+                'Coords',
+                'points',
+                page,
+                self.codes_labels.keys(),
+                self.namespaces_label
+            )
+        }
+    )
+    return shapes_label_name, anomalies
+\end{lstlisting}
+
+As you can see, an operation module called XMLParser used as {\it xml} has been created to easily parse annotation files.
+
+\subsection{Training}
+Before using the trainer provided by the dhSegment library, the developer must specify if they want to use a GPU and which one.
+The {\it deep_learning_lab.gpu_setup} module allows the selection of a GPU/CPU in the backend.
+
+The Trainer class from the {\it deep_learning_lab.model} module can then be instantiated with a specified set of labels to segment and the dataset to use.
+The trainer can be configured with many parameters relating to the split of the validation and test sets or to the training of the model itself.
+
+By default, the dataset to be used is {\it training_data} (results/'specified_labels'/training_data).
+The model and tensorboard directories should be in the same location.
+The model directory contains the best serialized models, and the tensorboard directory contains the logs of the metrics acquired during training.
+
+\subsection{Inference}
+The {\it deep_learning_lab.gpu_setup} module is also used for selection of a GPU/CPU in the backend.
+
+The Predictor class from the {\it deep_learning_lab.model} module can be instantiated with a specified set of labels to segment.
+The class can convert the input images from a CSV file into a folder in order to reuse the split test data from the training phase (it is only designed for developers).
+It can draw regions around the elements of content in an image and cut out vignettes from it.
+The output directory contains the vignettes and the output of the *`Predictor.start`* method returns additional data such as the original image on which the regions are drawn.
+
+By default, the input data is {\it inference_data}, and the output directory is not specified.
 
 
 \chapter{Installation document}
