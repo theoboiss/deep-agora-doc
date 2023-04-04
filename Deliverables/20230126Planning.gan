@@ -1,14 +1,14 @@
-<?xml version="1.0" encoding="UTF-8"?><project name="Untitled Gantt Project" company="" webLink="http://" view-date="2023-01-23" view-index="0" gantt-divider-location="383" resource-divider-location="300" version="2.8.11" locale="en_GB">
+<?xml version="1.0" encoding="UTF-8"?><project name="Untitled Gantt Project" company="" webLink="http://" view-date="2023-01-09" view-index="0" gantt-divider-location="1" resource-divider-location="300" version="2.8.11" locale="en_GB">
     <description/>
-    <view zooming-state="default:7" id="gantt-chart">
-        <field id="tpd3" name="Name" width="186" order="0"/>
-        <field id="tpd4" name="Begin date" width="89" order="1"/>
-        <field id="tpd5" name="End date" width="89" order="2"/>
+    <view zooming-state="default:6" id="gantt-chart">
+        <field id="tpd3" name="Name" width="15" order="0"/>
+        <field id="tpd4" name="Begin date" width="15" order="1"/>
+        <field id="tpd5" name="End date" width="15" order="2"/>
         <option id="taskLabelUp" value=""/>
         <option id="taskLabelDown" value=""/>
         <option id="taskLabelLeft" value="resources"/>
         <option id="taskLabelRight" value="name"/>
-        <option id="color.recent"><![CDATA[#ff00ff #9966ff #ff0033 #ff9933 #3399ff #66ff66 #f4f4f4 #000000 #003399 #ffcc33]]></option>
+        <option id="color.recent"><![CDATA[#ff0033 #ff00ff #9966ff #ff9933 #3399ff #66ff66 #f4f4f4 #000000 #003399 #ffcc33]]></option>
     </view>
     <view id="resource-table">
         <field id="0" name="Name" width="296" order="0"/>
@@ -92,15 +92,14 @@
             <task id="152" name="Feedback" color="#ff0033" meeting="false" start="2023-03-08" duration="1" complete="0" thirdDate="2023-02-09" thirdDate-constraint="0" expand="true"/>
             <task id="269" name="Write project report" color="#9966ff" meeting="false" start="2023-03-08" duration="1" complete="0" thirdDate="2022-12-05" thirdDate-constraint="0" expand="true"/>
         </task>
-        <task id="176" name="Sprint 4" color="#000000" meeting="false" start="2023-03-09" duration="11" complete="0" thirdDate="2023-02-01" thirdDate-constraint="0" expand="true">
+        <task id="176" name="Sprint 4" color="#000000" meeting="false" start="2023-03-09" duration="10" complete="0" thirdDate="2023-02-01" thirdDate-constraint="0" expand="true">
             <task id="178" name="Plan" color="#ffcc33" meeting="false" start="2023-03-09" duration="1" complete="0" thirdDate="2023-01-20" thirdDate-constraint="0" expand="true"/>
             <task id="180" name="Corrections (Model tuning)" color="#ffcc33" meeting="false" start="2023-03-09" duration="3" complete="0" thirdDate="2023-01-26" thirdDate-constraint="0" expand="true"/>
-            <task id="379" name="API refactoring" color="#ffcc33" meeting="false" start="2023-03-14" duration="5" complete="0" thirdDate="2022-12-26" thirdDate-constraint="0" expand="true"/>
-            <task id="272" name="Write project report" color="#9966ff" meeting="false" start="2023-03-21" duration="3" complete="0" thirdDate="2022-12-05" thirdDate-constraint="0" expand="true"/>
+            <task id="379" name="API refactoring" color="#ffcc33" meeting="false" start="2023-03-14" duration="7" complete="0" thirdDate="2022-12-26" thirdDate-constraint="0" expand="true"/>
         </task>
-        <task id="184" name="Feedback" color="#ff0033" meeting="false" start="2023-03-27" duration="1" complete="0" thirdDate="2023-02-09" thirdDate-constraint="0" expand="true"/>
-        <task id="246" name="Project report validation" color="#ff0033" meeting="false" start="2023-03-24" duration="6" complete="0" thirdDate="2023-02-06" thirdDate-constraint="0" expand="true"/>
-        <task id="240" name="Final presentation" color="#ff0033" meeting="true" start="2023-04-03" duration="0" complete="0" thirdDate="2023-01-30" thirdDate-constraint="0" expand="true"/>
+        <task id="272" name="Write project report" color="#9966ff" meeting="false" start="2023-03-23" duration="7" complete="0" thirdDate="2022-12-05" thirdDate-constraint="0" expand="true"/>
+        <task id="380" name="Implementation meeting" color="#ff0033" meeting="true" start="2023-03-30" duration="0" complete="0" thirdDate="2023-01-09" thirdDate-constraint="0" expand="true"/>
+        <task id="240" name="Final presentation" color="#ff0033" meeting="true" start="2023-04-04" duration="0" complete="0" thirdDate="2023-01-30" thirdDate-constraint="0" expand="true"/>
     </tasks>
     <resources>
         <resource id="3" name="Retro Team" function="Default:0" contacts="" phone=""/>

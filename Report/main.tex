@@ -809,6 +809,17 @@ Future work can include implementing multi-label support for data preparation an
 The {\it segmentation.ipynb} Jupyter Notebook acts as an application and demonstration of the use of the {\it deep_learning_lab} package.
 First, it patches raw data sets into the {\bf Training data preparation} section and demonstrates how to use the Orchestrator class.
 Next comes {\bf Deep learning lab} which shows how to use the Trainer class by training a model on a single label, and then how to use the Predictor class by using inference from the same model, on the same label and on test data.
+Note that we did always used the same parameters for our models and did not tune them for better training: 
+\begin{itemize}
+\item batch size is 4,
+\item number of epochs is 100,
+\item learning rate is 1e-4,
+\item decay rate for the learning rate is 0.9995,
+\item evaluate the model on the validation set every 5 epochs,
+\item 4 epochs to wait for improvement in validation loss before early stopping,
+\item repeat 4 times the dataset,
+\item 1e6 pixels in the images (size of the input layer)
+\end{itemize}
 Finally, the section {\bf Tests} shows an example of how to use the inference results and allows the user to test the performance of the model.
 
 \section{Analysis of results, evaluation, quality}
@@ -872,17 +883,48 @@ And here is an example of bad performance:
 
 
 With the same learning rate decay, here are its loss curve on training and validation datasets:
-\img{TextLine/metrics/trainloss.png}{Loss curve of TextRegion model on training set}{width=0.7\textwidth}
-\img{TextLine/metrics/valloss.png}{Loss curve of TextRegion model on validation set}{width=0.7\textwidth}
+\img{TextRegion/metrics/trainloss.png}{Loss curve of TextRegion model on training set}{width=0.7\textwidth}
+\img{TextRegion/metrics/valloss.png}{Loss curve of TextRegion model on validation set}{width=0.7\textwidth}
+
+Here are its other metrics on the validation set:
+\img{TextRegion/metrics/valiouLabel.png}{IoU metric for TextRegion of TextRegion model on the validation set}{width=0.7\textwidth}
+\img{TextRegion/metrics/valiouBack.png}{IoU metric for Background of TextRegion model on the validation set}{width=0.7\textwidth}
+\img{TextRegion/metrics/valmiou.png}{mIoU metric of TextRegion model on the validation set}{width=0.7\textwidth}
+\img{TextRegion/metrics/valprecision.png}{Precision metric of TextRegion model on the validation set}{width=0.7\textwidth}
+
+As we can see, all the metrics vary a lot.
+We did not have enough time to tune the models since we focused on the quality of the code.
+A solution could have been to increase the number of epochs or the number of validation steps without increase to tolerate (the early stopping).
+This way, the model could train more and maybe the loss on the validation set would start decreasing.
+
+However, the result is unlikely to be much better, as the TextRegion masks in the training data actually often overlap.
+It comes from annotation files that often make poor quality masks.
+Here is an example:
+\img{image.jpg}{Image of HS_107_192_object_132921 from "Baseline Competition - Complex Documents/Bohisto_Bozen_SetP" dataset}{width=0.4\textwidth}
+\img{mask.png}{Mask of HS_107_192_object_132921 from "Baseline Competition - Complex Documents/Bohisto_Bozen_SetP" dataset}{width=0.4\textwidth}
+
+A solution could be to ignore the annotation files that only contain 1 label TextRegion when patching the datasets.
+They can easily be counted with the Orchestrator.validate method and verbose parameter greater or equal to 4.
 
 
+\subsection{ImageRegion and Word}
 
-\section{Main HMIs}
+Their models have very bad performances. They simply do not find any ImageRegion or Word in the test data.
 
-\subsection{HMI 1}
+The IoU metric for ImageRegion clearly shows that the ImageRegion model has not learned to recognise any of these elements:
+\img{ImageRegion/metrics/valiouLabel.png}{IoU metric for ImageRegion of ImageRegion model on the validation set}{width=0.7\textwidth}
 
-Résumé des principaux éléments présent dans le Guide de l'utilisateur
-avec d'éventuels compléments d'information sur leur mode de mise en œuvre.
+This bad performance comes from a lack of data: we only have 3 labelled ImageRegion in all of our datasets
+
+Concerning the Word model, it is not as obvious:
+\img{Word/metrics/valiouLabel.png}{IoU metric for Word of Word model on the validation set}{width=0.7\textwidth}
+
+However, although we have about 40,000-word regions in all our datasets, they belong to only 135 images in total, of which 35 are from the pinkas dataset and 100 from the IEHHR dataset.
+Therefore, we have a very bad diversity of our data for the Word regions.
+
+In addition, the annotations from the IEHHR dataset, which constitutes most of the Word training data, makes poor quality masks that overlap:
+\img{wordmask.png}{Mask of Volum_069_Registres_0004 from "IEHHR-XMLpages" dataset}{width=0.7\textwidth}
+
 
 
 \chapter{Assessment and conclusion}
@@ -929,13 +971,36 @@ As soon as the environment is ready, the data pipeline will have to be started i
 
 %Bilan global $\Rightarrow$ respect du cahier des charges (fait / à faire)
 
+The environment of the project has been hard to configure due to the incompatibility between the CUDA version of our GPU server and the requirements of the dgSegment-torch library.
+In order to avoid this complication for the next users of the project, new environment files, solid documentation and an installation guide have been created.
+
+We estimate the delay due to the environment, including research and migration, to be two weeks.
+The progress of the project has been slowed down by two weeks due to illness.
+The last two sprints, each lasting two weeks, were already planned as optional.
+
+We have been able to develop a validated model of text line segmentation and analyse its performance.
+However, we did not tune it.
+Instead, we really focused on creating new packages for the project and created a modular project structure with a deep learning package.
+As specified, we focused on the quality of the code and its documentation so that it is easily maintainable and scalable for future developers.
+
+Finally, we offered the first functionality for output export by saving all the vignettes in a directory.
+However, we did not go further in the development and therefore did not create functionality for building ALTO output files or HMIs (which was specified in the optional sprints).
+
 \section{Quality assessment}
 
--
+In terms of the quality of the code and the documentation, we are very satisfied with our achievements and we believe that the next developers working on this project will have all the elements to do a great job.
+
+We also believe that we had good project management and managed to overcome the challenges we faced in our project.
+
+However, we would have liked to have acquired and patched more diverse data, tuned our models and obtained better results for most of them, as only one has really satisfactory results.
+Many datasets were not available, and we could have realised it earlier if we did not work as much on the specification part.
 
 \section{Self-critical review}
 
--
+We really enjoyed doing this project and thought it has been very formative.
+It was a personal goal to work for a long time on a large deep learning project and this R\&D project made it possible.
+We even insisted on getting this project from our supervisor and we are very grateful to have been able to work on it.
+It reinforces our idea that we want to work as an engineer in the field of machine learning.
 
 \begin{appendix}
 \selectlanguage{english}
@@ -1020,7 +1085,7 @@ As soon as the environment is ready, the data pipeline will have to be started i
 
 \subsection{Evolution of the project}
 
-\img{20221115Planning.png}{Initial Gantt Chart for Agile planning of the implementation phase}{width=\textwidth}\label{plan}
+\img{20221115Planning.png}{Initial Gantt Chart for Agile planning of the implementation phase}{width=\textwidth}\label{planS10}
 
 \subsection{Job description}
 
@@ -1073,6 +1138,11 @@ All these sprints aim to prioritise and propose different versions of Deep-Agora
 \end{itemize}
 
 The two last sprints being optional, it is envisaged that they will only cover the remaining backlog from previous sprints.
+
+
+Here are the final plannings of the project:
+\img{20230404Planning1.png}{Final Gantt Chart for Agile planning of the implementation phase (part 1)}{width=\textwidth}\label{planS102}
+\img{20230404Planning2.png}{Final Gantt Chart for Agile planning of the implementation phase (part 2)}{width=\textwidth}\label{planS102}
 
 
 \chapter{Description of the interfaces}
@@ -1461,7 +1531,7 @@ The {\it deep_learning_lab.data_preparation.patch} module defines the classes Da
 
 \section{Detailed descriptions of data used}
 
-For training our deep neural networks, we used the 6 following datasets:
+For training our deep neural networks, we used the 6 following datasets (some bring together several data sets):
 \begin{itemize}
 \item FCR
 \item ESPOSALLES
@@ -1598,11 +1668,40 @@ By default, the input data is {\it inference_data}, and the output directory is 
 
 \chapter{Installation document}
 
--
+\section{Requirements}
+To work in the deep_learning directory, it is recommended to have a Linux or WSL machine with a GPU, as the processing time can be very long. You also need to have Conda installed on your machine.
 
-\chapter{User document}
+Check if you have a GPU and CUDA installed via the NVIDIA System Management Interface (NVIDIA-SMI) driver by entering in your terminal:
+\begin{verbatim}
+nvidia-smi
+\end{verbatim}
 
--
+\section{Installation}
+The deep_learning_lab package uses the sub-module and framework dhSegment-torch. First, go to dependencies/ and clone the sub-module(s) as follows:
+\begin{verbatim}
+cd dependencies/
+git submodule update --init --recursive
+\end{verbatim}
+
+The environment files environment.yml and setup.py of the dhSegment-torch framework have been edited to adapt to the sm_86 CUDA architecture of our machine. You can match your GPU name to your CUDA architecture on this website. To apply such changes, do as follows:
+\begin{verbatim}
+cp environment.yml dhSegment-torch/
+cp setup.py dhSegment-torch/
+\end{verbatim}
+
+To install the package of the sub-module, go to dhSegment-torch/:
+\begin{verbatim}
+cd dhSegment-torch
+\end{verbatim}
+
+dhSegment will not work properly if the dependencies are not respected.
+In particular, inaccurate dependencies may result in an inability to converge, even if no error is displayed.
+Therefore, we highly recommend to create a dedicated environment as follows:
+\begin{verbatim}
+conda env create --name dhs --file environment.yml
+source activate dhs
+python setup.py install
+\end{verbatim}
 
 \chapter{Tests}
 
@@ -1930,10 +2029,6 @@ The XML of the scenario contains the parameters of the operation. \\\hline
 
 
 
-\chapter{Developer's Workbook}
-
-
-
 \chapter{Glossary}
 \begin{table}[]
 
@@ -1976,27 +2071,13 @@ Sprint	& A time-bound effort, i.e. the duration is agreed and fixed in advance f
 
 \chapter{Bibliography}
 
-20221130Specification, Specification document
-
-Meeting minutes deliverables
-
-20221012SpecsOutputs, Output specifications deliverable
-
-20221020SpecsFrameworks, Framework specifications deliverable
-
-20221110SpecsDataSets, Data set specifications deliverable
-
-20221115Planning, Planning deliverable
-
-20221116DiagComponent, Component diagram deliverable
-
-20221116DiagUseCase, Use cases diagram deliverable
-
-\href{https://sites.google.com/site/paradiitproject/}{PARADIIT Project}
-
-\href{https://arxiv.org/abs/1804.10371}{dhSegment paper}
-
-\href{https://github.com/dhlab-epfl/dhSegment}{GitHub dhSegment}
+\begin{itemize}
+\item \href{https://arxiv.org/abs/1804.10371}{S. Ares Oliveira, B.Seguin, and F. Kaplan, “dhSegment: A generic deep-learning approach for document segmentation”, in Frontiers in Handwriting Recognition (ICFHR), 2018 16th International Conference on, pp. 7-12, IEEE, 2018.}
+\item \href{https://arxiv.org/abs/2203.08504}{K. Nikolaidou, M. Seuret, H. Mokayed and M. Liwicki, “A survey of historical document image datasets”, IJDAR 25, 305–338 (2022)}
+\item \href{https://sites.google.com/site/paradiitproject/}{PARADIIT Project}
+\item \href{https://github.com/theo-boi/deep-agora}{GitHub deep-agora}
+\item \href{https://github.com/dhlab-epfl/dhSegment-torch}{GitHub dhSegment-torch}
+\end{itemize}
 
 
 
